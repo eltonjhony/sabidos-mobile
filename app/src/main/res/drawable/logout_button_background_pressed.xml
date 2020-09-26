@@ -1,0 +1,13 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/logoutButtonPressedColor" />
+    <stroke
+        android:width="3dp"
+        android:color="@color/colorPrimary">
+
+    </stroke>
+    <corners
+        android:bottomLeftRadius="80dip"
+        android:bottomRightRadius="80dip"
+        android:topLeftRadius="80dip"
+        android:topRightRadius="80dip" />
+</shape>

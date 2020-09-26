@@ -1,0 +1,85 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="NoActionBarAppThemeDefault" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="NoActionBarAppThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorBackgroundLight</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="NoActionBarAppThemePrimary" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="TextStyleMedium" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/poppins_medium</item>
+        <item name="android:textColor">@color/colorFontDark</item>
+    </style>
+
+    <style name="TextStyleRegular" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/poppins_regular</item>
+        <item name="android:textColor">@color/colorFontDark</item>
+    </style>
+
+    <style name="TextStyleLight" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textColor">@color/colorFontDark</item>
+    </style>
+
+    <style name="TextStyleExtraLight" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/poppins_extra_light</item>
+        <item name="android:textColor">@color/colorFontDark</item>
+    </style>
+
+    <style name="TextStyleSemiBold" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/poppins_semi_bold</item>
+        <item name="android:textColor">@color/colorFontDark</item>
+    </style>
+
+    <style name="TextStyleItalic" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/poppins_italic</item>
+        <item name="android:textColor">@color/colorFontDark</item>
+    </style>
+
+    <style name="ButtonStyleSemiBold" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">@font/poppins_semi_bold</item>
+        <item name="android:background">@drawable/button_state</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="LogoutButtonStyleSemiBold" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">@font/poppins_semi_bold</item>
+        <item name="android:background">@drawable/logout_button_state</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/disableButtonColor</item>
+        <item name="colorControlActivated">@color/goldColor</item>
+    </style>
+
+    <style name="TextAppearance.Design.Snackbar.Message" parent="android:TextAppearance" tools:override="true">
+        <item name="android:fontFamily">@font/poppins_light</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_up_anim</item>
+        <item name="android:windowExitAnimation">@anim/slide_down_anim</item>
+    </style>
+
+</resources>

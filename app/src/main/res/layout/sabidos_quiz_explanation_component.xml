@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="32dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="32dp"
+    android:background="@drawable/card_background">
+
+    <TextView
+        android:id="@+id/correctAnswerResultLabel"
+        style="@style/TextStyleLight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toTopOf="@id/questionExplanationTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="A resposta correta é Biologia Marinha" />
+
+    <TextView
+        android:id="@+id/questionExplanationTextView"
+        style="@style/TextStyleRegular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:lineSpacingExtra="10dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:textAlignment="textStart"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Biologia marinha é a especialidade biológica que se encarrega de entender os organismos que vivem em ecossistemas de água salgada e as relações dos mesmos com o ambiente.\nOs oceanos cobrem mais de 71% da superfície da Terra e, assim como o ambiente terrestre é diverso, os oceanos também são. Por isso encontramos as mais diferentes formas de vida no mar, desde o plâncton microscópico, incluindo o fitoplâncton, de enorme importância para a produção primária." />
+
+    <TextView
+        android:id="@+id/explanationResourceTextView"
+        style="@style/TextStyleLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/questionExplanationTextView"
+        tools:text="Wikipedia.org" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

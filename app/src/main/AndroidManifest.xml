@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.sabidos">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".SabidosApplication"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:networkSecurityConfig="@xml/network_config"
+        android:theme="@style/NoActionBarAppThemeDefault">
+
+        <activity
+            android:name=".presentation.splash.SplashActivity"
+            android:theme="@style/NoActionBarAppThemePrimary">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" android:host="sabidosdev.page.link" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".presentation.onboarding.OnboardingActivity"
+            android:theme="@style/NoActionBarAppThemeLight"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
+            android:name=".presentation.MainActivity"
+            android:theme="@style/NoActionBarAppThemeDefault"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <activity
+            android:name=".presentation.quiz.SabidosQuizActivity"
+            android:theme="@style/NoActionBarAppThemeDefault"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+    </application>
+
+</manifest>

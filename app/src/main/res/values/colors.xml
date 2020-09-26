@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#9BA0FF</color>
+    <color name="colorPrimaryDark">#9BA0FF</color>
+    <color name="colorPrimaryLight">#caccf6</color>
+    <color name="colorAccent">#3A414B</color>
+    <color name="colorAccentLight">#7d7d7e</color>
+    <color name="colorAccentTransparency">#B33A414B</color>
+    <color name="colorPrimaryPressed">#797EDA</color>
+    <color name="colorBackgroundLight">#F8F8F8</color>
+    <color name="colorFontDark">#3A414B</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="textColorHint">#B3929391</color>
+    <color name="redColor">#E00615</color>
+    <color name="checkboxBorderColor">#D9D6D6</color>
+    <color name="disableButtonColor">#cccccc</color>
+    <color name="colorIconDisabled">#B5B5B5</color>
+    <color name="textColorDarkGray">#6D7278</color>
+    <color name="blueLinkColor">#009CFF</color>
+    <color name="greenMoneyColor">#73BF00</color>
+    <color name="goldColor">#FAC638</color>
+    <color name="colorLink">#4d94ff</color>
+    <color name="greenCorrectColor">#6DD400</color>
+    <color name="logoutButtonPressedColor">#f0efef</color>
+    <color name="greenCorrectAnswerColor">#01b49d</color>
+    <color name="redIncorrectAnswerColor">#ff7c80</color>
+</resources>

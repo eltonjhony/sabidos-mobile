@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/contentLayoutParent">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/firstSelectionOption"
+        android:layout_width="90dp"
+        android:layout_height="25dp"
+        tools:text="@string/previous_label"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textColor="@color/colorWhite"
+        style="@style/TextStyleMedium"
+        android:background="@drawable/filter_background_disabled_rounded"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/secondSelectionOption"
+        android:layout_width="90dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="70dp"
+        android:textColor="@color/colorWhite"
+        android:textAlignment="center"
+        android:gravity="center"
+        style="@style/TextStyleMedium"
+        tools:text="@string/current_label"
+        android:background="@drawable/filter_background_active_rounded"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

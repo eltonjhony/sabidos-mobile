@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/answerIconView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_baseline_check_circle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimary"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintTop_toBottomOf="@id/answerIconView"
+        app:layout_constraintStart_toStartOf="@id/answerIconView"
+        app:layout_constraintEnd_toEndOf="@id/answerIconView"
+        app:layout_constraintBottom_toBottomOf="@id/categoryTextView"/>
+
+    <TextView
+        android:id="@+id/questionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@id/answerIconView"
+        app:layout_constraintEnd_toStartOf="@id/answerDateTextView"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:paddingBottom="2dp"
+        style="@style/TextStyleLight"
+        android:textColor="@color/colorAccentLight"
+        android:textSize="13sp"
+        tools:text="A Marinha proibiu o desembarque na ilha da Queimada Grande por qual motivo?" />
+
+    <TextView
+        android:id="@+id/categoryTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/questionTextView"
+        app:layout_constraintStart_toEndOf="@id/answerIconView"
+        android:layout_marginStart="10dp"
+        android:paddingBottom="16dp"
+        style="@style/TextStyleRegular"
+        android:textSize="12sp"
+        tools:text="Curiosidades" />
+
+    <TextView
+        android:id="@+id/answerDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@id/questionTextView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/TextStyleRegular"
+        android:textSize="12sp"
+        android:textColor="@color/colorAccent"
+        tools:text="12 Agosto" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

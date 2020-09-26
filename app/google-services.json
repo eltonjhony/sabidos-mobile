@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1098305251398",
+    "firebase_url": "https://sabidos-dev.firebaseio.com",
+    "project_id": "sabidos-dev",
+    "storage_bucket": "sabidos-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098305251398:android:212e499d848b42459d4247",
+        "android_client_info": {
+          "package_name": "com.sabidos.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1098305251398-o45v44kedvskh91svvbidrnsfvrit9e4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sabidos.dev",
+            "certificate_hash": "8fb6c5fdc1a3b9fa13646b706ac940fe760b9664"
+          }
+        },
+        {
+          "client_id": "1098305251398-cq6a0shbquonsjc661cjtg93p1non7oh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQgo7KEZq8JGtaKKYinCJNSnP08P1CdMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1098305251398-cq6a0shbquonsjc661cjtg93p1non7oh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

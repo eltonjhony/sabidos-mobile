@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/starLevelParent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@android:color/transparent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/firstStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:paddingStart="2dp"
+        android:scaleType="fitXY"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_enabled_star" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/secondStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@id/firstStar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_enabled_star" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/thirdStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@id/secondStar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_disable_star" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/fourthStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@id/thirdStar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_disable_star" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/fiftyStar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="2dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toEndOf="@id/fourthStar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_disable_star" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

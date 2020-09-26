@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="280dp"
+    android:layout_marginTop="56dp"
+    android:background="@drawable/curved_bottom">
+
+    <com.sabidos.presentation.home.views.SimpleTimerCountdownComponent
+        android:id="@+id/simpleTimerCtComponent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.sabidos.presentation.home.views.WeeklyProgressTimerComponent
+        android:id="@+id/weeklyProgressTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/simpleTimerCtComponent">
+
+        <com.sabidos.presentation.home.views.LevelInfoComponent
+            android:id="@+id/levelInfoComponent"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent" />
+
+    </com.sabidos.presentation.home.views.WeeklyProgressTimerComponent>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

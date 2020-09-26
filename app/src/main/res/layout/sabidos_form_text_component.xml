@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/formTitleText"
+        style="@style/TextStyleLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Primeiro nome" />
+
+    <TextView
+        android:id="@+id/requiredSymbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:textColor="@color/redColor"
+        app:layout_constraintStart_toEndOf="@id/formTitleText"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="*" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/formTextInputField"
+        style="@style/TextStyleLight"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/edit_text_border"
+        android:focusableInTouchMode="true"
+        android:hint="@string/name_hint"
+        android:paddingStart="17dp"
+        android:paddingEnd="17dp"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/formTitleText" />
+
+    <TextView
+        android:id="@+id/formTextInputErrorField"
+        style="@style/TextStyleLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/redColor"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/formTextInputField"
+        tools:text="Por favor, informe um email válido" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
