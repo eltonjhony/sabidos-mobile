@@ -9,12 +9,17 @@ import com.sabidos.domain.User
 import com.sabidos.infrastructure.Constants
 import com.sabidos.infrastructure.ResultWrapper
 import com.sabidos.infrastructure.helpers.SignInPrefsHelper
+import com.sabidos.infrastructure.logging.Logger
 import com.sabidos.infrastructure.oauth.OAuthProvider
+import com.sabidos.infrastructure.oauth.VerificationPhoneNumberListener
+import java.io.Closeable
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
     OAuthProvider {
+
+    private val disposeBag = mutableListOf<Closeable>()
 
     private val auth: FirebaseAuth by lazy { Firebase.auth }
 
@@ -152,35 +157,41 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
         callback: ((ResultWrapper<Boolean>) -> Unit)
     ) = runCatching {
 
+        val listener = VerificationPhoneNumberListener(object :
+            PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+            override fun onVerificationFailed(e: FirebaseException) {
+                callback(handleFirebaseException(e))
+            }
+
+            override fun onCodeSent(
+                verificationId: String,
+                token: PhoneAuthProvider.ForceResendingToken
+            ) {
+                signInPrefsHelper.putVerificationId(verificationId)
+                signInPrefsHelper.putPhoneNumber(phoneNumber)
+                callback(ResultWrapper.Success(true))
+            }
+
+            override fun onVerificationCompleted(p0: PhoneAuthCredential) {
+                // This callback will be invoked in two situations:
+                // 1 - Instant verification. In some cases the phone number can be instantly
+                //     verified without needing to send or enter a verification code.
+                // 2 - Auto-retrieval. On some devices Google Play services can automatically
+                //     detect the incoming verification SMS and perform verification without
+                //     user action.
+            }
+
+        })
+
+        disposeBag.add(listener)
+
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
             phoneNumber,
             60,
             TimeUnit.SECONDS,
             Executors.newSingleThreadExecutor(),
-            object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
-                override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                    // This callback will be invoked in two situations:
-                    // 1 - Instant verification. In some cases the phone number can be instantly
-                    //     verified without needing to send or enter a verification code.
-                    // 2 - Auto-retrieval. On some devices Google Play services can automatically
-                    //     detect the incoming verification SMS and perform verification without
-                    //     user action.
-                }
-
-                override fun onVerificationFailed(e: FirebaseException) {
-                    callback(handleFirebaseException(e))
-                }
-
-                override fun onCodeSent(
-                    verificationId: String,
-                    token: PhoneAuthProvider.ForceResendingToken
-                ) {
-                    signInPrefsHelper.putVerificationId(verificationId)
-                    signInPrefsHelper.putPhoneNumber(phoneNumber)
-                    callback(ResultWrapper.Success(true))
-                }
-            }
+            listener
         )
 
     }.getOrThrow()
@@ -211,6 +222,15 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
             }
 
         } ?: callback(ResultWrapper.DataNotFoundError)
+    }
+
+    override fun clear() {
+        runCatching {
+            disposeBag.forEach {
+                it.close()
+            }
+            disposeBag.clear()
+        }.onFailure { Logger.withTag(FirebaseOAuthProvider::class.java.simpleName).withCause(it) }
     }
 
     override suspend fun logout(): ResultWrapper<Boolean> = runCatching {

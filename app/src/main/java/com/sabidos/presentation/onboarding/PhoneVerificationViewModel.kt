@@ -57,10 +57,4 @@ class PhoneVerificationViewModel(
         return phoneNumber?.replaceRange(0, phoneNumber.length - 2, "** *******")
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        signInWithPhoneNumberUseCase.clear()
-        verifyPhoneNumberUseCase.clear()
-    }
-
 }

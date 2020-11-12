@@ -48,10 +48,4 @@ class HomeViewModel(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        getWeeklyHitsUseCase.clear()
-        getTimelineUseCase.clear()
-    }
-
 }

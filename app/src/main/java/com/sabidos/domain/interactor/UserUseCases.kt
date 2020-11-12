@@ -40,6 +40,7 @@ class VerifyPhoneNumberUseCase(private val oauthProvider: OAuthProvider) :
 
     override suspend fun run(params: Params): ResultWrapper<Boolean?> = suspendCoroutine { cont ->
         oauthProvider.verifyPhoneNumber(params.phoneNumber) {
+            oauthProvider.clear()
             cont.resume(it)
         }
     }

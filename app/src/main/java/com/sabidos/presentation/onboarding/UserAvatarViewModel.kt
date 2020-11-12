@@ -31,9 +31,4 @@ class UserAvatarViewModel(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        getAllAvatarsUseCase.clear()
-    }
-
 }

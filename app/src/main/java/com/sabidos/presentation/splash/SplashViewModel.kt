@@ -92,10 +92,4 @@ class SplashViewModel(
         } ?: accountResource.setDataNotFound()
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        loadInitialDataUseCase.clear()
-        isUserLoggedUseCase.clear()
-    }
-
 }

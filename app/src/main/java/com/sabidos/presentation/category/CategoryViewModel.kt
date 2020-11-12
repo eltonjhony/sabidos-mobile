@@ -32,9 +32,4 @@ class CategoryViewModel(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        getAllCategoriesUseCase.clear()
-    }
-
 }

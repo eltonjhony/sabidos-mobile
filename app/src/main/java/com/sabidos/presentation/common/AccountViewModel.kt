@@ -23,9 +23,4 @@ open class AccountViewModel(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        getCurrentAccountUseCase.clear()
-    }
-
 }

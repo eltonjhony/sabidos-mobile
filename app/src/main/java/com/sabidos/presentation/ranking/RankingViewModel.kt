@@ -30,9 +30,4 @@ class RankingViewModel(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        getWeeklyRankingUseCase.clear()
-    }
-
 }

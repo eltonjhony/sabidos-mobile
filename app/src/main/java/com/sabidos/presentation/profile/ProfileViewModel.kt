@@ -41,10 +41,4 @@ class ProfileViewModel(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        getCurrentUserUseCase.clear()
-        signOutUseCase.clear()
-    }
-
 }

@@ -88,13 +88,4 @@ class LoginViewModel(
 
     private fun isMailNotValid(email: String): Boolean =
         email.isBlank() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()
-
-    override fun onCleared() {
-        super.onCleared()
-        createAnonymousAccountUseCase.clear()
-        signInAnonymouslyUseCase.clear()
-        verifyPhoneNumberUseCase.clear()
-        signInWithEmailLinkUseCase.clear()
-    }
-
 }

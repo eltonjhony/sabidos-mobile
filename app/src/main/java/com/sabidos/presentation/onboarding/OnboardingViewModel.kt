@@ -107,10 +107,4 @@ class OnboardingViewModel(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        createAccountUseCase.clear()
-        getCurrentUserUseCase.clear()
-    }
-
 }

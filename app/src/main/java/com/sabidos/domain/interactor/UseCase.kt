@@ -31,16 +31,6 @@ abstract class UseCase<T, in Params> : CoroutineScope where T : Any? {
         }
     }
 
-    fun clear() {
-        runCatching {
-            if (!parentJob.isActive) {
-                parentJob.cancel()
-            }
-        }.onFailure {
-            Logger.withTag(UseCase::class.java.simpleName).withCause(it)
-        }
-    }
-
     private fun logErrors(result: ResultWrapper<T>) {
         runCatching {
             when (result) {
