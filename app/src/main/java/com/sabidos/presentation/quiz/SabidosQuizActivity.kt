@@ -42,11 +42,6 @@ class SabidosQuizActivity : BaseActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        quizProgressTimerComponent.stop()
-    }
-
     private fun bindQuizState(resource: Resource<Quiz>?) = resource?.let {
         if (it.state != Loading) {
             loading.dismiss()

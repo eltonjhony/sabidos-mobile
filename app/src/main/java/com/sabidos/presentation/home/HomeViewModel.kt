@@ -1,6 +1,7 @@
 package com.sabidos.presentation.home
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.sabidos.domain.Timeline
 import com.sabidos.domain.WeeklyHits
 import com.sabidos.domain.interactor.GetCurrentAccountUseCase
@@ -15,6 +16,7 @@ import com.sabidos.infrastructure.extensions.setGenericFailure
 import com.sabidos.infrastructure.extensions.setNetworkFailure
 import com.sabidos.infrastructure.extensions.setSuccess
 import com.sabidos.presentation.common.AccountViewModel
+import kotlinx.coroutines.launch
 import com.sabidos.domain.interactor.GetTimelineUseCase.Params as GetTimelineParams
 
 class HomeViewModel(
@@ -28,22 +30,26 @@ class HomeViewModel(
 
     fun getWeeklyHitsFor(endDate: String) {
         weeklyHitsResource.loading()
-        getWeeklyHitsUseCase(Params(endDate = endDate)) {
-            when (it) {
-                is Success -> weeklyHitsResource.setSuccess(it.data)
-                is NetworkError -> weeklyHitsResource.setNetworkFailure()
-                else -> weeklyHitsResource.setGenericFailure()
+        viewModelScope.launch {
+            getWeeklyHitsUseCase(Params(endDate = endDate)) {
+                when (it) {
+                    is Success -> weeklyHitsResource.setSuccess(it.data)
+                    is NetworkError -> weeklyHitsResource.setNetworkFailure()
+                    else -> weeklyHitsResource.setGenericFailure()
+                }
             }
         }
     }
 
     fun loadTimeline(page: Int = 1) {
         timelineResource.loading()
-        getTimelineUseCase(GetTimelineParams(page = page)) {
-            when (it) {
-                is Success -> timelineResource.setSuccess(it.data)
-                is NetworkError -> timelineResource.setNetworkFailure()
-                else -> timelineResource.setGenericFailure()
+        viewModelScope.launch {
+            getTimelineUseCase(GetTimelineParams(page = page)) {
+                when (it) {
+                    is Success -> timelineResource.setSuccess(it.data)
+                    is NetworkError -> timelineResource.setNetworkFailure()
+                    else -> timelineResource.setGenericFailure()
+                }
             }
         }
     }

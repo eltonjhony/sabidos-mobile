@@ -47,6 +47,10 @@
             android:theme="@style/NoActionBarAppThemeDefault"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
+        <activity android:name=".presentation.category.CategoryActivity"
+            android:theme="@style/NoActionBarAppThemeDefault"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
     </application>
 
 </manifest>

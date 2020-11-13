@@ -2,32 +2,23 @@ package com.sabidos.domain.interactor
 
 import com.sabidos.infrastructure.ResultWrapper
 import com.sabidos.infrastructure.logging.Logger
-import kotlinx.coroutines.*
-import kotlin.coroutines.CoroutineContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-abstract class UseCase<T, in Params> : CoroutineScope where T : Any? {
-
-    private val parentJob = SupervisorJob()
-    private val mainDispatcher = Dispatchers.Main
-    private val backgroundDispatcher = Dispatchers.IO
-
-    override val coroutineContext: CoroutineContext
-        get() = parentJob + mainDispatcher
+abstract class UseCase<T, in Params> where T : Any? {
 
     protected abstract suspend fun run(params: Params): ResultWrapper<T>
 
-    operator fun invoke(params: Params, onResult: (ResultWrapper<T>) -> Unit) {
-        launch(context = mainDispatcher) {
-            runCatching {
-                val result = withContext(backgroundDispatcher) {
-                    run(params)
-                }
-                logErrors(result)
-                onResult(result)
-            }.onFailure {
-                Logger.withTag(UseCase::class.java.simpleName).withCause(it)
-                onResult(ResultWrapper.GenericError(Error(it.message)))
+    suspend operator fun invoke(params: Params, onResult: (ResultWrapper<T>) -> Unit) {
+        runCatching {
+            val result = withContext(Dispatchers.IO) {
+                run(params)
             }
+            logErrors(result)
+            onResult(result)
+        }.onFailure {
+            Logger.withTag(UseCase::class.java.simpleName).withCause(it)
+            onResult(ResultWrapper.GenericError(Error(it.message)))
         }
     }
 

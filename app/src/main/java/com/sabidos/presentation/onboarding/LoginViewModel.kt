@@ -3,12 +3,14 @@ package com.sabidos.presentation.onboarding
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.sabidos.domain.interactor.*
 import com.sabidos.infrastructure.Resource
 import com.sabidos.infrastructure.ResultWrapper.NetworkError
 import com.sabidos.infrastructure.ResultWrapper.Success
 import com.sabidos.infrastructure.extensions.*
 import com.sabidos.infrastructure.helpers.PhoneNumberHelper
+import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val createAnonymousAccountUseCase: CreateAnonymousAccountUseCase,
@@ -26,11 +28,13 @@ class LoginViewModel(
     fun signInAnonymously() {
         signInAnonymouslyResource.loading()
 
-        signInAnonymouslyUseCase(None()) {
-            when (it) {
-                is Success -> createAnonymousAccount()
-                is NetworkError -> signInAnonymouslyResource.setNetworkFailure()
-                else -> signInAnonymouslyResource.setGenericFailure()
+        viewModelScope.launch {
+            signInAnonymouslyUseCase(None()) {
+                when (it) {
+                    is Success -> createAnonymousAccount()
+                    is NetworkError -> signInAnonymouslyResource.setNetworkFailure()
+                    else -> signInAnonymouslyResource.setGenericFailure()
+                }
             }
         }
     }
@@ -44,11 +48,13 @@ class LoginViewModel(
 
         signInWithEmailLinkResource.loading()
 
-        signInWithEmailLinkUseCase(SignInWithEmailLinkUseCase.Params(email)) {
-            when (it) {
-                is Success -> signInWithEmailLinkResource.setSuccess()
-                is NetworkError -> signInWithEmailLinkResource.setNetworkFailure()
-                else -> signInAnonymouslyResource.setGenericFailure()
+        viewModelScope.launch {
+            signInWithEmailLinkUseCase(SignInWithEmailLinkUseCase.Params(email)) {
+                when (it) {
+                    is Success -> signInWithEmailLinkResource.setSuccess()
+                    is NetworkError -> signInWithEmailLinkResource.setNetworkFailure()
+                    else -> signInAnonymouslyResource.setGenericFailure()
+                }
             }
         }
 
@@ -63,11 +69,13 @@ class LoginViewModel(
 
         verifyPhoneNumberResource.loading()
 
-        verifyPhoneNumberUseCase(VerifyPhoneNumberUseCase.Params(phoneNumber)) {
-            when (it) {
-                is Success -> verifyPhoneNumberResource.setSuccess()
-                is NetworkError -> verifyPhoneNumberResource.setNetworkFailure()
-                else -> verifyPhoneNumberResource.setGenericFailure()
+        viewModelScope.launch {
+            verifyPhoneNumberUseCase(VerifyPhoneNumberUseCase.Params(phoneNumber)) {
+                when (it) {
+                    is Success -> verifyPhoneNumberResource.setSuccess()
+                    is NetworkError -> verifyPhoneNumberResource.setNetworkFailure()
+                    else -> verifyPhoneNumberResource.setGenericFailure()
+                }
             }
         }
 
@@ -77,11 +85,13 @@ class LoginViewModel(
         phoneNumberHelper.getFormattedPhoneNumber(phone)
 
     private fun createAnonymousAccount() {
-        createAnonymousAccountUseCase(None()) {
-            when (it) {
-                is Success -> signInAnonymouslyResource.setSuccess()
-                is NetworkError -> signInAnonymouslyResource.setNetworkFailure()
-                else -> signInAnonymouslyResource.setGenericFailure()
+        viewModelScope.launch {
+            createAnonymousAccountUseCase(None()) {
+                when (it) {
+                    is Success -> signInAnonymouslyResource.setSuccess()
+                    is NetworkError -> signInAnonymouslyResource.setNetworkFailure()
+                    else -> signInAnonymouslyResource.setGenericFailure()
+                }
             }
         }
     }

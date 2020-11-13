@@ -42,9 +42,11 @@ class QuizProgressTimerComponent @JvmOverloads constructor(
                     setProgressValues(maximumTimer, it)
                 }
             }.onFailure {
-                Logger.withTag(QuizProgressTimerComponent::class.java.simpleName).withCause(it)
-                flowIsOpened = false
-                hide()
+                if (it !is CancellationException) {
+                    Logger.withTag(QuizProgressTimerComponent::class.java.simpleName).withCause(it)
+                    flowIsOpened = false
+                    hide()
+                }
             }
         }
     }

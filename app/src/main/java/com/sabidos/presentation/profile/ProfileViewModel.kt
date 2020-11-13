@@ -1,6 +1,7 @@
 package com.sabidos.presentation.profile
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.sabidos.domain.User
 import com.sabidos.domain.interactor.GetCurrentAccountUseCase
 import com.sabidos.domain.interactor.GetCurrentUserUseCase
@@ -11,6 +12,7 @@ import com.sabidos.infrastructure.ResultWrapper
 import com.sabidos.infrastructure.extensions.setGenericFailure
 import com.sabidos.infrastructure.extensions.setSuccess
 import com.sabidos.presentation.common.AccountViewModel
+import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     getCurrentAccountUseCase: GetCurrentAccountUseCase,
@@ -22,21 +24,25 @@ class ProfileViewModel(
     val signOutResource = MutableLiveData<Resource<Boolean?>>()
 
     fun getCurrentUser() {
-        getCurrentUserUseCase(None()) {
-            when (it) {
-                is ResultWrapper.Success -> currentUserResource.setSuccess(it.data)
-                else -> currentUserResource.setGenericFailure()
+        viewModelScope.launch {
+            getCurrentUserUseCase(None()) {
+                when (it) {
+                    is ResultWrapper.Success -> currentUserResource.setSuccess(it.data)
+                    else -> currentUserResource.setGenericFailure()
+                }
             }
         }
     }
 
     fun signOut() {
-        signOutUseCase(None()) {
-            when (it) {
-                is ResultWrapper.Success -> {
-                    signOutResource.setSuccess(it.data)
+        viewModelScope.launch {
+            signOutUseCase(None()) {
+                when (it) {
+                    is ResultWrapper.Success -> {
+                        signOutResource.setSuccess(it.data)
+                    }
+                    else -> signOutResource.setGenericFailure()
                 }
-                else -> signOutResource.setGenericFailure()
             }
         }
     }

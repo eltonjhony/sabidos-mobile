@@ -13,7 +13,6 @@ import com.sabidos.infrastructure.ResultWrapper
 import com.sabidos.infrastructure.extensions.goTo
 import com.sabidos.infrastructure.extensions.showGenericErrorDialog
 import com.sabidos.infrastructure.extensions.showNetworkErrorDialog
-import com.sabidos.infrastructure.helpers.DeepLinksHelper
 import com.sabidos.presentation.MainActivity
 import com.sabidos.presentation.onboarding.OnboardingActivity
 import com.sabidos.presentation.onboarding.OnboardingActivity.Companion.FIRST_STEP_NUMBER_PARAM
@@ -21,14 +20,12 @@ import com.sabidos.presentation.onboarding.OnboardingViewModel.Companion.PERSONA
 import kotlinx.android.synthetic.main.activity_splash.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SplashActivity : AppCompatActivity() {
 
     private val viewModel: SplashViewModel by viewModel()
-
-    private val deepLinksHelper: DeepLinksHelper by inject()
+    private val deepLinksViewModel: DeepLinksViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +87,7 @@ class SplashActivity : AppCompatActivity() {
         val data: Uri? = intent?.data
 
         data?.let {
-            deepLinksHelper.handle(it, callback)
+            deepLinksViewModel.handle(it, callback)
         } ?: callback.invoke(ResultWrapper.Success(true))
     }
 

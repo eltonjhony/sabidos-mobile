@@ -5,7 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.sabidos.R
 import com.sabidos.infrastructure.events.BottomNavigationEvent
 import com.sabidos.infrastructure.events.EventBus
-import com.sabidos.presentation.category.CategorySelectionDialogFragment
+import com.sabidos.infrastructure.extensions.goTo
+import com.sabidos.presentation.category.CategoryActivity
 import com.sabidos.presentation.components.BottomNavigationComponent.NavModel
 import com.sabidos.presentation.components.BottomNavigationPagerAdapter
 import com.sabidos.presentation.components.BottomNavigationPagerAdapter.Companion.HOME_TAB_POSITION
@@ -56,10 +57,7 @@ class MainActivity : AppCompatActivity() {
         sabidosBottomNavMenu.items = bottomNavItems
 
         playNavButton.onClickCallback = {
-            CategorySelectionDialogFragment().show(
-                supportFragmentManager,
-                CategorySelectionDialogFragment::class.java.simpleName
-            )
+            goTo(CategoryActivity::class.java, finished = false)
         }
 
     }

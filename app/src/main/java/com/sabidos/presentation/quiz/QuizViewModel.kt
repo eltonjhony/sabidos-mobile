@@ -1,6 +1,7 @@
 package com.sabidos.presentation.quiz
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.sabidos.data.remote.model.QuizRequest
 import com.sabidos.domain.Alternative
 import com.sabidos.domain.Quiz
@@ -16,6 +17,7 @@ import com.sabidos.infrastructure.extensions.setNetworkFailure
 import com.sabidos.infrastructure.extensions.setSuccess
 import com.sabidos.infrastructure.logging.Logger
 import com.sabidos.presentation.common.AccountViewModel
+import kotlinx.coroutines.launch
 
 class QuizViewModel(
     getCurrentAccountUseCase: GetCurrentAccountUseCase,
@@ -28,11 +30,13 @@ class QuizViewModel(
 
     fun getNextQuizFor(categoryId: Int) {
         quizResource.loading()
-        getNextQuizUseCase(Params(categoryId)) {
-            when (it) {
-                is ResultWrapper.Success -> quizResource.setSuccess(it.data)
-                is ResultWrapper.NetworkError -> quizResource.setNetworkFailure()
-                else -> quizResource.setGenericFailure()
+        viewModelScope.launch {
+            getNextQuizUseCase(Params(categoryId)) {
+                when (it) {
+                    is ResultWrapper.Success -> quizResource.setSuccess(it.data)
+                    is ResultWrapper.NetworkError -> quizResource.setNetworkFailure()
+                    else -> quizResource.setGenericFailure()
+                }
             }
         }
 
@@ -46,8 +50,10 @@ class QuizViewModel(
             alternative = alternative
         )
 
-        postQuizUseCase(PostQuizUseCase.Params(request)) {
-            Logger.withTag(QuizViewModel::class.java.simpleName).i("Post quiz returned: $it")
+        viewModelScope.launch {
+            postQuizUseCase(PostQuizUseCase.Params(request)) {
+                Logger.withTag(QuizViewModel::class.java.simpleName).i("Post quiz returned: $it")
+            }
         }
     }
 

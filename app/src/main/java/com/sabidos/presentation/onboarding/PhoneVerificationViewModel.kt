@@ -2,6 +2,7 @@ package com.sabidos.presentation.onboarding
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.sabidos.domain.interactor.SignInWithPhoneNumberUseCase
 import com.sabidos.domain.interactor.VerifyPhoneNumberUseCase
 import com.sabidos.infrastructure.Resource
@@ -12,6 +13,7 @@ import com.sabidos.infrastructure.extensions.setGenericFailure
 import com.sabidos.infrastructure.extensions.setNetworkFailure
 import com.sabidos.infrastructure.extensions.setSuccess
 import com.sabidos.infrastructure.helpers.SignInPrefsHelper
+import kotlinx.coroutines.launch
 
 class PhoneVerificationViewModel(
     private val signInWithPhoneNumberUseCase: SignInWithPhoneNumberUseCase,
@@ -25,11 +27,13 @@ class PhoneVerificationViewModel(
     fun signInWithPhoneNumber(code: String) {
         signInWithPhoneNumberResource.loading()
 
-        signInWithPhoneNumberUseCase(SignInWithPhoneNumberUseCase.Params(code)) {
-            when (it) {
-                is Success -> signInWithPhoneNumberResource.setSuccess()
-                is NetworkError -> signInWithPhoneNumberResource.setNetworkFailure()
-                else -> signInWithPhoneNumberResource.setGenericFailure()
+        viewModelScope.launch {
+            signInWithPhoneNumberUseCase(SignInWithPhoneNumberUseCase.Params(code)) {
+                when (it) {
+                    is Success -> signInWithPhoneNumberResource.setSuccess()
+                    is NetworkError -> signInWithPhoneNumberResource.setNetworkFailure()
+                    else -> signInWithPhoneNumberResource.setGenericFailure()
+                }
             }
         }
     }
@@ -41,11 +45,13 @@ class PhoneVerificationViewModel(
         phoneNumber?.let { phone ->
             resendCodeResource.loading()
 
-            verifyPhoneNumberUseCase(VerifyPhoneNumberUseCase.Params(phone)) {
-                when (it) {
-                    is Success -> resendCodeResource.setSuccess()
-                    is NetworkError -> resendCodeResource.setNetworkFailure()
-                    else -> resendCodeResource.setGenericFailure()
+            viewModelScope.launch {
+                verifyPhoneNumberUseCase(VerifyPhoneNumberUseCase.Params(phone)) {
+                    when (it) {
+                        is Success -> resendCodeResource.setSuccess()
+                        is NetworkError -> resendCodeResource.setNetworkFailure()
+                        else -> resendCodeResource.setGenericFailure()
+                    }
                 }
             }
         } ?: resendCodeResource.setGenericFailure()

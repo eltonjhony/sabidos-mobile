@@ -3,6 +3,7 @@ package com.sabidos.presentation.onboarding
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.sabidos.domain.Account
 import com.sabidos.domain.User
 import com.sabidos.domain.UserAvatar
@@ -13,6 +14,7 @@ import com.sabidos.domain.interactor.None
 import com.sabidos.infrastructure.Resource
 import com.sabidos.infrastructure.ResultWrapper.*
 import com.sabidos.infrastructure.extensions.*
+import kotlinx.coroutines.launch
 
 class OnboardingViewModel(
     private val createAccountUseCase: CreateAccountUseCase,
@@ -80,16 +82,18 @@ class OnboardingViewModel(
     fun completeUserProfile() {
         completeProfileResource.loading()
 
-        getCurrentUserUseCase(None()) { userResource ->
-            when (userResource) {
-                is Success -> {
-                    userResource.data?.let { user ->
-                        createAccountFor(user)
+        viewModelScope.launch {
+            getCurrentUserUseCase(None()) { userResource ->
+                when (userResource) {
+                    is Success -> {
+                        userResource.data?.let { user ->
+                            createAccountFor(user)
+                        }
                     }
+                    is NetworkError -> completeProfileResource.setNetworkFailure()
+                    is ApiError -> completeProfileResource.setApiFailure(userResource.errorResponse)
+                    else -> completeProfileResource.setGenericFailure()
                 }
-                is NetworkError -> completeProfileResource.setNetworkFailure()
-                is ApiError -> completeProfileResource.setApiFailure(userResource.errorResponse)
-                else -> completeProfileResource.setGenericFailure()
             }
         }
 
@@ -97,12 +101,15 @@ class OnboardingViewModel(
 
     private fun createAccountFor(user: User) {
         val account = Account(name, nickname, userAvatar)
-        createAccountUseCase(Params(account, user)) {
-            when (it) {
-                is Success -> completeProfileResource.setSuccess()
-                is NetworkError -> completeProfileResource.setNetworkFailure()
-                is ApiError -> completeProfileResource.setApiFailure(it.errorResponse)
-                else -> completeProfileResource.setGenericFailure()
+
+        viewModelScope.launch {
+            createAccountUseCase(Params(account, user)) {
+                when (it) {
+                    is Success -> completeProfileResource.setSuccess()
+                    is NetworkError -> completeProfileResource.setNetworkFailure()
+                    is ApiError -> completeProfileResource.setApiFailure(it.errorResponse)
+                    else -> completeProfileResource.setGenericFailure()
+                }
             }
         }
     }

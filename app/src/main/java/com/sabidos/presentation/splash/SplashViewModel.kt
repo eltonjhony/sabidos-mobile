@@ -2,6 +2,7 @@ package com.sabidos.presentation.splash
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.sabidos.data.local.cache.AccountCache
 import com.sabidos.domain.Account
 import com.sabidos.domain.User
@@ -38,24 +39,28 @@ class SplashViewModel(
 
         val startTime = System.currentTimeMillis()
 
-        isUserLoggedUseCase(None()) {
-            when (it) {
-                is Success -> {
-                    if (it.data) {
-                        loadInitialDataUseCase(None()) { account ->
+        viewModelScope.launch {
+            isUserLoggedUseCase(None()) {
+                when (it) {
+                    is Success -> {
+                        if (it.data) {
+                            viewModelScope.launch {
+                                loadInitialDataUseCase(None()) { account ->
+                                    delaySplashIfNeeded(startTime) {
+                                        handleResult(account)
+                                    }
+                                }
+                            }
+                        } else {
                             delaySplashIfNeeded(startTime) {
-                                handleResult(account)
+                                userResource.setDataNotFound()
                             }
                         }
-                    } else {
-                        delaySplashIfNeeded(startTime) {
-                            userResource.setDataNotFound()
-                        }
                     }
-                }
-                else -> {
-                    delaySplashIfNeeded(startTime) {
-                        userResource.setGenericFailure()
+                    else -> {
+                        delaySplashIfNeeded(startTime) {
+                            userResource.setGenericFailure()
+                        }
                     }
                 }
             }

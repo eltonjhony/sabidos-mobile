@@ -12,7 +12,6 @@ import com.sabidos.data.repository.*
 import com.sabidos.data.repository.datasources.*
 import com.sabidos.domain.interactor.*
 import com.sabidos.domain.repository.*
-import com.sabidos.infrastructure.helpers.DeepLinksHelper
 import com.sabidos.infrastructure.helpers.PhoneNumberHelper
 import com.sabidos.infrastructure.helpers.SignInPrefsHelper
 import com.sabidos.infrastructure.oauth.OAuthProvider
@@ -27,6 +26,7 @@ import com.sabidos.presentation.onboarding.UserAvatarViewModel
 import com.sabidos.presentation.profile.ProfileViewModel
 import com.sabidos.presentation.quiz.QuizViewModel
 import com.sabidos.presentation.ranking.RankingViewModel
+import com.sabidos.presentation.splash.DeepLinksViewModel
 import com.sabidos.presentation.splash.SplashViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.viewmodel.dsl.viewModel
@@ -39,6 +39,7 @@ val presentationModule = module {
     viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
     viewModel { PhoneVerificationViewModel(get(), get(), get()) }
     viewModel { SplashViewModel(get(), get(), get()) }
+    viewModel { DeepLinksViewModel(get(), get()) }
     viewModel { HomeViewModel(get(), get(), get()) }
     viewModel { ProfileViewModel(get(), get(), get()) }
     viewModel { RankingViewModel(get()) }
@@ -75,7 +76,6 @@ val infrastructureModule = module {
     single { SignInPrefsHelper(androidContext()) }
     single { PhoneNumberHelper() }
     single<OAuthProvider> { FirebaseOAuthProvider(get()) }
-    single { DeepLinksHelper(get(), get()) }
 }
 
 val dataModule = module {
