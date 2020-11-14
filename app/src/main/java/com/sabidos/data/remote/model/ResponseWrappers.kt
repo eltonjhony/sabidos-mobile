@@ -15,10 +15,19 @@ data class AccountResponse(
     val totalHits: Int
 )
 
+data class QuizResponseWrapper(
+    val id: Int,
+    val numberOfQuestions: Int,
+    val questions: List<QuizResponse>
+)
+
 data class QuizResponse(
     val id: Int,
+    val position: Int,
     val imageUrl: String?,
     val description: String,
+    val quizLimitInSeconds: Int,
+    val category: CategoryResponse,
     val alternatives: List<AlternativeResponse>,
     val explanation: ExplanationResponse
 )

@@ -29,9 +29,12 @@ class QuizSelectionItem @JvmOverloads constructor(
     var questionAnswered: Boolean = false
 
     fun setup(optionDescription: String?) {
-        percentageAnsweredTextView.hide()
+        questionAnswered = false
         progressLineView.hide()
+
         optionDescTextView.text = optionDescription
+        optionDescTextView.setTextColor(context.color(R.color.colorWhite))
+        optionContainer.background = context.drawable(R.drawable.curved_end_initial_background)
 
         optionContainer.setOnClickListener {
 
@@ -45,23 +48,12 @@ class QuizSelectionItem @JvmOverloads constructor(
     }
 
     fun animateAnswer(percentageAnswered: Int, isCorrect: Boolean, callback: (() -> Unit)? = null) {
-        percentageAnsweredTextView.show()
         progressLineView.show()
 
         if (isCorrect) {
             animateProgressWith(R.drawable.curved_progress_end_correct_background)
-            percentageAnsweredTextView.setTextColor(
-                context.color(
-                    R.color.colorPrimary
-                )
-            )
         } else {
             animateProgressWith(R.drawable.curved_progress_end_wrong_background)
-            percentageAnsweredTextView.setTextColor(
-                context.color(
-                    R.color.disableButtonColor
-                )
-            )
             optionDescTextView.setTextColor(context.color(R.color.colorWhite))
         }
 
@@ -70,28 +62,20 @@ class QuizSelectionItem @JvmOverloads constructor(
         }.onFailure {
             Logger.withTag(QuizSelectionItem::class.java.simpleName).withCause(it)
             progressLineView.progress = 100
-            percentageAnsweredTextView.text = "$percentageAnswered %"
             callback?.invoke()
         }
 
     }
 
     fun animateUnSelectedAnswer(percentageAnswered: Int) {
-        percentageAnsweredTextView.show()
         progressLineView.show()
         animateProgressWith(R.drawable.curved_progress_end_unselected_background)
-        percentageAnsweredTextView.setTextColor(
-            context.color(
-                R.color.disableButtonColor
-            )
-        )
 
         runCatching {
             animateAnswerProgress(percentageAnswered)
         }.onFailure {
             Logger.withTag(QuizSelectionItem::class.java.simpleName).withCause(it)
             progressLineView.progress = 100
-            percentageAnsweredTextView.text = "$percentageAnswered %"
         }
 
     }
@@ -105,7 +89,6 @@ class QuizSelectionItem @JvmOverloads constructor(
                     progressStatus += 1
                     handler.post {
                         progressLineView.progress = progressStatus
-                        percentageAnsweredTextView.text = "$progressStatus %"
                     }
                     try {
                         Thread.sleep(8)

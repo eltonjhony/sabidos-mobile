@@ -5,11 +5,11 @@ import com.sabidos.domain.Quiz
 import com.sabidos.domain.repository.QuizRepository
 import com.sabidos.infrastructure.ResultWrapper
 
-class GetNextQuizUseCase(private val quizRepository: QuizRepository) :
-    UseCase<Quiz, GetNextQuizUseCase.Params>() {
+class GetNextRoundUseCase(private val quizRepository: QuizRepository) :
+    UseCase<Quiz, GetNextRoundUseCase.Params>() {
 
     override suspend fun run(params: Params): ResultWrapper<Quiz> =
-        quizRepository.getNextQuiz(params.categoryId)
+        quizRepository.getNextRound(params.categoryId)
 
     data class Params(val categoryId: Int)
 }

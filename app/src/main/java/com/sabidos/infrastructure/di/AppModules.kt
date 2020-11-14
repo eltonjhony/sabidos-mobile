@@ -4,6 +4,7 @@ import android.content.Context
 import com.sabidos.data.local.*
 import com.sabidos.data.local.cache.AccountCache
 import com.sabidos.data.local.cache.AvatarCache
+import com.sabidos.data.local.cache.CacheHandler
 import com.sabidos.data.local.cache.CategoryCache
 import com.sabidos.data.remote.CloudApiFactory
 import com.sabidos.data.remote.NetworkHandler
@@ -45,7 +46,7 @@ val presentationModule = module {
     viewModel { RankingViewModel(get()) }
     viewModel { CategoryViewModel(get()) }
     viewModel { UserAvatarViewModel(get()) }
-    viewModel { QuizViewModel(get(), get(), get()) }
+    viewModel { QuizViewModel(get(), get()) }
 }
 
 val domainModule = module {
@@ -57,7 +58,7 @@ val domainModule = module {
     single { VerifyPhoneNumberUseCase(get()) }
     single { CompleteSignInWithEmailLinkUseCase(get()) }
     single { IsSignInWithEmailLinkUseCase(get()) }
-    single { SignOutUseCase(get(), get()) }
+    single { SignOutUseCase(get(), get(), get()) }
     single { CreateAccountUseCase(get()) }
     single { CreateAnonymousAccountUseCase(get()) }
     single { GetCurrentAccountUseCase(get()) }
@@ -67,7 +68,7 @@ val domainModule = module {
     single { GetAllCategoriesUseCase(get()) }
     single { LoadInitialDataUseCase(get()) }
     single { GetAllAvatarsUseCase(get()) }
-    single { GetNextQuizUseCase(get()) }
+    single { GetNextRoundUseCase(get()) }
     single { PostQuizUseCase(get()) }
     single { SyncQuizUseCase(get()) }
 }
@@ -79,6 +80,8 @@ val infrastructureModule = module {
 }
 
 val dataModule = module {
+
+    single { CacheHandler(get(), get(), get()) }
 
     single {
         AccountCache(

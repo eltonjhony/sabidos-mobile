@@ -26,6 +26,7 @@ class QuizSelectionComponent @JvmOverloads constructor(
     var alternatives: List<Alternative> = emptyList()
         set(value) {
             field = value
+            isTimerOver = false
             configureAlternatives()
         }
 

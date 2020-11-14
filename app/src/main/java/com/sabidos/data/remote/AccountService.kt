@@ -11,10 +11,10 @@ interface AccountService {
     @POST("v1/account/anonymous")
     suspend fun createAnonymousAccount(@Body params: HashMap<String, String>): AccountResponse
 
-    @GET("v1/account/{nickname}/nickname")
+    @GET("v1/account/nickname/{nickname}")
     suspend fun getAccountBy(@Path(value = "nickname") nickname: String): AccountResponseWrapper
 
-    @GET("v1/account/{uid}/uid")
+    @GET("v1/account/uid/{uid}")
     suspend fun getAccountByUid(@Path(value = "uid") uid: String): AccountResponseWrapper
 
     @GET("v1/weekly/hits/{nickname}")

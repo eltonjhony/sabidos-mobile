@@ -19,9 +19,9 @@ class QuizDataRepository(
     private val accountCache: AccountCache
 ) : QuizRepository {
 
-    override suspend fun getNextQuiz(categoryId: Int): ResultWrapper<Quiz> =
+    override suspend fun getNextRound(categoryId: Int): ResultWrapper<Quiz> =
         localAccountDataSource.getCurrentNickname()?.let {
-            cloudQuizDataSource.getQuiz(it, categoryId)
+            cloudQuizDataSource.getNextRound(it, categoryId)
         } ?: DataNotFoundError
 
     override suspend fun postQuiz(request: QuizRequest): ResultWrapper<Boolean> =

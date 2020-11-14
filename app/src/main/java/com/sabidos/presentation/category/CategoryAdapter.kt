@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sabidos.R
 import com.sabidos.domain.Category
 import com.sabidos.infrastructure.extensions.color
+import com.sabidos.infrastructure.extensions.didSelect
 import com.sabidos.infrastructure.extensions.load
 import kotlinx.android.synthetic.main.category_choice_content_item.view.*
 
@@ -62,11 +63,7 @@ class CategoryAdapter(
         }
 
         fun select() {
-            itemView.setBackgroundColor(
-                itemView.context.color(
-                    R.color.colorPrimary
-                )
-            )
+            itemView.didSelect()
         }
 
         fun unSelect() {

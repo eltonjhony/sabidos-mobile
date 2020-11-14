@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundLight">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/initialSplashLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/roundLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/timerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/roundLabel"
+                style="@style/TextStyleSemiBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/round_label"
+                android:textColor="@color/colorWhite"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toTopOf="@id/roundValue"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/roundValue"
+                style="@style/TextStyleSemiBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="30sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.sabidos.presentation.components.CircularSeekBar
+            android:id="@+id/circularSeekComponent"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            app:cs_circle_color="@android:color/transparent"
+            app:cs_circle_fill="@android:color/transparent"
+            app:cs_circle_progress_color="@color/colorWhite"
+            app:cs_circle_stroke_width="12dp"
+            app:cs_circle_style="round"
+            app:cs_disable_pointer="true"
+            app:cs_max="200"
+            app:cs_pointer_color="@android:color/transparent"
+            app:cs_progress="0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/timerView"
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:background="@drawable/animation_circle_active"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/timerValue"
+                style="@style/TextStyleSemiBold"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="50sp"
+                tools:text="1" />
+
+        </FrameLayout>
+
+        <TextView
+            style="@style/TextStyleMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/preparing_label"
+            android:textColor="@color/colorWhite"
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/timerView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.sabidos.presentation.components.GenericErrorReloadComponent
+        android:id="@+id/quizErrorComponent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

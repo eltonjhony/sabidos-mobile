@@ -2,11 +2,10 @@ package com.sabidos.presentation.quiz
 
 import android.os.Bundle
 import android.view.ViewTreeObserver
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.sabidos.R
-import com.sabidos.domain.Account
 import com.sabidos.domain.Quiz
+import com.sabidos.domain.QuizItem
 import com.sabidos.infrastructure.Constants
 import com.sabidos.infrastructure.Resource
 import com.sabidos.infrastructure.ResourceState.*
@@ -25,68 +24,80 @@ class SabidosQuizActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        hideStatusBar()
         setContentView(R.layout.activity_sabidos_quiz)
-        loading.build(this)
-        viewModel.getCurrentAccount()
-        viewModel.accountResource.observe(this, Observer { bindAccountState(it) })
+        setupBackgroundImage()
 
         categoryId = intent.extras?.get(CATEGORY_ID_BUNDLE_KEY) as? Int
-        viewModel.getNextQuizFor(categoryId ?: 1)
-        viewModel.quizResource.observe(this, Observer { bindQuizState(it) })
+        fetchNewRound()
+
+        viewModel.roundResource.observe(this, Observer { bindRoundState(it) })
+        viewModel.quizItemResource.observe(this, Observer { bindQuizItemState(it) })
+        viewModel.currentQuizResource.observe(this, Observer { bindRoundProgressState(it) })
     }
 
-    override fun onBackPressed() {
-        if (shouldAllowBackPressed()) {
+    override fun onDestroy() {
+        super.onDestroy()
+        quizTopContentComponent.stopTimer()
+    }
+
+    private fun fetchNewRound() {
+        viewModel.getNewRoundFor(categoryId ?: DEFAULT_CATEGORY_FALLBACK)
+    }
+
+    private fun bindRoundState(resource: Resource<Quiz>?) = resource?.let {
+        when (it.state) {
+            Loading -> overlayView.startPreparingRound()
+            Success -> {
+                overlayView.didPrepareRound {
+                    overlayView.hideWithAnimation()
+                    viewModel.getNextQuizForRound()
+                }
+            }
+            NetworkError -> {
+                overlayView.showNetworkErrorWithRetry { fetchNewRound() }
+            }
+            else -> overlayView.showErrorWithRetry { fetchNewRound() }
+        }
+    }
+
+    private fun bindQuizItemState(resource: Resource<QuizItem>?) = resource?.let {
+        when (it.state) {
+            Success -> {
+                it.data?.let { quizItem ->
+                    quizNestedScrollView.focusOnView(quizTopContentComponent, delay = 50)
+                    configureBasicViewElements(quizItem)
+                    configureSelectionComponent(quizItem)
+                    configureQuizProgressTimer(quizItem.quizLimitInSeconds)
+                }
+            }
+            else -> overlayView.showErrorWithRetry {
+                viewModel.getNewRoundFor(categoryId ?: 1)
+            }
+        }
+    }
+
+    private fun bindRoundProgressState(resource: Resource<Pair<Int, Int>>?) = resource?.let {
+        if (it.state is Success) {
+            it.data?.let { roundProgress ->
+                quizTopContentComponent.setupRoundProgress("${roundProgress.first}/${roundProgress.second}")
+            }
+        }
+    }
+
+    private fun configureBasicViewElements(quizItem: QuizItem) {
+        quizQuestionAreaComponent.setup(quizItem)
+        quizExplanationComponent.configureView(quizItem.explanation, quizItem.getCorrectAnswer())
+        quizBottomMenuComponent.onNextCallback = {
+            viewModel.getNextQuizForRound()
+        }
+        quizAnswerResultComponent.hide()
+        quizTopContentComponent.didBackPressed = {
             super.onBackPressed()
         }
     }
 
-    private fun bindQuizState(resource: Resource<Quiz>?) = resource?.let {
-        if (it.state != Loading) {
-            loading.dismiss()
-        }
-        when (it.state) {
-            Loading -> {
-                overlayView.show()
-                loading.show()
-            }
-            Success -> {
-                overlayView.hide()
-                handleQuizSuccessResult(it.data)
-            }
-            NetworkError -> {
-                overlayView.showNetworkErrorWithRetry {
-                    viewModel.getNextQuizFor(categoryId ?: 1)
-                }
-            }
-            else -> overlayView.showErrorWithRetry {
-                viewModel.getNextQuizFor(categoryId ?: 1)
-            }
-        }
-    }
-
-    private fun handleQuizSuccessResult(data: Quiz?) {
-        data?.let {
-            configureBasicViewElements(it)
-            configureSelectionComponent(it)
-            configureQuizProgressTimer()
-        }
-    }
-
-    private fun bindAccountState(resource: Resource<Account?>?) = resource?.let {
-        if (it.state is Success) {
-            it.data?.let { account ->
-                levelStatusComponent.show()
-                starsLevelComponent.show()
-                levelStatusComponent.level = account.reputation?.level
-                starsLevelComponent.stars = account.reputation?.stars
-            }
-        }
-    }
-
-    private fun configureQuizProgressTimer() {
-        quizProgressTimerComponent.onTimerFinishedCallback = {
+    private fun configureQuizProgressTimer(quizLimitInSeconds: Int) {
+        quizTopContentComponent.onTimerFinishedCallback = {
             quizSelectionComponent.isTimerOver = true
             showAnimationDialog(
                 Constants.Animation.TIME_OVER_ANIMATION_JSON,
@@ -94,32 +105,22 @@ class SabidosQuizActivity : BaseActivity() {
                 message = getString(
                     R.string.time_over_message
                 ),
-                closeLabel = getString(R.string.try_again_label),
+                closeLabel = getString(R.string.next_label),
                 onCloseCallback = {
-                    goTo(SabidosQuizActivity::class.java)
+                    viewModel.getNextQuizForRound()
                 }
             )
         }
 
-        quizProgressTimerComponent.start()
+        quizTopContentComponent.startTimer(quizLimitInSeconds)
     }
 
-    private fun configureBasicViewElements(quiz: Quiz) {
-        quiz.imageUrl?.let {
-            quizTopImageView.show()
-            quizTopImageView.load(it)
-        }
-        questionDescTextView.text = quiz.description
-        quizExplanationComponent.configureView(quiz.explanation, quiz.getCorrectAnswer())
-        quizBottomMenuComponent.setup(this)
-    }
-
-    private fun configureSelectionComponent(quiz: Quiz) {
-        quizSelectionComponent.alternatives = quiz.alternatives
+    private fun configureSelectionComponent(quizItem: QuizItem) {
+        quizSelectionComponent.alternatives = quizItem.alternatives
         quizSelectionComponent.onDidClickCallback = { alternative ->
-            quizProgressTimerComponent.stop()
+            quizTopContentComponent.stopTimer()
             quizAnswerResultComponent.showResultFor(alternative.isCorrect)
-            viewModel.postQuiz(quiz, quizProgressTimerComponent.timeToAnswer, alternative)
+            viewModel.postQuiz(quizItem, quizTopContentComponent.getTimerToAnswer(), alternative)
         }
         quizSelectionComponent.onSelectionCallback = {
             quizExplanationComponent.show()
@@ -146,15 +147,14 @@ class SabidosQuizActivity : BaseActivity() {
         })
     }
 
-    private fun shouldAllowBackPressed(): Boolean = runCatching {
-        quizSelectionComponent.isTimerOver || quizExplanationComponent.isVisible
-    }.getOrElse {
-        Logger.withTag(SabidosQuizActivity::class.java.simpleName).withCause(it)
-        false
-    }
+    private fun setupBackgroundImage() =
+        runCatching {
+            contentWrapperLayout.background = baseContext.drawable(R.mipmap.quiz_background_image)
+        }.getOrElse { Logger.withTag(SabidosQuizActivity::class.java.simpleName).withCause(it) }
 
     companion object {
         const val CATEGORY_ID_BUNDLE_KEY = "CATEGORY_ID_BUNDLE"
+        const val DEFAULT_CATEGORY_FALLBACK = 1
     }
 
 }

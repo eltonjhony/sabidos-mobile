@@ -14,7 +14,7 @@ class CloudQuizDataSource(
     private val networkHandler: NetworkHandler
 ) {
 
-    suspend fun getQuiz(
+    suspend fun getNextRound(
         nickname: String,
         categoryId: Int
     ): ResultWrapper<Quiz> {
@@ -22,7 +22,7 @@ class CloudQuizDataSource(
             networkHandler.isConnected -> {
                 runCatching {
                     val service = cloudApiFactory.create(QuizService::class.java)
-                    val response = service.getQuiz(nickname, categoryId)
+                    val response = service.getRound(nickname, categoryId)
                     ResultWrapper.Success(ResponseToQuizMapper.transform(response))
                 }.getOrElse { ErrorHandling.parse(it) }
             }

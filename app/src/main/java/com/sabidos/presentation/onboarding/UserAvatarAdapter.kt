@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sabidos.R
 import com.sabidos.domain.UserAvatar
 import com.sabidos.infrastructure.extensions.color
+import com.sabidos.infrastructure.extensions.didSelect
 import com.sabidos.infrastructure.extensions.load
 import kotlinx.android.synthetic.main.avatar_choice_content_item.view.*
 
@@ -65,11 +66,7 @@ class UserAvatarAdapter(
         }
 
         fun select() {
-            itemView.setBackgroundColor(
-                itemView.context.color(
-                    R.color.colorPrimary
-                )
-            )
+            itemView.didSelect()
         }
 
         fun unSelect() {

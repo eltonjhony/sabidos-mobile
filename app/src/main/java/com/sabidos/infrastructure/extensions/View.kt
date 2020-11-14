@@ -1,5 +1,6 @@
 package com.sabidos.infrastructure.extensions
 
+import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
@@ -13,7 +14,9 @@ import android.text.style.ClickableSpan
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
+import android.view.animation.ScaleAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
@@ -63,6 +66,21 @@ fun View.invisible() {
 
 fun View.hide() {
     visibility = View.GONE
+}
+
+fun View.hideWithAnimation() {
+    animate()
+        .translationY(height.toFloat())
+        .alpha(1.0f)
+        .setListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(animation: Animator?) {}
+            override fun onAnimationEnd(animation: Animator?) {
+                hide()
+            }
+
+            override fun onAnimationCancel(animation: Animator?) {}
+            override fun onAnimationStart(animation: Animator?) {}
+        })
 }
 
 fun View.show() {
@@ -218,4 +236,19 @@ fun TextView.stylableText(
         movementMethod = LinkMovementMethod.getInstance()
         highlightColor = Color.TRANSPARENT
     }
+}
+
+fun View.didSelect() {
+    runCatching {
+        background = context.drawable(
+            R.drawable.item_selection_background
+        )
+        val fadeIn = ScaleAnimation(
+            0f, 1f, 0f, 1f,
+            Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
+        )
+        fadeIn.duration = 400
+        fadeIn.fillAfter = true
+        startAnimation(fadeIn)
+    }.onFailure { Logger.withTag(View::class.java.simpleName).withCause(it) }
 }

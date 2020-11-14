@@ -34,7 +34,7 @@ object ServiceFactory {
                     .header("Content-Type", "application/json")
                     .header("Accept", "application/json")
                     .header("Authorization", "Bearer $authToken")
-                    .method(original.method(), original.body())
+                    .method(original.method, original.body)
                     .build()
                 it.proceed(request)
             }

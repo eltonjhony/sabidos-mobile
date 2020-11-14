@@ -5,10 +5,10 @@
         <shape>
             <solid android:color="@color/disableButtonColor" />
             <corners
-                android:bottomLeftRadius="0dip"
-                android:bottomRightRadius="30dip"
-                android:topLeftRadius="0dip"
-                android:topRightRadius="30dip" />
+                android:bottomLeftRadius="6dip"
+                android:bottomRightRadius="6dip"
+                android:topLeftRadius="6dip"
+                android:topRightRadius="6dip" />
         </shape>
     </item>
 
@@ -24,10 +24,10 @@
                 <shape>
                     <solid android:color="#B7B7B7" />
                     <corners
-                        android:bottomLeftRadius="0dip"
-                        android:bottomRightRadius="30dip"
-                        android:topLeftRadius="0dip"
-                        android:topRightRadius="30dip" />
+                        android:bottomLeftRadius="6dip"
+                        android:bottomRightRadius="6dip"
+                        android:topLeftRadius="6dip"
+                        android:topRightRadius="6dip" />
                 </shape>
             </scale>
         </clip>

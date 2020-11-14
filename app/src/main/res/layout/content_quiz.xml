@@ -1,68 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/contentWrapperLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="16dp">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/quizTopImageView"
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:scaleType="centerCrop"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/placeholder"
-        tools:visibility="visible" />
-
-    <com.sabidos.presentation.components.LevelStatusComponent
-        android:id="@+id/levelStatusComponent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/quizTopImageView"
-        tools:visibility="visible" />
-
-    <com.sabidos.presentation.components.StarLevelComponent
-        android:id="@+id/starsLevelComponent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@id/levelStatusComponent"
-        app:layout_constraintStart_toEndOf="@id/levelStatusComponent"
-        app:layout_constraintTop_toTopOf="@id/levelStatusComponent"
-        tools:visibility="visible" />
-
-    <com.sabidos.presentation.quiz.views.QuizProgressTimerComponent
-        android:id="@+id/quizProgressTimerComponent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/quizTopImageView" />
-
-    <TextView
-        android:id="@+id/questionDescTextView"
-        style="@style/TextStyleRegular"
+    <com.sabidos.presentation.quiz.views.QuizTopContentComponent
+        android:id="@+id/quizTopContentComponent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
-        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/quizProgressTimerComponent"
-        tools:text="Qual ciência estuda especificamente a vida animal e vegetal no mar?" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.sabidos.presentation.quiz.views.QuizQuestionAreaComponent
+        android:id="@+id/quizQuestionAreaComponent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/quizTopContentComponent" />
 
     <com.sabidos.presentation.quiz.views.QuizSelectionComponent
         android:id="@+id/quizSelectionComponent"
@@ -70,7 +28,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/questionDescTextView" />
+        app:layout_constraintTop_toBottomOf="@id/quizQuestionAreaComponent" />
 
     <com.sabidos.presentation.quiz.views.QuizExplanationComponent
         android:id="@+id/quizExplanationComponent"

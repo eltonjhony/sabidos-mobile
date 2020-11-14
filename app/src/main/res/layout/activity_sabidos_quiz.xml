@@ -14,10 +14,7 @@
         <include
             layout="@layout/content_quiz"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/quizTopImageView" />
+            android:layout_height="0dp" />
 
     </androidx.core.widget.NestedScrollView>
 
@@ -30,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.sabidos.presentation.components.OverlayComponent
+    <com.sabidos.presentation.quiz.views.QuizInitialSplashOverlayComponent
         android:id="@+id/overlayView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

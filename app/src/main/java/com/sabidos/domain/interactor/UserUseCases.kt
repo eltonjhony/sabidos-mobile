@@ -1,6 +1,7 @@
 package com.sabidos.domain.interactor
 
 import com.sabidos.data.local.AppDatabase
+import com.sabidos.data.local.cache.CacheHandler
 import com.sabidos.domain.User
 import com.sabidos.infrastructure.ResultWrapper
 import com.sabidos.infrastructure.ResultWrapper.Success
@@ -88,12 +89,14 @@ class IsSignInWithEmailLinkUseCase(private val oauthProvider: OAuthProvider) :
 
 class SignOutUseCase(
     private val oauthProvider: OAuthProvider,
-    private val appDatabase: AppDatabase
+    private val appDatabase: AppDatabase,
+    private val cacheHandler: CacheHandler
 ) : UseCase<Boolean, None>() {
     override suspend fun run(params: None): ResultWrapper<Boolean> {
         return when (val logoutCommand = oauthProvider.logout()) {
             is Success -> {
                 appDatabase.clearAllData()
+                cacheHandler.invalidateAll()
                 logoutCommand
             }
             else -> logoutCommand

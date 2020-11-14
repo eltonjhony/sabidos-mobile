@@ -1,13 +1,14 @@
 package com.sabidos.presentation.quiz
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sabidos.data.remote.model.QuizRequest
 import com.sabidos.domain.Alternative
 import com.sabidos.domain.Quiz
-import com.sabidos.domain.interactor.GetCurrentAccountUseCase
-import com.sabidos.domain.interactor.GetNextQuizUseCase
-import com.sabidos.domain.interactor.GetNextQuizUseCase.Params
+import com.sabidos.domain.QuizItem
+import com.sabidos.domain.interactor.GetNextRoundUseCase
+import com.sabidos.domain.interactor.GetNextRoundUseCase.Params
 import com.sabidos.domain.interactor.PostQuizUseCase
 import com.sabidos.infrastructure.Resource
 import com.sabidos.infrastructure.ResultWrapper
@@ -16,36 +17,52 @@ import com.sabidos.infrastructure.extensions.setGenericFailure
 import com.sabidos.infrastructure.extensions.setNetworkFailure
 import com.sabidos.infrastructure.extensions.setSuccess
 import com.sabidos.infrastructure.logging.Logger
-import com.sabidos.presentation.common.AccountViewModel
 import kotlinx.coroutines.launch
 
 class QuizViewModel(
-    getCurrentAccountUseCase: GetCurrentAccountUseCase,
-    private val getNextQuizUseCase: GetNextQuizUseCase,
+    private val getNextRoundUseCase: GetNextRoundUseCase,
     private val postQuizUseCase: PostQuizUseCase
-) :
-    AccountViewModel(getCurrentAccountUseCase) {
+) : ViewModel() {
 
-    val quizResource = MutableLiveData<Resource<Quiz>>()
+    val roundResource = MutableLiveData<Resource<Quiz>>()
+    val quizItemResource = MutableLiveData<Resource<QuizItem>>()
+    val currentQuizResource = MutableLiveData<Resource<Pair<Int, Int>>>()
 
-    fun getNextQuizFor(categoryId: Int) {
-        quizResource.loading()
+    private val roundQuizList = mutableListOf<QuizItem>()
+
+    private var roundTotal: Int? = null
+
+    fun getNewRoundFor(categoryId: Int) {
+        roundResource.loading()
         viewModelScope.launch {
-            getNextQuizUseCase(Params(categoryId)) {
+            getNextRoundUseCase(Params(categoryId)) {
                 when (it) {
-                    is ResultWrapper.Success -> quizResource.setSuccess(it.data)
-                    is ResultWrapper.NetworkError -> quizResource.setNetworkFailure()
-                    else -> quizResource.setGenericFailure()
+                    is ResultWrapper.Success -> handleSuccessRound(it.data)
+                    is ResultWrapper.NetworkError -> roundResource.setNetworkFailure()
+                    else -> roundResource.setGenericFailure()
                 }
             }
         }
 
     }
 
-    fun postQuiz(quiz: Quiz, timeToAnswer: Int, alternative: Alternative) {
+    fun getNextQuizForRound() {
+        val nextQuiz = roundQuizList.first()
+        roundQuizList.remove(nextQuiz)
+        roundTotal?.let { currentQuizResource.setSuccess(Pair(nextQuiz.position, it)) }
+        quizItemResource.setSuccess(nextQuiz)
+    }
+
+    private fun handleSuccessRound(quiz: Quiz) {
+        roundQuizList.addAll(quiz.questions.sortedBy { it.position })
+        roundTotal = quiz.numberOfQuestions
+        roundResource.setSuccess(quiz)
+    }
+
+    fun postQuiz(quizItem: QuizItem, timeToAnswer: Int, alternative: Alternative) {
 
         val request = QuizRequest(
-            quizId = quiz.id,
+            quizId = quizItem.id,
             timeToAnswer = timeToAnswer,
             alternative = alternative
         )

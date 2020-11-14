@@ -48,7 +48,7 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <com.sabidos.presentation.components.OverlayComponent
+    <com.sabidos.presentation.quiz.views.QuizInitialSplashOverlayComponent
         android:id="@+id/homeOverlayContentView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

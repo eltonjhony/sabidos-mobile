@@ -77,5 +77,7 @@
     <string name="incorrect_answer_result_label">ERROOOU ):</string>
     <string name="long_correct_answer_result_label">A resposta correta é</string>
     <string name="time_over_title">Tempo Esgotado!!</string>
-    <string name="time_over_message">Que pena ): Seu tempo acabou! Tente de novo! Na próxima você consegue ;)</string>
+    <string name="time_over_message">Tente responder a próxima pergunta um pouco mais rápido ;)</string>
+    <string name="round_label">RODADA</string>
+    <string name="preparing_label">PREPARANDO...</string>
 </resources>
