@@ -53,6 +53,9 @@ class SabidosQuizActivity : BaseActivity() {
                     viewModel.getNextQuizForRound()
                 }
             }
+            Finished -> {
+                goTo(QuizResultActivity::class.java)
+            }
             NetworkError -> {
                 overlayView.showNetworkErrorWithRetry { fetchNewRound() }
             }

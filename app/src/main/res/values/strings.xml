@@ -80,4 +80,6 @@
     <string name="time_over_message">Tente responder a próxima pergunta um pouco mais rápido ;)</string>
     <string name="round_label">RODADA</string>
     <string name="preparing_label">PREPARANDO...</string>
+    <string name="performance_label">DESEMPENHO DA RODADA</string>
+    <string name="corrects_label">CORRETAS</string>
 </resources>

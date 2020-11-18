@@ -9,6 +9,10 @@ fun <T> MutableLiveData<Resource<T>>.setSuccess(data: T? = null) {
     postValue(Resource(ResourceState.Success, data))
 }
 
+fun <T> MutableLiveData<Resource<T>>.setFinish(data: T? = null) {
+    postValue(Resource(ResourceState.Finished, data))
+}
+
 fun <T> MutableLiveData<Resource<T>>.loading() =
     postValue(Resource(ResourceState.Loading))
 

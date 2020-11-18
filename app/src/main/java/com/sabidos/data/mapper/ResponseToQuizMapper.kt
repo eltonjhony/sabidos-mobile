@@ -13,6 +13,7 @@ object ResponseToQuizMapper : DataMapper<QuizResponseWrapper, Quiz>() {
     override fun transform(entity: QuizResponseWrapper): Quiz {
         return Quiz(
             id = entity.id,
+            categoryId = entity.categoryId,
             numberOfQuestions = entity.numberOfQuestions,
             questions = ResponseToQuizItemMapper.transform(entities = entity.questions)
         )

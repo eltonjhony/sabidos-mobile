@@ -69,18 +69,23 @@ fun View.hide() {
 }
 
 fun View.hideWithAnimation() {
-    animate()
-        .translationY(height.toFloat())
-        .alpha(1.0f)
-        .setListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(animation: Animator?) {}
-            override fun onAnimationEnd(animation: Animator?) {
-                hide()
-            }
+    runCatching {
+        animate()
+            .translationY(height.toFloat())
+            .alpha(1.0f)
+            .setListener(object : Animator.AnimatorListener {
+                override fun onAnimationRepeat(animation: Animator?) {}
+                override fun onAnimationEnd(animation: Animator?) {
+                    hide()
+                }
 
-            override fun onAnimationCancel(animation: Animator?) {}
-            override fun onAnimationStart(animation: Animator?) {}
-        })
+                override fun onAnimationCancel(animation: Animator?) {}
+                override fun onAnimationStart(animation: Animator?) {}
+            })
+    }.onFailure {
+        hide()
+        Logger.withTag(View::class.java.simpleName).withCause(it)
+    }
 }
 
 fun View.show() {

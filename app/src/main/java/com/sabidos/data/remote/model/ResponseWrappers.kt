@@ -17,6 +17,7 @@ data class AccountResponse(
 
 data class QuizResponseWrapper(
     val id: Int,
+    val categoryId: Int,
     val numberOfQuestions: Int,
     val questions: List<QuizResponse>
 )

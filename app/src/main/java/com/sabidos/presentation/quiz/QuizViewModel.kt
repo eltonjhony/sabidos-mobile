@@ -3,6 +3,8 @@ package com.sabidos.presentation.quiz
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sabidos.data.local.singleton.QuizResult
+import com.sabidos.data.local.singleton.QuizResultHandler
 import com.sabidos.data.remote.model.QuizRequest
 import com.sabidos.domain.Alternative
 import com.sabidos.domain.Quiz
@@ -12,10 +14,7 @@ import com.sabidos.domain.interactor.GetNextRoundUseCase.Params
 import com.sabidos.domain.interactor.PostQuizUseCase
 import com.sabidos.infrastructure.Resource
 import com.sabidos.infrastructure.ResultWrapper
-import com.sabidos.infrastructure.extensions.loading
-import com.sabidos.infrastructure.extensions.setGenericFailure
-import com.sabidos.infrastructure.extensions.setNetworkFailure
-import com.sabidos.infrastructure.extensions.setSuccess
+import com.sabidos.infrastructure.extensions.*
 import com.sabidos.infrastructure.logging.Logger
 import kotlinx.coroutines.launch
 
@@ -47,19 +46,30 @@ class QuizViewModel(
     }
 
     fun getNextQuizForRound() {
-        val nextQuiz = roundQuizList.first()
-        roundQuizList.remove(nextQuiz)
-        roundTotal?.let { currentQuizResource.setSuccess(Pair(nextQuiz.position, it)) }
-        quizItemResource.setSuccess(nextQuiz)
+        if (roundQuizList.isNullOrEmpty()) {
+            roundResource.setFinish()
+        } else {
+            val nextQuiz = roundQuizList.first()
+            roundQuizList.remove(nextQuiz)
+            roundTotal?.let { currentQuizResource.setSuccess(Pair(nextQuiz.position, it)) }
+            quizItemResource.setSuccess(nextQuiz)
+        }
     }
 
     private fun handleSuccessRound(quiz: Quiz) {
+        QuizResultHandler.init(
+            QuizResult(categoryId = quiz.categoryId, numberOfQuestions = quiz.numberOfQuestions)
+        )
         roundQuizList.addAll(quiz.questions.sortedBy { it.position })
         roundTotal = quiz.numberOfQuestions
         roundResource.setSuccess(quiz)
     }
 
     fun postQuiz(quizItem: QuizItem, timeToAnswer: Int, alternative: Alternative) {
+
+        if (alternative.isCorrect) {
+            QuizResultHandler.addCorrectAnswer()
+        }
 
         val request = QuizRequest(
             quizId = quizItem.id,

@@ -59,6 +59,7 @@ data class Category(
 data class Quiz(
     val id: Int,
     val numberOfQuestions: Int,
+    val categoryId: Int,
     val questions: List<QuizItem>
 )
 

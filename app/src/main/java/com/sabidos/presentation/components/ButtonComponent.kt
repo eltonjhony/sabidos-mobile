@@ -4,7 +4,11 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import com.sabidos.R
+import com.sabidos.infrastructure.extensions.color
+import com.sabidos.infrastructure.extensions.drawable
 import kotlinx.android.synthetic.main.sabidos_button_component.view.*
 
 class ButtonComponent @JvmOverloads constructor(
@@ -43,6 +47,11 @@ class ButtonComponent @JvmOverloads constructor(
 
     fun setText(text: String) {
         actionButton.text = text
+    }
+
+    fun setupAppearance(@DrawableRes background: Int, @ColorRes colorTitle: Int) {
+        actionButton.background = context.drawable(background)
+        actionButton.setTextColor(context.color(colorTitle))
     }
 
 }

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contentScreenWrapper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/goBackIconView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_arrow_back_white" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/fullLogoView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/full_logo" />
+
+    <TextView
+        android:id="@+id/performanceLabel"
+        style="@style/TextStyleSemiBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/performance_label"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fullLogoView" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/resultsContentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@drawable/curved_quiz_results_border_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/performanceLabel">
+
+        <TextView
+            android:id="@+id/roundFeedbackLabel"
+            style="@style/TextStyleRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Rodada Perfeita. Toma aqui seus XPs extras" />
+
+        <com.sabidos.presentation.components.CircularSeekBar
+            android:id="@+id/circularSeekComponent"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="24dp"
+            app:cs_circle_progress_color="@color/greenCorrectAnswerColor"
+            app:cs_circle_stroke_width="12dp"
+            app:cs_circle_style="round"
+            app:cs_disable_pointer="true"
+            app:cs_max="100"
+            app:cs_pointer_color="@android:color/transparent"
+            app:cs_progress="100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/roundFeedbackLabel" />
+
+        <TextView
+            android:id="@+id/correctPercentageLabel"
+            style="@style/TextStyleSemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:textColor="@color/colorAccent"
+            android:textSize="36sp"
+            app:layout_constraintBottom_toBottomOf="@id/circularSeekComponent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/circularSeekComponent"
+            tools:text="100%" />
+
+        <TextView
+            android:id="@+id/percentageDescLabel"
+            style="@style/TextStyleLight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/corrects_label"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/correctPercentageLabel" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/nextButton"
+            style="@style/ButtonStyleSemiBold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/curved_border_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="CONTINUAR" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

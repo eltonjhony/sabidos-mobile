@@ -42,6 +42,7 @@ class QuizInitialSplashOverlayComponent @JvmOverloads constructor(
     }
 
     fun showErrorWithRetry(retryCallback: (View) -> Unit) {
+        initialSplashLayout.hide()
         quizErrorComponent.setErrorImage(R.drawable.ic_bored_icon)
         quizErrorComponent.show()
         quizErrorComponent.onReloadListener(retryCallback)
