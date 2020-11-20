@@ -8,7 +8,7 @@ import com.sabidos.data.local.entities.*
 import com.sabidos.infrastructure.logging.Logger
 
 @Database(
-    entities = [AccountEntity::class, ReputationEntity::class, AvatarEntity::class, CategoryEntity::class, PostQuizEntity::class],
+    entities = [AccountEntity::class, ReputationEntity::class, AvatarEntity::class, CategoryEntity::class, PostQuizEntity::class, PostRoundEntity::class],
     version = 1,
     exportSchema = false
 )

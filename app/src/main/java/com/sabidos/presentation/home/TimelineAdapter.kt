@@ -1,12 +1,12 @@
 package com.sabidos.presentation.home
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sabidos.R
 import com.sabidos.domain.Timeline
+import com.sabidos.infrastructure.extensions.color
 import com.sabidos.infrastructure.extensions.drawable
 import com.sabidos.infrastructure.extensions.format
 import com.sabidos.infrastructure.extensions.toDate
@@ -65,7 +65,7 @@ class TimelineAdapter(
 
                 itemView.questionTextView.text = this.description
                 itemView.categoryTextView.text = this.category.description
-                itemView.categoryTextView.setTextColor(Color.parseColor(this.category.colorHex))
+                itemView.categoryTextView.setTextColor(itemView.context.color(R.color.colorPrimary))
                 itemView.answerDateTextView.text = this.date.toDate()?.format("dd MMMM")
             }
 

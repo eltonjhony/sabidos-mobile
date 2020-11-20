@@ -25,7 +25,7 @@ class QuizProgressTimerComponent @JvmOverloads constructor(
 
     var onTimerFinishedCallback: (() -> Unit)? = null
 
-    var timeToAnswer = 0
+    var responseTime = 0
         private set
 
     private var flowIsOpened = true
@@ -62,14 +62,14 @@ class QuizProgressTimerComponent @JvmOverloads constructor(
 
     private fun flowTimer(maximumTimer: Int): Flow<Int> = flow {
 
-        timeToAnswer = maximumTimer
+        responseTime = maximumTimer
 
-        while (timeToAnswer > 0) {
-            timeToAnswer--
+        while (responseTime > 0) {
+            responseTime--
             delay(1000)
 
             if (flowIsOpened) {
-                emit(timeToAnswer)
+                emit(responseTime)
             }
         }
 

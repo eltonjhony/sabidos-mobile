@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.util.AttributeSet
 import com.sabidos.R
 import com.sabidos.domain.QuizItem
+import com.sabidos.infrastructure.extensions.color
 import com.sabidos.infrastructure.extensions.hide
 import com.sabidos.infrastructure.extensions.load
 import com.sabidos.infrastructure.extensions.show
@@ -31,7 +32,7 @@ class QuizQuestionAreaComponent @JvmOverloads constructor(
     fun setup(quizItem: QuizItem) {
 
         categoryTextView.text = quizItem.category.description
-        categoryTextView.setTextColor(Color.parseColor(quizItem.category.colorHex))
+        categoryTextView.setTextColor(context.color(R.color.colorAccentLight))
 
         if (quizItem.imageUrl != null) {
             questionAreaLayout.hide()

@@ -8,8 +8,8 @@ import java.util.concurrent.TimeUnit
 
 object ServiceFactory {
 
-    fun getRetrofit(authToken: String): Retrofit {
-        return Retrofit.Builder()
+    fun getRetrofit(authToken: String): Retrofit =
+        Retrofit.Builder()
             .baseUrl("https://private-620e9-sabidos1.apiary-mock.com/")
             .addConverterFactory(
                 GsonConverterFactory.create(
@@ -20,7 +20,6 @@ object ServiceFactory {
             )
             .client(getClient(authToken))
             .build()
-    }
 
     private fun getClient(authToken: String): OkHttpClient {
         val builder = OkHttpClient.Builder()

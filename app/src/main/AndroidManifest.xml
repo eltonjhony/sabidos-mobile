@@ -17,7 +17,8 @@
 
         <activity
             android:name=".presentation.splash.SplashActivity"
-            android:theme="@style/NoActionBarAppThemePrimary">
+            android:theme="@style/NoActionBarAppThemePrimary"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -37,26 +38,31 @@
 
         <activity
             android:name=".presentation.onboarding.OnboardingActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/NoActionBarAppThemeLight"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
             android:name=".presentation.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/NoActionBarAppThemeDefault"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
             android:name=".presentation.quiz.SabidosQuizActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/NoActionBarAppThemeDefault"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
             android:name=".presentation.quiz.QuizResultActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/NoActionBarAppThemeDefault"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
             android:name=".presentation.category.CategoryActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/NoActionBarAppThemeDefault"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 

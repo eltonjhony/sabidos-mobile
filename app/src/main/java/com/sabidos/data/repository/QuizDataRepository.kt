@@ -1,8 +1,11 @@
 package com.sabidos.data.repository
 
 import com.sabidos.data.local.cache.AccountCache
+import com.sabidos.data.mapper.FinishRoundRequestToEntity
 import com.sabidos.data.mapper.QuizEntityToRequest
 import com.sabidos.data.mapper.QuizRequestToEntity
+import com.sabidos.data.mapper.RoundEntityToRequest
+import com.sabidos.data.remote.model.FinishRoundRequest
 import com.sabidos.data.remote.model.QuizRequest
 import com.sabidos.data.repository.datasources.CloudQuizDataSource
 import com.sabidos.data.repository.datasources.LocalAccountDataSource
@@ -26,7 +29,7 @@ class QuizDataRepository(
 
     override suspend fun postQuiz(request: QuizRequest): ResultWrapper<Boolean> =
         localAccountDataSource.getCurrentNickname()?.let {
-            val result = cloudQuizDataSource.postQuiz(it, request)
+            val result = cloudQuizDataSource.postQuiz(it, listOf(request))
             when (result) {
                 is ResultWrapper.Success -> {
                     accountCache.invalidate()
@@ -36,17 +39,44 @@ class QuizDataRepository(
             result
         } ?: handlePostQuizError(request)
 
+    override suspend fun postRound(request: FinishRoundRequest): ResultWrapper<Boolean> =
+        localAccountDataSource.getCurrentNickname()?.let {
+            val result = cloudQuizDataSource.postRound(it, listOf(request))
+            when (result) {
+                is ResultWrapper.Success -> {
+                    accountCache.invalidate()
+                }
+                else -> handlePostRoundError(request, result)
+            }
+            result
+        } ?: handlePostRoundError(request)
+
     override suspend fun syncQuiz(): ResultWrapper<Boolean> =
         localAccountDataSource.getCurrentNickname()?.let { nickname ->
-            localQuizDataSource.getAll()?.let { failedRequests ->
-                val result = cloudQuizDataSource.syncQuiz(
+
+            localQuizDataSource.getAllFailedRound()?.let { failedRequests ->
+                val result = cloudQuizDataSource.postRound(
+                    nickname,
+                    RoundEntityToRequest.transform(entities = failedRequests)
+                )
+                when (result) {
+                    is ResultWrapper.Success -> {
+                        accountCache.invalidate()
+                        localQuizDataSource.clearAllRound()
+                    }
+                }
+                result
+            }
+
+            localQuizDataSource.getAllFailedQuiz()?.let { failedRequests ->
+                val result = cloudQuizDataSource.postQuiz(
                     nickname,
                     QuizEntityToRequest.transform(failedRequests)
                 )
                 when (result) {
                     is ResultWrapper.Success -> {
                         accountCache.invalidate()
-                        localQuizDataSource.clear()
+                        localQuizDataSource.clearAllQuiz()
                     }
                 }
                 result
@@ -57,7 +87,15 @@ class QuizDataRepository(
         request: QuizRequest,
         result: ResultWrapper<Boolean>? = null
     ): ResultWrapper<Boolean> {
-        localQuizDataSource.insert(QuizRequestToEntity.transform(request))
+        localQuizDataSource.insertQuiz(QuizRequestToEntity.transform(request))
+        return result ?: ResultWrapper.GenericError()
+    }
+
+    private fun handlePostRoundError(
+        request: FinishRoundRequest,
+        result: ResultWrapper<Boolean>? = null
+    ): ResultWrapper<Boolean> {
+        localQuizDataSource.insertRound(FinishRoundRequestToEntity.transform(request))
         return result ?: ResultWrapper.GenericError()
     }
 

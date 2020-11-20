@@ -16,6 +16,12 @@ data class AccountRequest(
 
 data class QuizRequest(
     val quizId: Int,
-    val timeToAnswer: Int,
+    val responseTime: Int,
     val alternative: Alternative
+)
+
+data class FinishRoundRequest(
+    val roundId: Int,
+    val averageResponseTime: Int,
+    val accumulateXp: Int
 )

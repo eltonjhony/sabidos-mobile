@@ -36,10 +36,12 @@ object ResponseToQuizItemMapper : DataMapper<QuizResponse, QuizItem>() {
             quizLimitInSeconds = entity.quizLimitInSeconds,
             category = ResponseToCategoryMapper.transform(entity.category),
             alternatives = ResponseToAlternativeMapper.transform(entity.alternatives),
-            explanation = Explanation(
-                description = entity.explanation.description,
-                resource = entity.explanation.resource
-            )
+            explanation = entity.explanation?.let {
+                Explanation(
+                    description = it.description,
+                    resource = it.resource
+                )
+            }
         )
     }
 

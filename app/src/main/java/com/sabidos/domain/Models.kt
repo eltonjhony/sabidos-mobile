@@ -52,7 +52,6 @@ data class Ranking(
 data class Category(
     val id: Int,
     val description: String,
-    val colorHex: String?,
     val imageUrl: String?
 )
 
@@ -71,7 +70,7 @@ data class QuizItem(
     val quizLimitInSeconds: Int,
     val category: Category,
     val alternatives: List<Alternative>,
-    val explanation: Explanation
+    val explanation: Explanation?
 ) {
 
     fun getCorrectAnswer(): Alternative {

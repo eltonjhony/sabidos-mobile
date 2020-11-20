@@ -41,7 +41,8 @@ class QuizTopContentComponent @JvmOverloads constructor(
         quizProgressTimerComponent.start(quizLimitInSeconds)
     }
 
-    fun getTimerToAnswer() = quizProgressTimerComponent.timeToAnswer
+    fun getResponseTime(quizLimitInSeconds: Int) =
+        quizLimitInSeconds - quizProgressTimerComponent.responseTime
 
     fun setupRoundProgress(progress: String) {
         roundProgressText.text = progress

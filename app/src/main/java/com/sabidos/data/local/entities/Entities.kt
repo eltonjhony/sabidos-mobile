@@ -34,15 +34,21 @@ data class AvatarEntity(
 data class CategoryEntity(
     @PrimaryKey val id: Int,
     val description: String,
-    val colorHex: String?,
     val imageUrl: String?
 )
 
 @Entity(tableName = "post_quiz")
 data class PostQuizEntity(
     @PrimaryKey val quizId: Int,
-    val timeToAnswer: Int,
+    val responseTime: Int,
     @Embedded val alternative: AlternativeEntity
+)
+
+@Entity(tableName = "post_round")
+data class PostRoundEntity(
+    @PrimaryKey val roundId: Int,
+    val averageResponseTime: Int,
+    val accumulateXps: Int
 )
 
 @Entity(tableName = "alternative")

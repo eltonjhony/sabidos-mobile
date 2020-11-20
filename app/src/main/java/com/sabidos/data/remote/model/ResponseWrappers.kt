@@ -30,7 +30,7 @@ data class QuizResponse(
     val quizLimitInSeconds: Int,
     val category: CategoryResponse,
     val alternatives: List<AlternativeResponse>,
-    val explanation: ExplanationResponse
+    val explanation: ExplanationResponse?
 )
 
 data class AlternativeResponse(
@@ -86,4 +86,4 @@ data class PlayerResponse(
 )
 
 data class CategoryWrapperResponse(val categories: List<CategoryResponse>)
-data class CategoryResponse(val id: Int, val description: String, val colorHex: String?, val imageUrl: String?)
+data class CategoryResponse(val id: Int, val description: String, val imageUrl: String?)

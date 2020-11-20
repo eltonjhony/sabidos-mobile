@@ -65,15 +65,15 @@ class QuizViewModel(
         roundResource.setSuccess(quiz)
     }
 
-    fun postQuiz(quizItem: QuizItem, timeToAnswer: Int, alternative: Alternative) {
+    fun postQuiz(quizItem: QuizItem, responseTime: Int, alternative: Alternative) {
 
         if (alternative.isCorrect) {
-            QuizResultHandler.addCorrectAnswer()
+            QuizResultHandler.addCorrectAnswer(responseTime)
         }
 
         val request = QuizRequest(
             quizId = quizItem.id,
-            timeToAnswer = timeToAnswer,
+            responseTime = responseTime,
             alternative = alternative
         )
 

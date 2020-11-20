@@ -92,7 +92,9 @@ class SabidosQuizActivity : BaseActivity() {
 
     private fun configureBasicViewElements(quizItem: QuizItem) {
         quizQuestionAreaComponent.setup(quizItem)
-        quizExplanationComponent.configureView(quizItem.explanation, quizItem.getCorrectAnswer())
+        quizItem.explanation?.let {
+            quizExplanationComponent.configureView(it, quizItem.getCorrectAnswer())
+        }
         quizBottomMenuComponent.onNextCallback = {
             viewModel.getNextQuizForRound()
         }
@@ -126,13 +128,16 @@ class SabidosQuizActivity : BaseActivity() {
         quizSelectionComponent.onDidClickCallback = { alternative ->
             quizTopContentComponent.stopTimer()
             quizAnswerResultComponent.showResultFor(alternative.isCorrect)
-            viewModel.postQuiz(quizItem, quizTopContentComponent.getTimerToAnswer(), alternative)
+            viewModel.postQuiz(quizItem, quizTopContentComponent.getResponseTime(quizItem.quizLimitInSeconds), alternative)
         }
         quizSelectionComponent.onSelectionCallback = {
-            quizExplanationComponent.show()
+            quizExplanationComponent.hide()
             quizBottomMenuComponent.show()
-            applyContentBottomPadding()
-            quizNestedScrollView.focusOnView(quizExplanationComponent)
+            if (quizItem.explanation != null) {
+                quizExplanationComponent.show()
+                applyContentBottomPadding()
+                quizNestedScrollView.focusOnView(quizExplanationComponent)
+            }
         }
     }
 

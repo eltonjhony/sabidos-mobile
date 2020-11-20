@@ -9,7 +9,6 @@ object CategoryToEntityMapper : DataMapper<Category, CategoryEntity>() {
         return CategoryEntity(
             entity.id,
             entity.description,
-            entity.colorHex,
             entity.imageUrl
         )
     }

@@ -1,5 +1,6 @@
 package com.sabidos.data.remote
 
+import com.sabidos.data.remote.model.FinishRoundRequest
 import com.sabidos.data.remote.model.QuizRequest
 import com.sabidos.data.remote.model.QuizResponseWrapper
 import retrofit2.http.*
@@ -14,12 +15,12 @@ interface QuizService {
 
     @POST("v1/quiz/{nickname}")
     suspend fun postQuiz(
-        @Path(value = "nickname") nickname: String, @Body request: QuizRequest
+        @Path(value = "nickname") nickname: String, @Body request: List<QuizRequest>
     )
 
-    @POST("v1/quiz/sync/{nickname}")
-    suspend fun syncFailedQuiz(
-        @Path(value = "nickname") nickname: String, @Body quiz: List<QuizRequest>
+    @POST("v1/quiz/round/{nickname}")
+    suspend fun postRound(
+        @Path(value = "nickname") nickname: String, @Body request: List<FinishRoundRequest>
     )
 
 }

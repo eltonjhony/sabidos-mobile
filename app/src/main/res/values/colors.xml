@@ -24,4 +24,5 @@
     <color name="logoutButtonPressedColor">#f0efef</color>
     <color name="greenCorrectAnswerColor">#01b49d</color>
     <color name="redIncorrectAnswerColor">#ff7c80</color>
+    <color name="yellowMediumPerformanceColor">#f0db32</color>
 </resources>

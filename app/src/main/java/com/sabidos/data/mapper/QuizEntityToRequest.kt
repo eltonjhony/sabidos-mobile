@@ -9,7 +9,7 @@ object QuizEntityToRequest : DataMapper<PostQuizEntity, QuizRequest>() {
     override fun transform(entity: PostQuizEntity): QuizRequest {
         return QuizRequest(
             quizId = entity.quizId,
-            timeToAnswer = entity.timeToAnswer,
+            responseTime = entity.responseTime,
             alternative = Alternative(
                 description = entity.alternative.description,
                 isCorrect = entity.alternative.isCorrect,
