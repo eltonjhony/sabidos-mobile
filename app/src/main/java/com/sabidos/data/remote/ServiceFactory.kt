@@ -10,7 +10,7 @@ object ServiceFactory {
 
     fun getRetrofit(authToken: String): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://private-620e9-sabidos1.apiary-mock.com/")
+            .baseUrl("https://private-620e9-sabidos1.apiary-mock.com/")
             .addConverterFactory(
                 GsonConverterFactory.create(
                     GsonBuilder()

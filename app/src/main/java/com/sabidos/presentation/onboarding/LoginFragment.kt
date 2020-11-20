@@ -16,6 +16,7 @@ import com.sabidos.infrastructure.Constants
 import com.sabidos.infrastructure.Resource
 import com.sabidos.infrastructure.ResourceState.*
 import com.sabidos.infrastructure.extensions.color
+import com.sabidos.infrastructure.extensions.focusOnView
 import com.sabidos.infrastructure.extensions.hide
 import com.sabidos.infrastructure.helpers.SignInPrefsHelper
 import com.sabidos.infrastructure.logging.Logger
@@ -64,6 +65,12 @@ class LoginFragment : BaseFragment() {
         phoneTextComponent.onChange {
             phoneTextComponent.hideInputError()
             handlePhoneChange(it)
+        }
+
+        phoneTextComponent.onFocus { hasFocus ->
+            if (hasFocus) {
+                scrollView.focusOnView(signFooterComponent, delay = 300)
+            }
         }
 
         signInPhoneButton.setOnClickListener {

@@ -25,6 +25,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.animation.doOnRepeat
 import androidx.core.widget.NestedScrollView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.sabidos.R
@@ -35,6 +36,24 @@ fun ImageView.load(url: String?) {
         Glide.with(this)
             .load(url)
             .apply(RequestOptions.placeholderOf(R.mipmap.placeholder))
+            .into(this)
+    }.onFailure {
+        Logger.withTag(View::class.java.simpleName).withCause(it)
+        this.setImageDrawable(context.drawable(R.mipmap.placeholder))
+    }
+}
+
+fun ImageView.loadShowingProgressBar(url: String?) {
+    runCatching {
+
+        val circularProgress = CircularProgressDrawable(context)
+        circularProgress.strokeWidth = 5f
+        circularProgress.centerRadius = 30f
+        circularProgress.start()
+
+        Glide.with(this)
+            .load(url)
+            .placeholder(circularProgress)
             .into(this)
     }.onFailure {
         Logger.withTag(View::class.java.simpleName).withCause(it)

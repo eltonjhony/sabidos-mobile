@@ -21,7 +21,7 @@ class OnboardingActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_initial_info)
+        setContentView(R.layout.activity_onboarding)
 
         viewModel.isAnonymousMigration = intent.getBooleanExtra(AUTHENTICATE_ANONYMOUS_PARAM, false)
         viewModel.defineStep(intent.getIntExtra(FIRST_STEP_NUMBER_PARAM, SIGN_IN_STEP))

@@ -5,14 +5,13 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import com.sabidos.R
+import com.sabidos.infrastructure.extensions.hide
 import com.sabidos.infrastructure.logging.Logger
 import kotlinx.android.synthetic.main.sabidos_progress_animation_dots.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
 
 class ProgressAnimationView @JvmOverloads constructor(
     context: Context,
@@ -29,12 +28,24 @@ class ProgressAnimationView @JvmOverloads constructor(
 
     private var animating: Boolean = false
 
+    private var job: Job? = null
+
     suspend fun startAnimation(transitionTime: Long = 700L) {
 
-        val flow = flowAnimation(transitionTime)
-        flow.collect {
-            it?.active(context)
-            setDefaultStateExceptFor(it)
+        job = GlobalScope.launch {
+
+            runCatching {
+                val flow = flowAnimation(transitionTime)
+                flow.collect {
+                    it?.active(context)
+                    setDefaultStateExceptFor(it)
+                }
+            }.onFailure {
+                if (it !is CancellationException) {
+                    Logger.withTag(ProgressAnimationView::class.java.simpleName).withCause(it)
+                    hide()
+                }
+            }
         }
 
     }
@@ -76,6 +87,12 @@ class ProgressAnimationView @JvmOverloads constructor(
 
     fun stopAnimation() {
         animating = false
+        runCatching {
+            job?.cancel()
+            job = null
+        }.onFailure {
+            Logger.withTag(ProgressAnimationView::class.java.simpleName).withCause(it)
+        }
     }
 
     fun setup(isDark: Boolean = false) {

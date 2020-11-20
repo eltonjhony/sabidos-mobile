@@ -53,6 +53,12 @@ class FormInputTextComponent @JvmOverloads constructor(
         formTextInputField.onChange { callback(it) }
     }
 
+    fun onFocus(callback: (Boolean) -> Unit) {
+        formTextInputField.setOnFocusChangeListener { _, hasFocus ->
+            callback(hasFocus)
+        }
+    }
+
     fun setValue(value: String = "") {
         formTextInputField.isSaveEnabled = false
         formTextInputField.setText(value)

@@ -7,6 +7,7 @@ import com.sabidos.R
 import com.sabidos.domain.UserAvatar
 import com.sabidos.infrastructure.extensions.drawable
 import com.sabidos.infrastructure.extensions.load
+import com.sabidos.infrastructure.extensions.loadShowingProgressBar
 import kotlinx.android.synthetic.main.sabidos_avatar_component.view.*
 
 class AvatarComponent @JvmOverloads constructor(
@@ -45,6 +46,10 @@ class AvatarComponent @JvmOverloads constructor(
 
     private fun setupPlayerPhoto() {
         avatarImage.load(userAvatar?.imageUrl)
+    }
+
+    fun loadWithProgress(url: String?) {
+        avatarImage.loadShowingProgressBar(url)
     }
 
 }

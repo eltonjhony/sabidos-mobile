@@ -60,7 +60,7 @@ class UserAvatarAdapter(
         fun bind(userAvatar: UserAvatar) {
 
             userAvatar.apply {
-                itemView.avatarIconView.load(this.imageUrl)
+                itemView.avatarIconView.load(imageUrl)
             }
 
         }

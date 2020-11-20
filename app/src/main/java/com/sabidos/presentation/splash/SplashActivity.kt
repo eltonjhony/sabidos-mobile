@@ -39,6 +39,11 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        progressAnimationView.stopAnimation()
+    }
+
     private fun bindUserState(resource: Resource<User>?) {
         resource?.let {
             stopAnimation()
