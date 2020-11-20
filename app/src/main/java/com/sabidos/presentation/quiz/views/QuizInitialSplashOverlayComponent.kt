@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import com.sabidos.R
 import com.sabidos.infrastructure.extensions.hide
+import com.sabidos.infrastructure.extensions.pump
 import com.sabidos.infrastructure.extensions.show
 import com.sabidos.infrastructure.logging.Logger
 import com.sabidos.presentation.components.BaseComponent
@@ -77,6 +78,7 @@ class QuizInitialSplashOverlayComponent @JvmOverloads constructor(
     }
 
     private fun startSeekProgress() {
+        timerView.pump()
         circularSeekComponent.max = MAX_PROGRESS_VALUE
         circularSeekComponent.progress = 0f
         GlobalScope.launch {

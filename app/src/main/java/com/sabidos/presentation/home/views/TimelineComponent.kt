@@ -10,8 +10,6 @@ import com.sabidos.infrastructure.extensions.show
 import com.sabidos.presentation.home.TimelineAdapter
 import com.sabidos.presentation.components.BaseComponent
 import kotlinx.android.synthetic.main.sabidos_timeline_component.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class TimelineComponent @JvmOverloads constructor(
     context: Context,
@@ -49,10 +47,10 @@ class TimelineComponent @JvmOverloads constructor(
     fun starLoading() {
         isLoading = true
         progressAnimationComponent.show()
-        GlobalScope.launch { progressAnimationComponent.startAnimation() }
+        progressAnimationComponent.startAnimation()
     }
 
-    fun resetPagination() {
+    private fun resetPagination() {
         currentPage = 1
     }
 

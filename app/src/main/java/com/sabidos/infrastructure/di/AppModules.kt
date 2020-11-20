@@ -6,6 +6,7 @@ import com.sabidos.data.local.cache.AccountCache
 import com.sabidos.data.local.cache.AvatarCache
 import com.sabidos.data.local.cache.CacheHandler
 import com.sabidos.data.local.cache.CategoryCache
+import com.sabidos.data.local.preferences.RoundPrefsHelper
 import com.sabidos.data.remote.CloudApiFactory
 import com.sabidos.data.remote.NetworkHandler
 import com.sabidos.data.remote.SecurityCloudApiFactory
@@ -80,6 +81,8 @@ val infrastructureModule = module {
 }
 
 val dataModule = module {
+
+    single { RoundPrefsHelper(androidContext()) }
 
     single { CacheHandler(get(), get(), get()) }
 

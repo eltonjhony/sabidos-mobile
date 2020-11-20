@@ -18,8 +18,6 @@ import kotlinx.android.synthetic.main.fragment_user_avatar.*
 import kotlinx.android.synthetic.main.fragment_user_avatar.finishButton
 import kotlinx.android.synthetic.main.fragment_user_avatar.loadingView
 import kotlinx.android.synthetic.main.fragment_user_avatar.scrollView
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class UserAvatarFragment : BaseFragment() {
@@ -108,7 +106,7 @@ class UserAvatarFragment : BaseFragment() {
         if (isLoading) {
             scrollView.hide()
             loadingView.show()
-            GlobalScope.launch { loadingView.startAnimation() }
+            loadingView.startAnimation()
         } else {
             scrollView.show()
             loadingView.hide()

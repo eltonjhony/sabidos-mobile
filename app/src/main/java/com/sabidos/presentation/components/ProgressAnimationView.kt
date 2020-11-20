@@ -30,7 +30,7 @@ class ProgressAnimationView @JvmOverloads constructor(
 
     private var job: Job? = null
 
-    suspend fun startAnimation(transitionTime: Long = 700L) {
+    fun startAnimation(transitionTime: Long = 700L) {
 
         job = GlobalScope.launch {
 

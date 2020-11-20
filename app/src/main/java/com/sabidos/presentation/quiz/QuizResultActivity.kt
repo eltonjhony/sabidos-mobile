@@ -4,6 +4,7 @@ import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.animation.AnimationUtils
 import com.sabidos.R
+import com.sabidos.data.local.preferences.RoundPrefsHelper
 import com.sabidos.data.local.singleton.QuizResult
 import com.sabidos.data.local.singleton.QuizResultHandler
 import com.sabidos.infrastructure.extensions.goTo
@@ -15,14 +16,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
 
 class QuizResultActivity : BaseActivity() {
 
     private val quizResult: QuizResult by lazy { QuizResultHandler.getResults() }
+    private val roundPrefsHelper: RoundPrefsHelper by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_result)
+        roundPrefsHelper.didFinishRound()
         startViewAnimation()
         setupResults()
         setupButtons()

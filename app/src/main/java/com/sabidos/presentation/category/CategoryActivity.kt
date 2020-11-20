@@ -13,8 +13,6 @@ import com.sabidos.infrastructure.extensions.show
 import com.sabidos.presentation.BaseActivity
 import com.sabidos.presentation.quiz.SabidosQuizActivity
 import kotlinx.android.synthetic.main.activity_category.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CategoryActivity : BaseActivity() {
@@ -84,7 +82,7 @@ class CategoryActivity : BaseActivity() {
             scrollView.hide()
             genericErrorView.hide()
             loadingView.show()
-            GlobalScope.launch { loadingView.startAnimation() }
+            loadingView.startAnimation()
         } else {
             scrollView.show()
             loadingView.hide()

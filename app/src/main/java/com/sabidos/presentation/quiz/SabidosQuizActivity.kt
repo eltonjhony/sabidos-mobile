@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.ViewTreeObserver
 import androidx.lifecycle.Observer
 import com.sabidos.R
+import com.sabidos.data.local.preferences.RoundPrefsHelper
 import com.sabidos.domain.Quiz
 import com.sabidos.domain.QuizItem
 import com.sabidos.infrastructure.Constants
@@ -14,6 +15,7 @@ import com.sabidos.infrastructure.logging.Logger
 import com.sabidos.presentation.BaseActivity
 import kotlinx.android.synthetic.main.activity_sabidos_quiz.*
 import kotlinx.android.synthetic.main.content_quiz.*
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SabidosQuizActivity : BaseActivity() {
@@ -21,6 +23,7 @@ class SabidosQuizActivity : BaseActivity() {
     private var categoryId: Int? = null
 
     private val viewModel: QuizViewModel by viewModel()
+    private val roundPrefsHelper: RoundPrefsHelper by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +49,7 @@ class SabidosQuizActivity : BaseActivity() {
 
     private fun bindRoundState(resource: Resource<Quiz>?) = resource?.let {
         when (it.state) {
-            Loading -> overlayView.startPreparingRound()
+            Loading -> overlayView.startPreparingRound(roundPrefsHelper.getRound())
             Success -> {
                 overlayView.didPrepareRound {
                     overlayView.hideWithAnimation()

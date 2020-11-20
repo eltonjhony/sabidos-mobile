@@ -11,8 +11,6 @@ import com.sabidos.infrastructure.extensions.show
 import com.sabidos.presentation.ranking.RegularRankingAdapter
 import com.sabidos.presentation.components.BaseComponent
 import kotlinx.android.synthetic.main.sabidos_ranking_tops_component.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class RankingTopsComponent @JvmOverloads constructor(
     context: Context,
@@ -50,7 +48,7 @@ class RankingTopsComponent @JvmOverloads constructor(
         rankingContainerLayout.hide()
         if (show) {
             loadingView.show()
-            GlobalScope.launch { loadingView.startAnimation() }
+            loadingView.startAnimation()
         } else {
             loadingView.hide()
             loadingView.stopAnimation()

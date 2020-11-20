@@ -18,8 +18,6 @@ import com.sabidos.presentation.onboarding.OnboardingActivity
 import com.sabidos.presentation.onboarding.OnboardingActivity.Companion.FIRST_STEP_NUMBER_PARAM
 import com.sabidos.presentation.onboarding.OnboardingViewModel.Companion.PERSONAL_INFO_STEP
 import kotlinx.android.synthetic.main.activity_splash.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SplashActivity : AppCompatActivity() {
@@ -79,9 +77,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun startLoading() {
-        GlobalScope.launch {
-            progressAnimationView.startAnimation()
-        }
+        progressAnimationView.startAnimation()
     }
 
     private fun stopAnimation() {

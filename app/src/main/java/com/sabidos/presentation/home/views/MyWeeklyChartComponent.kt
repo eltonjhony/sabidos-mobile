@@ -12,8 +12,6 @@ import com.sabidos.presentation.components.BaseComponent
 import com.sabidos.presentation.components.SimpleFilterComponent.FilterModel
 import im.dacer.androidcharts.LineView
 import kotlinx.android.synthetic.main.sabidos_my_weekly_chart_component.view.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.util.*
 
 class MyWeeklyChartComponent @JvmOverloads constructor(
@@ -62,7 +60,7 @@ class MyWeeklyChartComponent @JvmOverloads constructor(
     fun startLoading() {
         chartParent.hide()
         chartErrorComponent.hide()
-        GlobalScope.launch { chartProgressBar.startAnimation() }
+        chartProgressBar.startAnimation()
         chartProgressBar.show()
     }
 
