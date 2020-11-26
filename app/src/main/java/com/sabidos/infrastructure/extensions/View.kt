@@ -262,11 +262,13 @@ fun TextView.stylableText(
     }
 }
 
-fun View.didSelect() {
+fun View.didSelect(withBackground: Boolean = true) {
     runCatching {
-        background = context.drawable(
-            R.drawable.item_selection_background
-        )
+        if (withBackground) {
+            background = context.drawable(
+                R.drawable.item_selection_background
+            )
+        }
         val fadeIn = ScaleAnimation(
             0f, 1f, 0f, 1f,
             Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f

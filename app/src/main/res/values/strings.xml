@@ -89,4 +89,8 @@
     <string name="correct_quiz_result_values_label">ACERTOS DA RODADA</string>
     <string name="response_time_label">TEMPO MÉDIO DE RESPOSTA</string>
     <string name="xps_accumulate_label">XPs ACUMULADOS</string>
+    <string name="popular_categories_label">Categorias Populares</string>
+    <string name="newest_add_label">Adicionadas Recentemente</string>
+    <string name="browse_all_label">Navegue por Todas</string>
+    <string name="categories_label">Categorias</string>
 </resources>

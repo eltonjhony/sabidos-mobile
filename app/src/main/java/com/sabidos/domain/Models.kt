@@ -52,7 +52,8 @@ data class Ranking(
 data class Category(
     val id: Int,
     val description: String,
-    val imageUrl: String?
+    val imageUrl: String?,
+    val iconUrl: String?
 )
 
 data class Quiz(

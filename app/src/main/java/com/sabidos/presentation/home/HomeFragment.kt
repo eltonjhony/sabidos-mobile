@@ -7,13 +7,16 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.sabidos.R
 import com.sabidos.domain.Account
+import com.sabidos.domain.Category
 import com.sabidos.domain.Timeline
-import com.sabidos.domain.WeeklyHits
 import com.sabidos.infrastructure.Resource
 import com.sabidos.infrastructure.ResourceState.*
 import com.sabidos.infrastructure.extensions.*
+import com.sabidos.presentation.category.CategoryAdapter
+import com.sabidos.presentation.common.StartToPlayCommand
 import kotlinx.android.synthetic.main.content_home_layout.*
 import kotlinx.android.synthetic.main.content_home_weekly_timers.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -26,6 +29,10 @@ class HomeFragment : Fragment() {
 
     private val adapter = TimelineAdapter(clickListener = { })
 
+    private val browseAllAdapter = CategoryAdapter(false) {
+        StartToPlayCommand.playWithCategory(activity, it)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,18 +43,11 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        categoriesContainer.hide()
 
         today().getNext(SATURDAY).apply {
             simpleTimerCtComponent.endDate = this
             weeklyProgressTimer.endDate = this
-        }
-
-        myWeeklyChartComponent.currentWeekFilterCallback = {
-            viewModel.getWeeklyHitsFor(today().getNext(SATURDAY).format())
-        }
-
-        myWeeklyChartComponent.lastWeekFilterCallback = {
-            viewModel.getWeeklyHitsFor(today().getLast(SATURDAY).format())
         }
 
         timelineComponent.setup(adapter, nestedScrollView)
@@ -56,45 +56,17 @@ class HomeFragment : Fragment() {
         }
 
         viewModel.getCurrentAccount()
-        viewModel.getWeeklyHitsFor(today().getNext(SATURDAY).format())
         viewModel.loadTimeline()
+        viewModel.loadCategories()
 
         viewModel.accountResource.observe(viewLifecycleOwner, Observer { bindAccountState(it) })
-        viewModel.weeklyHitsResource.observe(
-            viewLifecycleOwner,
-            Observer { bindWeeklyHitsState(it) })
         viewModel.timelineResource.observe(viewLifecycleOwner, Observer { bindTimelineState(it) })
+        viewModel.categoriesResource.observe(viewLifecycleOwner, Observer { bindCategories(it) })
     }
 
     private fun bindAccountState(resource: Resource<Account?>?) = resource?.let {
         when (it.state) {
             Success -> setupAccountInformation(it.data)
-        }
-    }
-
-    private fun bindWeeklyHitsState(resource: Resource<List<WeeklyHits>>?) = resource?.let {
-        if (it.state != Loading) {
-            myWeeklyChartComponent.stopLoading()
-        }
-        when (it.state) {
-            Loading -> myWeeklyChartComponent.startLoading()
-            Success -> myWeeklyChartComponent.setup(it.data)
-            NetworkError -> {
-                homeOverlayContentView.show()
-                appBarLayout.setExpanded(false)
-                homeOverlayContentView.showNetworkErrorWithRetry {
-                    homeOverlayContentView.hide()
-                    viewModel.getWeeklyHitsFor(today().getNext(SATURDAY).format())
-                    viewModel.loadTimeline()
-                }
-            }
-            else -> myWeeklyChartComponent.setupError {
-                viewModel.getWeeklyHitsFor(
-                    today().getNext(
-                        SATURDAY
-                    ).format()
-                )
-            }
         }
     }
 
@@ -107,6 +79,25 @@ class HomeFragment : Fragment() {
             Success -> adapter.updateItems(it.data)
             GenericError -> (activity as AppCompatActivity).showGenericErrorSnackBar()
         }
+    }
+
+    private fun bindCategories(resource: Resource<List<Category>>?) {
+        resource?.let {
+            when (it.state) {
+                Success -> setupCategories(it.data)
+                else -> categoriesContainer.hide()
+            }
+        }
+    }
+
+    private fun setupCategories(categories: List<Category>?) {
+        categoriesContainer.show()
+        categoriesRecyclerView.apply {
+            layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL)
+            adapter = browseAllAdapter
+            isNestedScrollingEnabled = false
+        }
+        browseAllAdapter.addItems(categories)
     }
 
     private fun setupAccountInformation(account: Account?) {

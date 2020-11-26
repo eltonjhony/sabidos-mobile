@@ -1,38 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.sabidos.presentation.components.RoundedImageView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/categoryIconView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/colorBackgroundLight">
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/categoryIconView"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toTopOf="@id/categoryDescriptionTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_avatar_boy_1" />
-
-    <TextView
-        android:id="@+id/categoryDescriptionTextView"
-        style="@style/TextStyleLight"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="16dp"
-        android:textAlignment="center"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/categoryIconView"
-        tools:text="Cinema" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    android:layout_margin="6dp"
+    app:sriv_left_bottom_corner_radius="16dp"
+    app:sriv_left_top_corner_radius="16dp"
+    app:sriv_right_bottom_corner_radius="16dp"
+    app:sriv_right_top_corner_radius="16dp"
+    tools:src="@drawable/ic_avatar_boy_1" />

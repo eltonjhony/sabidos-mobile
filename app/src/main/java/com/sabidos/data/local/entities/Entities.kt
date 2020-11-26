@@ -34,7 +34,8 @@ data class AvatarEntity(
 data class CategoryEntity(
     @PrimaryKey val id: Int,
     val description: String,
-    val imageUrl: String?
+    val imageUrl: String?,
+    val iconUrl: String?
 )
 
 @Entity(tableName = "post_quiz")

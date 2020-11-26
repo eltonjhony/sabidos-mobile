@@ -19,21 +19,33 @@ class CategoryViewModel(
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase
 ) : ViewModel() {
 
-    var selectedCategory: Category? = null
-
-    val categoriesResource = MutableLiveData<Resource<List<Category>>>()
+    val categoryWrapperResource = MutableLiveData<Resource<CategoryWrapper>>()
 
     fun loadCategories() {
-        categoriesResource.loading()
+        categoryWrapperResource.loading()
         viewModelScope.launch {
             getAllCategoriesUseCase(None()) {
                 when (it) {
-                    is Success -> categoriesResource.setSuccess(it.data)
-                    is NetworkError -> categoriesResource.setNetworkFailure()
-                    else -> categoriesResource.setGenericFailure()
+                    is Success -> {
+                        handleSuccess(it.data)
+                    }
+                    is NetworkError -> categoryWrapperResource.setNetworkFailure()
+                    else -> categoryWrapperResource.setGenericFailure()
                 }
             }
         }
     }
 
+    private fun handleSuccess(data: List<Category>) {
+        val newest = data.takeLast(3).reversed()
+        val tops = data.takeLast(3)
+        categoryWrapperResource.setSuccess(CategoryWrapper(tops, newest, data))
+    }
+
 }
+
+data class CategoryWrapper(
+    val tops: List<Category>,
+    val newest: List<Category>,
+    val all: List<Category>
+)
