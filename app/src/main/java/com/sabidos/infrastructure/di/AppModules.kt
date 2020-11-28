@@ -25,6 +25,8 @@ import com.sabidos.presentation.onboarding.LoginViewModel
 import com.sabidos.presentation.onboarding.OnboardingViewModel
 import com.sabidos.presentation.onboarding.PhoneVerificationViewModel
 import com.sabidos.presentation.onboarding.UserAvatarViewModel
+import com.sabidos.presentation.profile.AccountManagementViewModel
+import com.sabidos.presentation.profile.MyPerformanceViewModel
 import com.sabidos.presentation.profile.ProfileViewModel
 import com.sabidos.presentation.quiz.QuizViewModel
 import com.sabidos.presentation.quiz.ResultsViewModel
@@ -44,7 +46,9 @@ val presentationModule = module {
     viewModel { SplashViewModel(get(), get(), get()) }
     viewModel { DeepLinksViewModel(get(), get()) }
     viewModel { HomeViewModel(get(), get(), get()) }
-    viewModel { ProfileViewModel(get(), get(), get()) }
+    viewModel { ProfileViewModel(get()) }
+    viewModel { AccountManagementViewModel(get(), get()) }
+    viewModel { MyPerformanceViewModel(get()) }
     viewModel { RankingViewModel(get()) }
     viewModel { CategoryViewModel(get()) }
     viewModel { UserAvatarViewModel(get()) }

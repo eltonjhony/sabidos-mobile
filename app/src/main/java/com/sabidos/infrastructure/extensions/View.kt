@@ -12,6 +12,7 @@ import android.text.*
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
@@ -28,6 +29,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.tabs.TabLayout
 import com.sabidos.R
 import com.sabidos.infrastructure.logging.Logger
 
@@ -277,4 +279,17 @@ fun View.didSelect(withBackground: Boolean = true) {
         fadeIn.fillAfter = true
         startAnimation(fadeIn)
     }.onFailure { Logger.withTag(View::class.java.simpleName).withCause(it) }
+}
+
+fun TabLayout.setCustomTabView() {
+    runCatching {
+        for (index in 0..tabCount) {
+            val customView =
+                LayoutInflater.from(context).inflate(R.layout.sabidos_tab_layout_title_layout, null)
+            getTabAt(index)?.customView = customView
+        }
+        tabCount
+    }.onFailure {
+        Logger.withTag(View::class.java.simpleName).withCause(it)
+    }
 }

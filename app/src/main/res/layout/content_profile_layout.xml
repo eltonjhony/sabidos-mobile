@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:nestedScrollingEnabled="false"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/fragment_profile">
 
     <com.sabidos.presentation.profile.views.UserProfileInfoComponent
@@ -17,68 +18,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/accountManagementLabel"
-        style="@style/TextStyleMedium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="@string/account_management_label"
-        android:textAlignment="center"
-        android:textColor="@color/colorAccent"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userProfileInfoComponent" />
-
-    <com.sabidos.presentation.components.SimpleActionChoiceComponent
-        android:id="@+id/addContactButton"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/accountManagementLabel"
-        custom:actionTitle="@string/add_contact_label" />
+        android:layout_marginTop="16dp"
+        android:background="@color/colorBackgroundLight"
+        android:minHeight="?actionBarSize"
+        android:nestedScrollingEnabled="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintTop_toBottomOf="@id/userProfileInfoComponent"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/colorPrimary"
+        app:tabIndicatorHeight="4dp"
+        app:tabMode="fixed"
+        app:tabTextColor="@color/colorAccent">
 
-    <com.sabidos.presentation.components.SimpleActionChoiceComponent
-        android:id="@+id/addPaymentButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addContactButton"
-        custom:actionTitle="@string/add_payment_label" />
+    </com.google.android.material.tabs.TabLayout>
 
-    <com.sabidos.presentation.components.SimpleActionChoiceComponent
-        android:id="@+id/myEarnsButton"
+    <com.sabidos.presentation.profile.views.WrapContentHeightViewPager
+        android:id="@+id/profileViewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addPaymentButton"
-        custom:actionTitle="@string/my_earns_label" />
-
-    <com.sabidos.presentation.components.SimpleActionChoiceComponent
-        android:id="@+id/faqButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myEarnsButton"
-        custom:actionTitle="@string/faq_label" />
-
-    <com.sabidos.presentation.profile.views.UserManagmtComponent
-        android:id="@+id/userManagmtComponent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
-        android:paddingBottom="36dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/faqButton" />
+        android:layout_height="0dp"
+        android:nestedScrollingEnabled="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

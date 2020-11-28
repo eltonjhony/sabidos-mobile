@@ -93,4 +93,6 @@
     <string name="newest_add_label">Adicionadas Recentemente</string>
     <string name="browse_all_label">Navegue por Todas</string>
     <string name="categories_label">Categorias</string>
+    <string name="manage_account_label">Gerenciar Conta</string>
+    <string name="my_performance_label">Minha Performance</string>
 </resources>
