@@ -35,7 +35,6 @@ class TimelineComponent @JvmOverloads constructor(
             isNestedScrollingEnabled = false
         }
         resetPagination()
-        progressAnimationComponent.setup(true)
     }
 
     fun stopLoading() {

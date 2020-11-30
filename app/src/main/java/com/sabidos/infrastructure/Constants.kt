@@ -10,6 +10,8 @@ class Constants {
             const val CORRECT_ANIMATION_JSON = "correct_animation.json"
             const val INCORRECT_ANIMATION_JSON = "incorrect_animation.json"
             const val TIME_OVER_ANIMATION_JSON = "time_over_animation.json"
+            const val PRIMARY_LOADING_ANIMATION_JSON = "primary_loading_animation.json"
+            const val SECONDARY_LOADING_ANIMATION_JSON = "secondary_loading_animation.json"
         }
     }
 

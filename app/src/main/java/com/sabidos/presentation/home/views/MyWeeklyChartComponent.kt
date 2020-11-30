@@ -46,7 +46,6 @@ class MyWeeklyChartComponent @JvmOverloads constructor(
 
     override fun setupComponent() {
         super.setupComponent()
-        chartProgressBar.setup(true)
         chartProgressBar.hide()
         chartErrorComponent.hide()
     }

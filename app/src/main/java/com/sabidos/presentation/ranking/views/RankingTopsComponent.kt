@@ -40,7 +40,6 @@ class RankingTopsComponent @JvmOverloads constructor(
         }
     
     fun setup() {
-        loadingView.setup(true)
         rankingContainerLayout.hide()
     }
 

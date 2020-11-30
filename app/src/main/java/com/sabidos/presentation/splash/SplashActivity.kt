@@ -28,18 +28,12 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        progressAnimationView.setup()
 
         handleDeepLinks {
             viewModel.setupInitialSession()
             viewModel.accountResource.observe(this, Observer { bindAccountState(it) })
             viewModel.userResource.observe(this, Observer { bindUserState(it) })
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        progressAnimationView.stopAnimation()
     }
 
     private fun bindUserState(resource: Resource<User>?) {
@@ -77,7 +71,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun startLoading() {
-        progressAnimationView.startAnimation()
+        progressAnimationView.startAnimation(false)
     }
 
     private fun stopAnimation() {

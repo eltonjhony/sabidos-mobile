@@ -41,7 +41,6 @@ class UserAvatarFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loading.build(context)
-        loadingView.setup(true)
         finishButton.disabled()
         setupAvatarRecyclerView()
         setupObservers()

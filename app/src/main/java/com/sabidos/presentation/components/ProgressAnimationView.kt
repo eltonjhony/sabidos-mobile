@@ -2,16 +2,10 @@ package com.sabidos.presentation.components
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.ImageView
-import androidx.appcompat.content.res.AppCompatResources
 import com.sabidos.R
-import com.sabidos.infrastructure.extensions.hide
+import com.sabidos.infrastructure.Constants
 import com.sabidos.infrastructure.logging.Logger
 import kotlinx.android.synthetic.main.sabidos_progress_animation_dots.view.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
 
 class ProgressAnimationView @JvmOverloads constructor(
     context: Context,
@@ -24,108 +18,26 @@ class ProgressAnimationView @JvmOverloads constructor(
     defStyleAttr = defStyleAttr
 ) {
 
-    private lateinit var dotsModel: List<DotsModel>
-
-    private var animating: Boolean = false
-
-    private var job: Job? = null
-
-    fun startAnimation(transitionTime: Long = 700L) {
-
-        job = GlobalScope.launch {
-
-            runCatching {
-                val flow = flowAnimation(transitionTime)
-                flow.collect {
-                    it?.active(context)
-                    setDefaultStateExceptFor(it)
-                }
-            }.onFailure {
-                if (it !is CancellationException) {
-                    Logger.withTag(ProgressAnimationView::class.java.simpleName).withCause(it)
-                    hide()
-                }
-            }
+    fun startAnimation(isPrimary: Boolean = true) {
+        val animationFile = when {
+            isPrimary -> Constants.Animation.PRIMARY_LOADING_ANIMATION_JSON
+            else -> Constants.Animation.SECONDARY_LOADING_ANIMATION_JSON
         }
 
-    }
-
-    private fun flowAnimation(transitionTime: Long = 700L): Flow<DotsModel?> = flow {
-
-        animating = true
-        var currentActiveDot = 1
-
-        while (animating) {
-
-            runCatching {
-
-                var model = getModelBy(currentActiveDot)
-                if (model != null) {
-                    currentActiveDot++
-                } else {
-                    currentActiveDot = 1
-                    model = getModelBy(currentActiveDot)
-                    currentActiveDot++
-                }
-                emit(model)
-                delay(transitionTime)
-
-            }.onFailure {
-                Logger.withTag(ProgressAnimationView::class.java.simpleName).withCause(it)
-            }
-        }
-
-    }
-
-    private fun getModelBy(position: Int) =
-        dotsModel.firstOrNull { it.position == position }
-
-    private suspend fun setDefaultStateExceptFor(model: DotsModel?) {
-        dotsModel.filter { it.position != model?.position }
-            .forEach { it.default(context) }
-    }
-
-    fun stopAnimation() {
-        animating = false
         runCatching {
-            job?.cancel()
-            job = null
+            animationView.setAnimation(animationFile)
+            animationView.playAnimation()
         }.onFailure {
             Logger.withTag(ProgressAnimationView::class.java.simpleName).withCause(it)
         }
     }
 
-    fun setup(isDark: Boolean = false) {
-        dotsModel = listOf(
-            DotsModel(1, animationDotOne, isDark),
-            DotsModel(2, animationDotTwo, isDark),
-            DotsModel(3, animationDotThree, isDark)
-        )
+    fun stopAnimation() {
+        runCatching {
+            animationView.cancelAnimation()
+        }.onFailure {
+            Logger.withTag(ProgressAnimationView::class.java.simpleName).withCause(it)
+        }
     }
 
-    data class DotsModel(val position: Int, val view: ImageView, val isDark: Boolean) {
-
-        suspend fun active(context: Context) {
-            withContext(Dispatchers.Main) {
-                view.setImageDrawable(
-                    AppCompatResources.getDrawable(
-                        context,
-                        if (isDark) R.drawable.animation_circle_active_dark else R.drawable.animation_circle_active
-                    )
-                )
-            }
-        }
-
-        suspend fun default(context: Context) {
-            withContext(Dispatchers.Main) {
-                view.setImageDrawable(
-                    AppCompatResources.getDrawable(
-                        context,
-                        if (isDark) R.drawable.animation_circle_default_dark else R.drawable.animation_circle_default
-                    )
-                )
-            }
-        }
-
-    }
 }

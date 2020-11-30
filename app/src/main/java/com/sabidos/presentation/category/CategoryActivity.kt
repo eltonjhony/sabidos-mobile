@@ -33,7 +33,6 @@ class CategoryActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_category)
 
-        loadingView.setup(true)
         setupCategoryRecyclerView()
 
         closeView.setOnClickListener {
