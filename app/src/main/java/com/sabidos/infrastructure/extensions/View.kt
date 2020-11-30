@@ -3,8 +3,9 @@ package com.sabidos.infrastructure.extensions
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.Color
-import android.graphics.Typeface
+import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -22,13 +23,17 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.animation.doOnRepeat
 import androidx.core.widget.NestedScrollView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.google.android.material.tabs.TabLayout
 import com.sabidos.R
 import com.sabidos.infrastructure.logging.Logger
@@ -37,7 +42,43 @@ fun ImageView.load(url: String?) {
     runCatching {
         Glide.with(this)
             .load(url)
-            .apply(RequestOptions.placeholderOf(R.mipmap.placeholder))
+            .into(this)
+    }.onFailure {
+        Logger.withTag(View::class.java.simpleName).withCause(it)
+        this.setImageDrawable(context.drawable(R.mipmap.placeholder))
+    }
+}
+
+fun ImageView.loadAsDrawable(url: String?, callback: () -> Unit) {
+    runCatching {
+        Glide.with(this)
+            .asDrawable()
+            .load(url)
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    setImageDrawable(context.drawable(R.mipmap.placeholder))
+                    callback.invoke()
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    setImageDrawable(resource)
+                    callback.invoke()
+                    return true
+                }
+
+            })
             .into(this)
     }.onFailure {
         Logger.withTag(View::class.java.simpleName).withCause(it)
@@ -292,4 +333,32 @@ fun TabLayout.setCustomTabView() {
     }.onFailure {
         Logger.withTag(View::class.java.simpleName).withCause(it)
     }
+}
+
+fun AppCompatImageView.roundImage(radius: Float) {
+
+    val drawable: BitmapDrawable = drawable as BitmapDrawable
+    val bitmap: Bitmap = drawable.bitmap
+
+    val output: Bitmap = Bitmap.createBitmap(
+        bitmap.width,
+        bitmap.height, Bitmap.Config.ARGB_8888
+    )
+    val canvas = Canvas(output)
+
+    val color = -0xbdbdbe
+    val paint = Paint()
+    val rect = Rect(0, 0, bitmap.width, bitmap.height)
+    val rectF = RectF(rect)
+    val roundPx = context.dpToPx(radius).toFloat()
+
+    paint.isAntiAlias = true
+    canvas.drawARGB(0, 0, 0, 0)
+    paint.color = color
+    canvas.drawRoundRect(rectF, roundPx, roundPx, paint)
+
+    paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+    canvas.drawBitmap(bitmap, rect, rect, paint)
+
+    setImageBitmap(output)
 }

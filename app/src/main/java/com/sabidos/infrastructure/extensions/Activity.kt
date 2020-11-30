@@ -32,6 +32,7 @@ fun <T> Activity.goTo(
     destination: Class<T>,
     finished: Boolean = true,
     forResult: Boolean = false,
+    withAnimation: Pair<Int,Int>? = null,
     bundle: Bundle? = null
 ) where T : Activity {
     runCatching {
@@ -41,6 +42,9 @@ fun <T> Activity.goTo(
 
         if (forResult) {
             startActivityForResult(intent, 100)
+        } else if (withAnimation != null) {
+            startActivity(intent)
+            overridePendingTransition(withAnimation.first, withAnimation.second)
         } else {
             startActivity(intent)
         }

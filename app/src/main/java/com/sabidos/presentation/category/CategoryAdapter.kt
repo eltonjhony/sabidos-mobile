@@ -6,13 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sabidos.R
 import com.sabidos.domain.Category
+import com.sabidos.infrastructure.extensions.dpToPx
 import com.sabidos.infrastructure.extensions.load
-import kotlinx.android.synthetic.main.category_choice_content_item.view.categoryIconView
+import com.sabidos.infrastructure.extensions.loadAsDrawable
+import com.sabidos.infrastructure.extensions.roundImage
+import kotlinx.android.synthetic.main.category_choice_content_item.view.*
 import kotlinx.android.synthetic.main.category_choice_secundary_content_item.view.*
 
 class CategoryAdapter(
     private val isPrimary: Boolean = true,
     private var categories: MutableList<Category> = mutableListOf(),
+    private val isGrid: Boolean = false,
     val clickListener: (Category) -> Unit
 ) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
@@ -42,7 +46,6 @@ class CategoryAdapter(
         val category = categories[position]
         holder.bind(category)
         holder.itemView.setOnClickListener {
-            notifyDataSetChanged()
             clickListener(category)
         }
     }
@@ -59,8 +62,15 @@ class CategoryAdapter(
 
         fun bind(category: Category) {
 
+            if (isGrid) {
+                val padding = itemView.context.dpToPx(4f)
+                itemView.setPadding(padding, padding, padding, padding)
+            }
+
             if (isPrimary) {
-                itemView.categoryIconView.load(category.imageUrl)
+                itemView.categoryIconView.loadAsDrawable(category.imageUrl) {
+                    itemView.categoryIconView.roundImage(16f)
+                }
             } else {
                 itemView.categoryIconImageView.load(category.iconUrl)
                 itemView.categoryName.text = category.description

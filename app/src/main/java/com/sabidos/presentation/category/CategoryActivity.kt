@@ -2,6 +2,7 @@ package com.sabidos.presentation.category
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.sabidos.R
 import com.sabidos.infrastructure.Resource
@@ -25,7 +26,7 @@ class CategoryActivity : BaseActivity() {
         StartToPlayCommand.playWithCategory(this, it)
     }
 
-    private val browseAllAdapter = CategoryAdapter {
+    private val browseAllAdapter = CategoryAdapter(isGrid = true) {
         StartToPlayCommand.playWithCategory(this, it)
     }
 
@@ -76,7 +77,7 @@ class CategoryActivity : BaseActivity() {
         }
 
         browseAllRecyclerView.apply {
-            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            layoutManager = GridLayoutManager(context, 2)
             adapter = browseAllAdapter
             isNestedScrollingEnabled = false
         }
