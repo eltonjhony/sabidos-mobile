@@ -8,6 +8,8 @@ import androidx.lifecycle.Observer
 import com.sabidos.R
 import com.sabidos.domain.Account
 import com.sabidos.infrastructure.Resource
+import com.sabidos.infrastructure.ResourceState
+import com.sabidos.infrastructure.ResourceState.Loading
 import com.sabidos.infrastructure.ResourceState.Success
 import com.sabidos.infrastructure.extensions.setCustomTabView
 import com.sabidos.presentation.BaseFragment
@@ -46,8 +48,11 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun bindAccountState(resource: Resource<Account?>?) = resource?.let {
+
         when (it.state) {
+            Loading -> userProfileInfoComponent.startLoading()
             Success -> setupProfile(it.data)
+            else -> userProfileInfoComponent.showError()
         }
     }
 
