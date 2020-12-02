@@ -92,6 +92,7 @@ class SabidosQuizActivity : BaseActivity() {
 
     private fun configureBasicViewElements(quizItem: QuizItem) {
         quizQuestionAreaComponent.setup(quizItem)
+        quizExplanationComponent.hide()
         quizItem.explanation?.let {
             quizExplanationComponent.configureView(it, quizItem.getCorrectAnswer())
         }
@@ -131,7 +132,6 @@ class SabidosQuizActivity : BaseActivity() {
             viewModel.postQuiz(quizItem, quizTopContentComponent.getResponseTime(quizItem.quizLimitInSeconds), alternative)
         }
         quizSelectionComponent.onSelectionCallback = {
-            quizExplanationComponent.hide()
             quizBottomMenuComponent.show()
             if (quizItem.explanation != null) {
                 quizExplanationComponent.show()
