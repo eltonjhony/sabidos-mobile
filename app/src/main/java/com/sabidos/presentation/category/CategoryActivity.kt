@@ -18,15 +18,15 @@ class CategoryActivity : BaseActivity() {
 
     private val viewModel: CategoryViewModel by viewModel()
 
-    private val topsAdapter = CategoryAdapter {
+    private val topsAdapter = CategoryHorizontalAdapter {
         StartToPlayCommand.playWithCategory(this, it)
     }
 
-    private val newestAdapter = CategoryAdapter {
+    private val newestAdapter = CategoryHorizontalAdapter {
         StartToPlayCommand.playWithCategory(this, it)
     }
 
-    private val browseAllAdapter = CategoryAdapter(isGrid = true) {
+    private val browseAllAdapter = CategoryVerticalAdapter {
         StartToPlayCommand.playWithCategory(this, it)
     }
 

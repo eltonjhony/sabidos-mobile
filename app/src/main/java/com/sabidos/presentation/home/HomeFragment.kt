@@ -15,7 +15,7 @@ import com.sabidos.domain.Timeline
 import com.sabidos.infrastructure.Resource
 import com.sabidos.infrastructure.ResourceState.*
 import com.sabidos.infrastructure.extensions.*
-import com.sabidos.presentation.category.CategoryAdapter
+import com.sabidos.presentation.category.CategoryHorizontalAdapter
 import com.sabidos.presentation.common.StartToPlayCommand
 import kotlinx.android.synthetic.main.content_home_layout.*
 import kotlinx.android.synthetic.main.content_home_weekly_timers.*
@@ -29,7 +29,7 @@ class HomeFragment : Fragment() {
 
     private val adapter = TimelineAdapter(clickListener = { })
 
-    private val browseAllAdapter = CategoryAdapter(false) {
+    private val browseAllAdapter = CategoryHorizontalAdapter(false) {
         StartToPlayCommand.playWithCategory(activity, it)
     }
 

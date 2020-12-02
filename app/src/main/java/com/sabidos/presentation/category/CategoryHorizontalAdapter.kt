@@ -6,31 +6,29 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sabidos.R
 import com.sabidos.domain.Category
-import com.sabidos.infrastructure.extensions.dpToPx
 import com.sabidos.infrastructure.extensions.load
 import com.sabidos.infrastructure.extensions.loadAsDrawable
 import com.sabidos.infrastructure.extensions.roundImage
-import kotlinx.android.synthetic.main.category_choice_content_item.view.*
+import kotlinx.android.synthetic.main.category_choice_horizontal_item.view.*
 import kotlinx.android.synthetic.main.category_choice_secundary_content_item.view.*
 
-class CategoryAdapter(
+class CategoryHorizontalAdapter(
     private val isPrimary: Boolean = true,
     private var categories: MutableList<Category> = mutableListOf(),
-    private val isGrid: Boolean = false,
     val clickListener: (Category) -> Unit
-) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+) : RecyclerView.Adapter<CategoryHorizontalAdapter.CategoryHorizontalViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryHorizontalViewHolder {
         return if (isPrimary) {
-            CategoryViewHolder(
+            CategoryHorizontalViewHolder(
                 LayoutInflater.from(parent.context).inflate(
-                    R.layout.category_choice_content_item,
+                    R.layout.category_choice_horizontal_item,
                     parent,
                     false
                 )
             )
         } else {
-            CategoryViewHolder(
+            CategoryHorizontalViewHolder(
                 LayoutInflater.from(parent.context).inflate(
                     R.layout.category_choice_secundary_content_item,
                     parent,
@@ -42,7 +40,7 @@ class CategoryAdapter(
 
     override fun getItemCount(): Int = categories.size
 
-    override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CategoryHorizontalViewHolder, position: Int) {
         val category = categories[position]
         holder.bind(category)
         holder.itemView.setOnClickListener {
@@ -58,14 +56,9 @@ class CategoryAdapter(
         }
     }
 
-    inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class CategoryHorizontalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(category: Category) {
-
-            if (isGrid) {
-                val padding = itemView.context.dpToPx(4f)
-                itemView.setPadding(padding, padding, padding, padding)
-            }
 
             if (isPrimary) {
                 itemView.categoryIconView.loadAsDrawable(category.imageUrl) {
