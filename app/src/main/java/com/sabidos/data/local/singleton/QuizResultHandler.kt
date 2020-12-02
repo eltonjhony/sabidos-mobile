@@ -30,8 +30,8 @@ data class QuizResult(
     var accumulateResponseTime: Int = 0
 ) {
 
-    fun getResultPercentageValue(): Float =
-        (numberOfQuestions * numberOfCorrects).toFloat()
+    fun getResultPercentageValue(): Int =
+        (numberOfQuestions * numberOfCorrects)
 
     fun getPerformance(): RoundPerformance =
         when ((numberOfCorrects * numberOfQuestions)) {

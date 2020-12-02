@@ -48,19 +48,11 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.sabidos.presentation.components.CircularSeekBar
-            android:id="@+id/circularSeekComponent"
+        <com.sabidos.presentation.components.CircularTimerSeekView
+            android:id="@+id/circularTimerSeekView"
             android:layout_width="250dp"
             android:layout_height="250dp"
-            app:cs_circle_color="@android:color/transparent"
-            app:cs_circle_fill="@android:color/transparent"
-            app:cs_circle_progress_color="@color/colorWhite"
-            app:cs_circle_stroke_width="12dp"
-            app:cs_circle_style="round"
-            app:cs_disable_pointer="true"
-            app:cs_max="200"
-            app:cs_pointer_color="@android:color/transparent"
-            app:cs_progress="0"
+            android:padding="18dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

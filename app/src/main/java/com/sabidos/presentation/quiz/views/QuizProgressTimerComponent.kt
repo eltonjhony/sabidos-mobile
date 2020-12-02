@@ -3,6 +3,7 @@ package com.sabidos.presentation.quiz.views
 import android.content.Context
 import android.util.AttributeSet
 import com.sabidos.R
+import com.sabidos.infrastructure.extensions.drawable
 import com.sabidos.infrastructure.extensions.hide
 import com.sabidos.infrastructure.logging.Logger
 import com.sabidos.presentation.components.BaseComponent
@@ -87,9 +88,14 @@ class QuizProgressTimerComponent @JvmOverloads constructor(
     ) {
         withContext(Dispatchers.Main) {
             timerLabel.text = "$currentTimer"
-            circularSeekComponent.progress = (maximumTimer.toFloat() - currentTimer.toFloat())
+            circularTimerSeekView.setPoints(maximumTimer - currentTimer)
             if (shouldSetMax) {
-                circularSeekComponent.max = maximumTimer.toFloat()
+                circularTimerSeekView.setupComponent(
+                    customIndicatorIcon = context.drawable(R.drawable.animation_circle_active),
+                    progressWidth = 3f,
+                    arcWidth = 0f,
+                    max = maximumTimer
+                )
             }
         }
     }

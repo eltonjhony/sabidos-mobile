@@ -61,12 +61,6 @@ class QuizResultContentComponent @JvmOverloads constructor(
             RoundPerformance.LOW -> context.getString(R.string.low_round_feedback)
         }
 
-        circularSeekComponent.circleProgressColor = when (quizResult.getPerformance()) {
-            RoundPerformance.PERFECT, RoundPerformance.HIGH -> context.color(R.color.greenCorrectAnswerColor)
-            RoundPerformance.MEDIUM -> context.color(R.color.yellowMediumPerformanceColor)
-            RoundPerformance.LOW -> context.color(R.color.redIncorrectAnswerColor)
-        }
-
         correctQuizValueComponent.resultValue = "${quizResult.numberOfCorrects}"
         responseTimeValueComponent.resultValue = "${quizResult.getAverageResponseTime()}s"
         xpValueComponent.resultValue = "${quizResult.getXPsForRound()}"
@@ -75,18 +69,30 @@ class QuizResultContentComponent @JvmOverloads constructor(
 
     @SuppressLint("SetTextI18n")
     private fun startSeekProgress(quizResult: QuizResult) {
-        circularSeekComponent.max = 100f
-        circularSeekComponent.progress = 0f
+
+        val progressColor = when (quizResult.getPerformance()) {
+            RoundPerformance.PERFECT, RoundPerformance.HIGH -> context.color(R.color.greenCorrectAnswerColor)
+            RoundPerformance.MEDIUM -> context.color(R.color.yellowMediumPerformanceColor)
+            RoundPerformance.LOW -> context.color(R.color.redIncorrectAnswerColor)
+        }
+
+        circularTimerSeekView.setupComponent(
+            progressWidth = 24f,
+            arcWidth = 0f,
+            progressColor = progressColor,
+            max = 100
+        )
+
         GlobalScope.launch {
             withContext(Dispatchers.IO) {
-                val animator = ValueAnimator.ofFloat(0f, quizResult.getResultPercentageValue())
+                val animator = ValueAnimator.ofInt(0, quizResult.getResultPercentageValue())
                 animator.duration = 2000L
                 animator.addUpdateListener { animation ->
                     GlobalScope.launch {
                         withContext(Dispatchers.Main) {
-                            val value = animation.animatedValue as Float
-                            circularSeekComponent.progress = value
-                            correctPercentageLabel.text = "${value.toInt()}%"
+                            val value = animation.animatedValue as Int
+                            circularTimerSeekView.setPoints(value)
+                            correctPercentageLabel.text = "${value}%"
                         }
                     }
                 }

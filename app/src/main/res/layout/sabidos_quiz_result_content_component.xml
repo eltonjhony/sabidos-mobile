@@ -30,19 +30,12 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Rodada Perfeita. Toma aqui seus XPs extras" />
 
-        <com.sabidos.presentation.components.CircularSeekBar
-            android:id="@+id/circularSeekComponent"
+        <com.sabidos.presentation.components.CircularTimerSeekView
+            android:id="@+id/circularTimerSeekView"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginTop="24dp"
-            app:cs_circle_color="@color/disableButtonColor"
-            app:cs_circle_progress_color="@color/greenCorrectAnswerColor"
-            app:cs_circle_stroke_width="12dp"
-            app:cs_circle_style="round"
-            app:cs_disable_pointer="true"
-            app:cs_max="100"
-            app:cs_pointer_color="@android:color/transparent"
-            app:cs_progress="50"
+            android:padding="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/roundFeedbackLabel" />
@@ -55,10 +48,10 @@
             android:includeFontPadding="false"
             android:textColor="@color/colorAccent"
             android:textSize="36sp"
-            app:layout_constraintBottom_toBottomOf="@id/circularSeekComponent"
+            app:layout_constraintBottom_toBottomOf="@id/circularTimerSeekView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/circularSeekComponent"
+            app:layout_constraintTop_toTopOf="@id/circularTimerSeekView"
             tools:text="100%" />
 
         <TextView
@@ -81,7 +74,7 @@
             android:layout_marginTop="36dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/circularSeekComponent"
+            app:layout_constraintTop_toBottomOf="@id/circularTimerSeekView"
             custom:includeTopSeparator="true"
             custom:resultLabel="@string/correct_quiz_result_values_label" />
 

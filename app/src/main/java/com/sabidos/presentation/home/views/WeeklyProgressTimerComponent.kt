@@ -3,6 +3,7 @@ package com.sabidos.presentation.home.views
 import android.content.Context
 import android.util.AttributeSet
 import com.sabidos.R
+import com.sabidos.infrastructure.extensions.drawable
 import com.sabidos.infrastructure.extensions.getWeeklyRankingProgressFormatted
 import com.sabidos.infrastructure.extensions.hoursInWeek
 import com.sabidos.infrastructure.extensions.today
@@ -35,7 +36,16 @@ class WeeklyProgressTimerComponent @JvmOverloads constructor(
         }
 
     private suspend fun setup() = withContext(Dispatchers.IO) {
-        weeklyProgressTimer.circularSeekComponent.max = hoursInWeek
+
+        withContext(Dispatchers.Main) {
+            weeklyProgressTimer.circularTimerView.setupComponent(
+                customIndicatorIcon = context.drawable(R.drawable.ic_indicator_icon),
+                indicatorSizeDelta = 6,
+                progressWidth = 14f,
+                arcWidth = 2f,
+                max = hoursInWeek.toInt()
+            )
+        }
 
         val consumedHours = getWeeklyRankingProgressFormatted(endDate)
 
@@ -49,7 +59,7 @@ class WeeklyProgressTimerComponent @JvmOverloads constructor(
 
     private suspend fun animate(x: Long) {
         withContext(Dispatchers.Main) {
-            weeklyProgressTimer.circularSeekComponent.progress = x.toFloat()
+            weeklyProgressTimer.circularTimerView.setPoints(x.toInt())
         }
     }
 

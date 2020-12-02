@@ -79,16 +79,19 @@ class QuizInitialSplashOverlayComponent @JvmOverloads constructor(
 
     private fun startSeekProgress() {
         timerView.pump()
-        circularSeekComponent.max = MAX_PROGRESS_VALUE
-        circularSeekComponent.progress = 0f
+        circularTimerSeekView.setupComponent(
+            progressWidth = 24f,
+            arcWidth = 0f,
+            max = MAX_PROGRESS_VALUE
+        )
         GlobalScope.launch {
             withContext(Dispatchers.IO) {
-                val animator = ValueAnimator.ofFloat(0f, MAX_PROGRESS_VALUE)
+                val animator = ValueAnimator.ofInt(0, MAX_PROGRESS_VALUE)
                 animator.duration = (DEFAULT_COUNTER * 1000).toLong()
                 animator.addUpdateListener { animation ->
                     GlobalScope.launch {
                         withContext(Dispatchers.Main) {
-                            circularSeekComponent.progress = animation.animatedValue as Float
+                            circularTimerSeekView.setPoints(animation.animatedValue as Int)
                         }
                     }
                 }
@@ -104,7 +107,7 @@ class QuizInitialSplashOverlayComponent @JvmOverloads constructor(
             setProgressValue(DEFAULT_COUNTER)
 
             runCatching {
-                val flow = flowTimer(DEFAULT_COUNTER)
+                val flow = flowTimer()
                 flow.collect {
                     setProgressValue(it)
                 }
@@ -116,9 +119,9 @@ class QuizInitialSplashOverlayComponent @JvmOverloads constructor(
         }
     }
 
-    private fun flowTimer(maximumTimer: Int): Flow<Int> = flow {
+    private fun flowTimer(): Flow<Int> = flow {
 
-        var temp = maximumTimer
+        var temp = DEFAULT_COUNTER
 
         while (temp > 0) {
             temp--
@@ -142,7 +145,7 @@ class QuizInitialSplashOverlayComponent @JvmOverloads constructor(
 
     companion object {
         const val DEFAULT_COUNTER = 3
-        const val MAX_PROGRESS_VALUE = 100f
+        const val MAX_PROGRESS_VALUE = 100
     }
 
 }
