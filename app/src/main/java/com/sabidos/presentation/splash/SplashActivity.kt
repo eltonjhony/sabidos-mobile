@@ -11,6 +11,7 @@ import com.sabidos.infrastructure.Resource
 import com.sabidos.infrastructure.ResourceState.*
 import com.sabidos.infrastructure.ResultWrapper
 import com.sabidos.infrastructure.extensions.goTo
+import com.sabidos.infrastructure.extensions.showAuthError
 import com.sabidos.infrastructure.extensions.showGenericErrorDialog
 import com.sabidos.infrastructure.extensions.showNetworkErrorDialog
 import com.sabidos.presentation.MainActivity
@@ -29,7 +30,14 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        handleDeepLinks {
+        handleDeepLinks { result ->
+
+            when (result) {
+                is ResultWrapper.AuthError -> {
+                    showAuthError(result.errorResponse)
+                }
+            }
+
             viewModel.setupInitialSession()
             viewModel.accountResource.observe(this, Observer { bindAccountState(it) })
             viewModel.userResource.observe(this, Observer { bindUserState(it) })

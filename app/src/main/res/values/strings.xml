@@ -96,4 +96,5 @@
     <string name="manage_account_label">Gerenciar Conta</string>
     <string name="my_performance_label">Minha Performance</string>
     <string name="user_already_in_use_error">Este usuário já está em uso. Tente com um usuário novo.</string>
+    <string name="email_already_exists_error">Já existe um usuário vinculado a este email. Tente com um email novo.</string>
 </resources>

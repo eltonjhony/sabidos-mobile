@@ -7,6 +7,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.sabidos.data.remote.model.AuthErrorResponse
 import com.sabidos.data.remote.model.AuthErrorResponse.Companion.ERROR_CREDENTIAL_ALREADY_IN_USE
+import com.sabidos.data.remote.model.AuthErrorResponse.Companion.ERROR_EMAIL_ALREADY_IN_USE
 import com.sabidos.domain.User
 import com.sabidos.infrastructure.Constants
 import com.sabidos.infrastructure.ResultWrapper
@@ -278,7 +279,7 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
             when (e) {
                 is FirebaseNetworkException -> NetworkError
                 is FirebaseAuthException -> {
-                    if (ERROR_CREDENTIAL_ALREADY_IN_USE == e.errorCode) {
+                    if (ERROR_CREDENTIAL_ALREADY_IN_USE == e.errorCode || ERROR_EMAIL_ALREADY_IN_USE == e.errorCode) {
                         AuthError(AuthErrorResponse(e.errorCode, e.message))
                     } else {
                         GenericError(Error(e))
