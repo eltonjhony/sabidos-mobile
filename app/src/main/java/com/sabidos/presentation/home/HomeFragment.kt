@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.sabidos.R
 import com.sabidos.domain.Account
 import com.sabidos.domain.Category
@@ -43,7 +43,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        categoriesContainer.hide()
+        setupUi()
 
         today().getNext(SATURDAY).apply {
             simpleTimerCtComponent.endDate = this
@@ -62,6 +62,16 @@ class HomeFragment : Fragment() {
         viewModel.accountResource.observe(viewLifecycleOwner, Observer { bindAccountState(it) })
         viewModel.timelineResource.observe(viewLifecycleOwner, Observer { bindTimelineState(it) })
         viewModel.categoriesResource.observe(viewLifecycleOwner, Observer { bindCategories(it) })
+    }
+
+    private fun setupUi() {
+        categoriesContainer.hide()
+        categoriesRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+            adapter = browseAllAdapter
+            isNestedScrollingEnabled = false
+        }
     }
 
     private fun bindAccountState(resource: Resource<Account?>?) = resource?.let {
@@ -92,11 +102,6 @@ class HomeFragment : Fragment() {
 
     private fun setupCategories(categories: List<Category>?) {
         categoriesContainer.show()
-        categoriesRecyclerView.apply {
-            layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL)
-            adapter = browseAllAdapter
-            isNestedScrollingEnabled = false
-        }
         browseAllAdapter.addItems(categories)
     }
 

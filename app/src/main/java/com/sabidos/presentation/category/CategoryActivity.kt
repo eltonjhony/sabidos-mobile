@@ -3,7 +3,7 @@ package com.sabidos.presentation.category
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.sabidos.R
 import com.sabidos.infrastructure.Resource
 import com.sabidos.infrastructure.ResourceState
@@ -65,13 +65,13 @@ class CategoryActivity : BaseActivity() {
     private fun setupCategoryRecyclerView() {
 
         topsRecyclerView.apply {
-            layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = topsAdapter
             isNestedScrollingEnabled = false
         }
 
         newestRecyclerView.apply {
-            layoutManager = StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = newestAdapter
             isNestedScrollingEnabled = false
         }
