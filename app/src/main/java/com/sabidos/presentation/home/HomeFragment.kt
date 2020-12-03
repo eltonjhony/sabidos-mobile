@@ -55,13 +55,18 @@ class HomeFragment : Fragment() {
             viewModel.loadTimeline(nextPage)
         }
 
-        viewModel.getCurrentAccount()
+
         viewModel.loadTimeline()
         viewModel.loadCategories()
 
         viewModel.accountResource.observe(viewLifecycleOwner, Observer { bindAccountState(it) })
         viewModel.timelineResource.observe(viewLifecycleOwner, Observer { bindTimelineState(it) })
         viewModel.categoriesResource.observe(viewLifecycleOwner, Observer { bindCategories(it) })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getCurrentAccount()
     }
 
     private fun setupUi() {

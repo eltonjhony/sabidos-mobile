@@ -49,6 +49,10 @@ class WeeklyProgressTimerComponent @JvmOverloads constructor(
 
         val consumedHours = getWeeklyRankingProgressFormatted(endDate)
 
+        if (consumedHours < 1) {
+            animate(0)
+        }
+
         delay(200)
         for (x in 1 until consumedHours) {
             animate(x)

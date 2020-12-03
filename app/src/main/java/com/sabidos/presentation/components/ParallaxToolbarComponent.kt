@@ -26,4 +26,9 @@ class ParallaxToolbarComponent @JvmOverloads constructor(
         avatarComponent.drawable = resId
     }
 
+    fun setup(imagePath: String?, orientation: Int) {
+        avatarComponent.orientation = orientation
+        avatarComponent.imagePath = imagePath
+    }
+
 }

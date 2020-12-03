@@ -2,6 +2,7 @@ package com.sabidos.presentation.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.sabidos.data.local.preferences.UserProfilePhotoPrefsHelper
 import com.sabidos.domain.Category
 import com.sabidos.domain.Timeline
 import com.sabidos.domain.interactor.GetAllCategoriesUseCase
@@ -21,9 +22,10 @@ import com.sabidos.domain.interactor.GetTimelineUseCase.Params as GetTimelinePar
 
 class HomeViewModel(
     getCurrentAccountUseCase: GetCurrentAccountUseCase,
+    profilePhotoPrefsHelper: UserProfilePhotoPrefsHelper,
     private val getTimelineUseCase: GetTimelineUseCase,
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase
-) : AccountViewModel(getCurrentAccountUseCase) {
+) : AccountViewModel(getCurrentAccountUseCase, profilePhotoPrefsHelper) {
 
     val categoriesResource = MutableLiveData<Resource<List<Category>>>()
     val timelineResource = MutableLiveData<Resource<List<Timeline>>>()

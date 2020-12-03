@@ -6,14 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sabidos.R
 import com.sabidos.domain.UserAvatar
-import com.sabidos.infrastructure.extensions.color
-import com.sabidos.infrastructure.extensions.didSelect
-import com.sabidos.infrastructure.extensions.load
+import com.sabidos.infrastructure.extensions.*
+import com.sabidos.presentation.components.UpdateAvatarComponent
 import kotlinx.android.synthetic.main.avatar_choice_content_item.view.*
 
 class UserAvatarAdapter(
     private var avatars: MutableList<UserAvatar> = mutableListOf(),
-    val clickListener: (UserAvatar) -> Unit
+    val clickListener: (UserAvatar) -> Unit,
+    val onGalleryPickerListener: () -> GalleryPickerListener
 ) : RecyclerView.Adapter<UserAvatarAdapter.UserAvatarViewHolder>() {
 
     private var selectedPosition = -1
@@ -28,11 +28,25 @@ class UserAvatarAdapter(
         )
     }
 
-    override fun getItemCount(): Int = avatars.size
+    override fun getItemCount(): Int = avatars.size + 1
 
     override fun onBindViewHolder(holder: UserAvatarViewHolder, position: Int) {
-        val avatar = avatars[position]
-        holder.bind(avatar)
+
+        if (position == 0) {
+            holder.bind()
+            holder.itemView.setOnClickListener {
+                selectedPosition = position
+                notifyDataSetChanged()
+            }
+        } else {
+            val avatar = avatars[position - 1]
+            holder.bind(avatar)
+            holder.itemView.setOnClickListener {
+                selectedPosition = position
+                notifyDataSetChanged()
+                clickListener(avatar)
+            }
+        }
 
         if (selectedPosition == position) {
             holder.select()
@@ -40,11 +54,6 @@ class UserAvatarAdapter(
             holder.unSelect()
         }
 
-        holder.itemView.setOnClickListener {
-            selectedPosition = position
-            notifyDataSetChanged()
-            clickListener(avatar)
-        }
     }
 
     fun addItems(items: List<UserAvatar>?) {
@@ -58,13 +67,19 @@ class UserAvatarAdapter(
     inner class UserAvatarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(userAvatar: UserAvatar) {
-
+            itemView.avatarIconView.show()
+            itemView.updateAvatarComponent.hide()
             userAvatar.apply {
                 itemView.avatarIconView.load(imageUrl)
             }
-
         }
 
+        fun bind() {
+            itemView.updateAvatarComponent.show()
+            itemView.avatarIconView.hide()
+            onGalleryPickerListener.invoke().setup(itemView.updateAvatarComponent)
+        }
+        
         fun select() {
             itemView.didSelect()
         }
@@ -72,11 +87,15 @@ class UserAvatarAdapter(
         fun unSelect() {
             itemView.setBackgroundColor(
                 itemView.context.color(
-                    R.color.colorWhite
+                    R.color.colorBackgroundLight
                 )
             )
         }
 
     }
 
+}
+
+interface GalleryPickerListener {
+    fun setup(component: UpdateAvatarComponent?)
 }

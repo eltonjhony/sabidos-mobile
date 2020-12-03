@@ -49,7 +49,7 @@ fun ImageView.load(url: String?) {
     }
 }
 
-fun ImageView.loadAsDrawable(url: String?, callback: () -> Unit) {
+fun ImageView.loadAsDrawable(url: String?, callback: (Boolean) -> Unit) {
     runCatching {
         Glide.with(this)
             .asDrawable()
@@ -62,7 +62,7 @@ fun ImageView.loadAsDrawable(url: String?, callback: () -> Unit) {
                     isFirstResource: Boolean
                 ): Boolean {
                     setImageDrawable(context.drawable(R.mipmap.placeholder))
-                    callback.invoke()
+                    callback.invoke(false)
                     return false
                 }
 
@@ -74,7 +74,44 @@ fun ImageView.loadAsDrawable(url: String?, callback: () -> Unit) {
                     isFirstResource: Boolean
                 ): Boolean {
                     setImageDrawable(resource)
-                    callback.invoke()
+                    callback.invoke(true)
+                    return true
+                }
+
+            })
+            .into(this)
+    }.onFailure {
+        Logger.withTag(View::class.java.simpleName).withCause(it)
+        this.setImageDrawable(context.drawable(R.mipmap.placeholder))
+    }
+}
+
+fun ImageView.loadAsBitmap(url: String?, orientation: Int = 0, callback: (Boolean) -> Unit) {
+    runCatching {
+        Glide.with(this)
+            .asBitmap()
+            .load(url)
+            .listener(object : RequestListener<Bitmap> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Bitmap>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    setImageDrawable(context.drawable(R.mipmap.placeholder))
+                    callback.invoke(false)
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Bitmap?,
+                    model: Any?,
+                    target: Target<Bitmap>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    setImageBitmap(resource?.modifyOrientation(orientation))
+                    callback.invoke(true)
                     return true
                 }
 
@@ -336,29 +373,67 @@ fun TabLayout.setCustomTabView() {
 }
 
 fun AppCompatImageView.roundImage(radius: Float) {
+    runCatching {
+        val drawable: BitmapDrawable = drawable as BitmapDrawable
+        val bitmap: Bitmap = drawable.bitmap
 
-    val drawable: BitmapDrawable = drawable as BitmapDrawable
-    val bitmap: Bitmap = drawable.bitmap
+        val output: Bitmap = Bitmap.createBitmap(
+            bitmap.width,
+            bitmap.height, Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(output)
 
-    val output: Bitmap = Bitmap.createBitmap(
-        bitmap.width,
-        bitmap.height, Bitmap.Config.ARGB_8888
-    )
-    val canvas = Canvas(output)
+        val color = -0xbdbdbe
+        val paint = Paint()
+        val rect = Rect(0, 0, bitmap.width, bitmap.height)
+        val rectF = RectF(rect)
+        val roundPx = context.dpToPx(radius).toFloat()
 
-    val color = -0xbdbdbe
-    val paint = Paint()
-    val rect = Rect(0, 0, bitmap.width, bitmap.height)
-    val rectF = RectF(rect)
-    val roundPx = context.dpToPx(radius).toFloat()
+        paint.isAntiAlias = true
+        canvas.drawARGB(0, 0, 0, 0)
+        paint.color = color
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint)
 
-    paint.isAntiAlias = true
-    canvas.drawARGB(0, 0, 0, 0)
-    paint.color = color
-    canvas.drawRoundRect(rectF, roundPx, roundPx, paint)
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+        canvas.drawBitmap(bitmap, rect, rect, paint)
 
-    paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
-    canvas.drawBitmap(bitmap, rect, rect, paint)
+        setImageBitmap(output)
+    }.onFailure {
+        Logger.withTag(View::class.java.simpleName).withCause(it)
+    }
 
-    setImageBitmap(output)
+}
+
+fun AppCompatImageView.circularImage() {
+    runCatching {
+        val drawable: BitmapDrawable = drawable as BitmapDrawable
+        val bitmap: Bitmap = drawable.bitmap
+
+        val output: Bitmap = Bitmap.createBitmap(
+            bitmap.width,
+            bitmap.height, Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(output)
+
+        val color = -0xbdbdbe
+        val paint = Paint()
+        val rect = Rect(0, 0, bitmap.width, bitmap.height)
+
+        paint.isAntiAlias = true
+        canvas.drawARGB(0, 0, 0, 0)
+        paint.color = color
+
+        canvas.drawCircle(
+            (bitmap.width / 2).toFloat(), (bitmap.height / 2).toFloat(),
+            (bitmap.width / 2).toFloat(), paint
+        )
+
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+        canvas.drawBitmap(bitmap, rect, rect, paint)
+
+        setImageBitmap(output)
+    }.onFailure {
+        Logger.withTag(View::class.java.simpleName).withCause(it)
+    }
+
 }

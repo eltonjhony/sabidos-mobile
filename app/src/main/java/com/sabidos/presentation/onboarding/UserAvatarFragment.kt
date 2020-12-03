@@ -1,5 +1,6 @@
 package com.sabidos.presentation.onboarding
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,18 +15,15 @@ import com.sabidos.infrastructure.ResourceState.*
 import com.sabidos.infrastructure.extensions.hide
 import com.sabidos.infrastructure.extensions.show
 import com.sabidos.presentation.BaseFragment
+import com.sabidos.presentation.components.UpdateAvatarComponent
 import kotlinx.android.synthetic.main.fragment_user_avatar.*
-import kotlinx.android.synthetic.main.fragment_user_avatar.finishButton
-import kotlinx.android.synthetic.main.fragment_user_avatar.loadingView
 import kotlinx.android.synthetic.main.fragment_user_avatar.scrollView
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class UserAvatarFragment : BaseFragment() {
 
-    private val avatarAdapter = UserAvatarAdapter {
-        finishButton.enable()
-        viewModel.setupUserAvatar(it)
-    }
+    private var avatarAdapter: UserAvatarAdapter? = null
+    private var updateAvatarComponent: UpdateAvatarComponent? = null
 
     private val viewModel: OnboardingViewModel by activityViewModels()
     private val avatarViewModel: UserAvatarViewModel by viewModel()
@@ -41,6 +39,7 @@ class UserAvatarFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loading.build(context)
+        configureAdapter()
         finishButton.disabled()
         setupAvatarRecyclerView()
         setupObservers()
@@ -56,6 +55,43 @@ class UserAvatarFragment : BaseFragment() {
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        updateAvatarComponent?.onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        updateAvatarComponent?.onActivityResult(requestCode, resultCode, data) { path: String?, orientation: Int ->
+            viewModel.saveUserProfilePhoto(path, orientation)
+            viewModel.completeUserProfile()
+        }
+    }
+
+    override fun onDestroy() {
+        updateAvatarComponent?.onDestroy()
+        super.onDestroy()
+    }
+
+    private fun configureAdapter() {
+        avatarAdapter = UserAvatarAdapter(
+            clickListener = {
+                finishButton.enable()
+                viewModel.setupUserAvatar(it)
+            },
+            onGalleryPickerListener = {
+                object : GalleryPickerListener {
+                    override fun setup(component: UpdateAvatarComponent?) {
+                        component?.setup(this@UserAvatarFragment, 16f)
+                        updateAvatarComponent = component
+                    }
+                }
+            }
+        )
+    }
+
     private fun setupObservers() {
         viewModel.completeProfileResource.observe(viewLifecycleOwner, Observer { bindState(it) })
         avatarViewModel.avatarsResource.observe(viewLifecycleOwner, Observer { bindAvatars(it) })
@@ -68,7 +104,7 @@ class UserAvatarFragment : BaseFragment() {
             }
             when (it.state) {
                 Loading -> loading(true)
-                Success -> avatarAdapter.addItems(it.data)
+                Success -> avatarAdapter?.addItems(it.data)
                 NetworkError -> showNetworkErrorDialog()
                 else -> {
                     showGenericErrorDialog()

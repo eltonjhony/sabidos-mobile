@@ -35,7 +35,7 @@ fun <T> Activity.goTo(
     destination: Class<T>,
     finished: Boolean = true,
     forResult: Boolean = false,
-    withAnimation: Pair<Int,Int>? = null,
+    withAnimation: Pair<Int, Int>? = null,
     bundle: Bundle? = null
 ) where T : Activity {
     runCatching {
@@ -152,7 +152,7 @@ fun AppCompatActivity.showAuthError(errorResponse: AuthErrorResponse?) {
             }
             else -> showGenericErrorDialog()
         }
-        
+
     } ?: showGenericErrorDialog()
 }
 

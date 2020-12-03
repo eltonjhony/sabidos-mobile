@@ -3,6 +3,7 @@ package com.sabidos.presentation.ranking
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sabidos.data.local.preferences.UserProfilePhotoPrefsHelper
 import com.sabidos.domain.RankingWrapper
 import com.sabidos.domain.interactor.GetWeeklyRankingUseCase
 import com.sabidos.domain.interactor.GetWeeklyRankingUseCase.Params
@@ -16,7 +17,8 @@ import com.sabidos.infrastructure.extensions.setSuccess
 import kotlinx.coroutines.launch
 
 class RankingViewModel(
-    private val getWeeklyRankingUseCase: GetWeeklyRankingUseCase
+    private val getWeeklyRankingUseCase: GetWeeklyRankingUseCase,
+    private val userProfilePhotoPrefsHelper: UserProfilePhotoPrefsHelper
 ) : ViewModel() {
 
     val rankingResource = MutableLiveData<Resource<RankingWrapper>>()
@@ -26,12 +28,19 @@ class RankingViewModel(
         viewModelScope.launch {
             getWeeklyRankingUseCase(Params(endDate = endDate)) {
                 when (it) {
-                    is Success -> rankingResource.setSuccess(it.data)
+                    is Success -> handleSuccess(it.data)
                     is NetworkError -> rankingResource.setNetworkFailure()
                     else -> rankingResource.setGenericFailure()
                 }
             }
         }
+    }
+
+    private fun handleSuccess(rankingWrapper: RankingWrapper) {
+        userProfilePhotoPrefsHelper.getPhotoPath()?.let {
+            rankingWrapper.setProfilePhotoPath(it, userProfilePhotoPrefsHelper.getOrientation())
+        }
+        rankingResource.setSuccess(rankingWrapper)
     }
 
 }

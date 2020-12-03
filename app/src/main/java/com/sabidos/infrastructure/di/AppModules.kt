@@ -7,6 +7,7 @@ import com.sabidos.data.local.cache.AvatarCache
 import com.sabidos.data.local.cache.CacheHandler
 import com.sabidos.data.local.cache.CategoryCache
 import com.sabidos.data.local.preferences.RoundPrefsHelper
+import com.sabidos.data.local.preferences.UserProfilePhotoPrefsHelper
 import com.sabidos.data.remote.CloudApiFactory
 import com.sabidos.data.remote.NetworkHandler
 import com.sabidos.data.remote.SecurityCloudApiFactory
@@ -40,16 +41,16 @@ import org.koin.dsl.module
 
 val presentationModule = module {
     viewModel { MainViewModel(get()) }
-    viewModel { OnboardingViewModel(get(), get()) }
+    viewModel { OnboardingViewModel(get(), get(), get(), get()) }
     viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
     viewModel { PhoneVerificationViewModel(get(), get(), get()) }
     viewModel { SplashViewModel(get(), get(), get()) }
     viewModel { DeepLinksViewModel(get(), get()) }
-    viewModel { HomeViewModel(get(), get(), get()) }
-    viewModel { ProfileViewModel(get()) }
+    viewModel { HomeViewModel(get(), get(), get(), get()) }
+    viewModel { ProfileViewModel(get(), get()) }
     viewModel { AccountManagementViewModel(get(), get()) }
     viewModel { MyPerformanceViewModel(get()) }
-    viewModel { RankingViewModel(get()) }
+    viewModel { RankingViewModel(get(), get()) }
     viewModel { CategoryViewModel(get()) }
     viewModel { UserAvatarViewModel(get()) }
     viewModel { QuizViewModel(get(), get()) }
@@ -88,6 +89,8 @@ val infrastructureModule = module {
 }
 
 val dataModule = module {
+
+    single { UserProfilePhotoPrefsHelper(androidContext()) }
 
     single { RoundPrefsHelper(androidContext()) }
 

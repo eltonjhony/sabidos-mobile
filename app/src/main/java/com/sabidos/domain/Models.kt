@@ -16,7 +16,10 @@ data class Account(
     val totalHits: Int = 0
 )
 
-data class UserAvatar(val id: Int, val imageUrl: String?)
+data class UserAvatar(val id: Int, val imageUrl: String?) {
+    var localUserPhoto: String? = null
+    var orientation: Int = 0
+}
 
 data class Reputation(val level: Int, val stars: Int) {
     companion object {
@@ -37,7 +40,19 @@ data class Timeline(
 data class RankingWrapper(
     val podium: List<Ranking>,
     val regularPositions: List<Ranking>
-)
+) {
+
+    fun setProfilePhotoPath(photoPath: String, orientation: Int) {
+        podium.filter { it.isMyPosition }.forEach {
+            it.avatar?.localUserPhoto = photoPath
+            it.avatar?.orientation = orientation
+        }
+        regularPositions.filter { it.isMyPosition }.forEach {
+            it.avatar?.localUserPhoto = photoPath
+            it.avatar?.orientation = orientation
+        }
+    }
+}
 
 data class Ranking(
     val position: Int,

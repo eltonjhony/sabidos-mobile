@@ -97,4 +97,7 @@
     <string name="my_performance_label">Minha Performance</string>
     <string name="user_already_in_use_error">Este usuário já está em uso. Tente com um usuário novo.</string>
     <string name="email_already_exists_error">Já existe um usuário vinculado a este email. Tente com um email novo.</string>
+    <string name="select_option_label">Selecione uma opção</string>
+    <string name="new_photo_label">Nova Foto</string>
+    <string name="gallery_label">Galeria</string>
 </resources>

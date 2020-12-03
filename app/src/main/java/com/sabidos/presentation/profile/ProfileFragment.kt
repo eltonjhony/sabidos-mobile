@@ -1,5 +1,6 @@
 package com.sabidos.presentation.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +9,10 @@ import androidx.lifecycle.Observer
 import com.sabidos.R
 import com.sabidos.domain.Account
 import com.sabidos.infrastructure.Resource
-import com.sabidos.infrastructure.ResourceState
 import com.sabidos.infrastructure.ResourceState.Loading
 import com.sabidos.infrastructure.ResourceState.Success
 import com.sabidos.infrastructure.extensions.setCustomTabView
+import com.sabidos.infrastructure.extensions.show
 import com.sabidos.presentation.BaseFragment
 import com.sabidos.presentation.profile.views.ProfileViewPagerAdapter
 import com.sabidos.presentation.profile.views.ProfileViewPagerAdapter.Companion.ACCOUNT_MANAGEMENT_TAB_POSITION
@@ -34,9 +35,30 @@ class ProfileFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViewPager()
+        updateAvatarComponent.setup(this)
 
         viewModel.getCurrentAccount()
         viewModel.accountResource.observe(viewLifecycleOwner, Observer { bindAccountState(it) })
+    }
+
+    override fun onDestroy() {
+        updateAvatarComponent?.onDestroy()
+        super.onDestroy()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        updateAvatarComponent?.onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        updateAvatarComponent.onActivityResult(requestCode, resultCode, data) { path: String?, orientation: Int ->
+            viewModel.saveUserProfilePhoto(path, orientation)
+            profileToolbarComponent.setup(path, orientation)
+        }
     }
 
     private fun setupViewPager() {
@@ -60,6 +82,7 @@ class ProfileFragment : BaseFragment() {
         account?.let {
             userProfileInfoComponent.setup(it)
             profileToolbarComponent.setupFor(it.avatar)
+            updateAvatarComponent.show()
         }
     }
 

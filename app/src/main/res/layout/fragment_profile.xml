@@ -25,6 +25,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+            <com.sabidos.presentation.components.UpdateAvatarComponent
+                android:id="@+id/updateAvatarComponent"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="bottom|center"
+                android:layout_marginStart="42dp" />
+
             <com.sabidos.presentation.components.SimpleToolbarComponent
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"

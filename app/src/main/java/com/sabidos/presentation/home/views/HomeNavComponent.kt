@@ -21,7 +21,7 @@ class HomeNavComponent @JvmOverloads constructor(
     var userAvatar: UserAvatar? = null
         set(value) {
             field = value
-            avatarComponent.loadWithProgress(value?.imageUrl)
+            avatarComponent.userAvatar = value
         }
 
     var username: String? = null

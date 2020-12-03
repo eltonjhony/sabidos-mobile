@@ -2,24 +2,28 @@ package com.sabidos.presentation.onboarding
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sabidos.data.local.preferences.UserProfilePhotoPrefsHelper
 import com.sabidos.domain.Account
 import com.sabidos.domain.User
 import com.sabidos.domain.UserAvatar
 import com.sabidos.domain.interactor.CreateAccountUseCase
 import com.sabidos.domain.interactor.CreateAccountUseCase.Params
+import com.sabidos.domain.interactor.GetCurrentAccountUseCase
 import com.sabidos.domain.interactor.GetCurrentUserUseCase
 import com.sabidos.domain.interactor.None
 import com.sabidos.infrastructure.Resource
 import com.sabidos.infrastructure.ResultWrapper.*
 import com.sabidos.infrastructure.extensions.*
+import com.sabidos.presentation.common.AccountViewModel
 import kotlinx.coroutines.launch
 
 class OnboardingViewModel(
+    getCurrentAccountUseCase: GetCurrentAccountUseCase,
+    userProfilePhotoPrefsHelper: UserProfilePhotoPrefsHelper,
     private val createAccountUseCase: CreateAccountUseCase,
     private val getCurrentUserUseCase: GetCurrentUserUseCase
-) : ViewModel() {
+) : AccountViewModel(getCurrentAccountUseCase, userProfilePhotoPrefsHelper) {
 
     companion object {
         const val SIGN_IN_STEP = 0
