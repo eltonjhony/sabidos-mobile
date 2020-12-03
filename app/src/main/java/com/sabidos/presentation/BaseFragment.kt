@@ -5,6 +5,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.sabidos.data.remote.model.AuthErrorResponse
 import com.sabidos.data.remote.model.ErrorResponse
 import com.sabidos.infrastructure.extensions.*
 import com.sabidos.presentation.components.AppLoadingComponent
@@ -17,6 +18,9 @@ open class BaseFragment : Fragment() {
 
     fun showApiError(error: ErrorResponse?) =
         activity?.let { (it as AppCompatActivity).showApiError(error) }
+
+    fun showAuthError(error: AuthErrorResponse?) =
+        activity?.let { (it as AppCompatActivity).showAuthError(error) }
 
     fun showGenericErrorDialog() =
         activity?.let { (it as AppCompatActivity).showGenericErrorDialog() }

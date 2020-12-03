@@ -1,6 +1,7 @@
 package com.sabidos.infrastructure.extensions
 
 import androidx.lifecycle.MutableLiveData
+import com.sabidos.data.remote.model.AuthErrorResponse
 import com.sabidos.data.remote.model.ErrorResponse
 import com.sabidos.infrastructure.Resource
 import com.sabidos.infrastructure.ResourceState
@@ -30,3 +31,6 @@ fun <T> MutableLiveData<Resource<T>>.setValidationFailure(error: Error? = null) 
 
 fun <T> MutableLiveData<Resource<T>>.setApiFailure(errorResponse: ErrorResponse? = null) =
     postValue(Resource(ResourceState.ApiError, errorResponse = errorResponse))
+
+fun <T> MutableLiveData<Resource<T>>.setAuthFailure(errorResponse: AuthErrorResponse? = null) =
+    postValue(Resource(ResourceState.AuthError, authErrorResponse = errorResponse))

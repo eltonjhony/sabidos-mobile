@@ -7,6 +7,7 @@ sealed class ResourceState {
     object NetworkError : ResourceState()
     object ValidationError : ResourceState()
     object ApiError : ResourceState()
+    object AuthError : ResourceState()
     object GenericError : ResourceState()
     object DataNotFoundError : ResourceState()
 }

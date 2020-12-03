@@ -131,6 +131,7 @@ class PhoneVerificationFragment : BaseFragment() {
                 Loading -> loading.show()
                 Success -> sharedViewModel.forceFinishStep()
                 NetworkError -> showNetworkErrorDialog()
+                AuthError -> showAuthError(it.authErrorResponse)
                 else -> showGenericErrorDialog()
             }
         }

@@ -6,12 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.sabidos.domain.interactor.SignInWithPhoneNumberUseCase
 import com.sabidos.domain.interactor.VerifyPhoneNumberUseCase
 import com.sabidos.infrastructure.Resource
-import com.sabidos.infrastructure.ResultWrapper.NetworkError
-import com.sabidos.infrastructure.ResultWrapper.Success
-import com.sabidos.infrastructure.extensions.loading
-import com.sabidos.infrastructure.extensions.setGenericFailure
-import com.sabidos.infrastructure.extensions.setNetworkFailure
-import com.sabidos.infrastructure.extensions.setSuccess
+import com.sabidos.infrastructure.ResultWrapper.*
+import com.sabidos.infrastructure.extensions.*
 import com.sabidos.infrastructure.helpers.SignInPrefsHelper
 import kotlinx.coroutines.launch
 
@@ -32,6 +28,7 @@ class PhoneVerificationViewModel(
                 when (it) {
                     is Success -> signInWithPhoneNumberResource.setSuccess()
                     is NetworkError -> signInWithPhoneNumberResource.setNetworkFailure()
+                    is AuthError -> signInWithPhoneNumberResource.setAuthFailure(it.errorResponse)
                     else -> signInWithPhoneNumberResource.setGenericFailure()
                 }
             }

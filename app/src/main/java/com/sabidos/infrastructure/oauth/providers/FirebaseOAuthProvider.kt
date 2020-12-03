@@ -5,9 +5,12 @@ import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.sabidos.data.remote.model.AuthErrorResponse
+import com.sabidos.data.remote.model.AuthErrorResponse.Companion.ERROR_CREDENTIAL_ALREADY_IN_USE
 import com.sabidos.domain.User
 import com.sabidos.infrastructure.Constants
 import com.sabidos.infrastructure.ResultWrapper
+import com.sabidos.infrastructure.ResultWrapper.*
 import com.sabidos.infrastructure.helpers.SignInPrefsHelper
 import com.sabidos.infrastructure.logging.Logger
 import com.sabidos.infrastructure.oauth.OAuthProvider
@@ -28,14 +31,14 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
     }
 
     override fun isUserLogged(): ResultWrapper<Boolean> = runCatching {
-        ResultWrapper.Success(auth.currentUser != null)
+        Success(auth.currentUser != null)
     }.getOrThrow()
 
     override suspend fun getCurrentUser(): ResultWrapper<User> = runCatching {
 
         convertOAuthUserToUser(auth.currentUser)?.let {
-            ResultWrapper.Success(it)
-        } ?: ResultWrapper.DataNotFoundError
+            Success(it)
+        } ?: DataNotFoundError
 
     }.getOrThrow()
 
@@ -51,19 +54,19 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
 
                     auth.currentUser!!.getIdToken(forceRefresh)
                         .addOnSuccessListener {
-                            callback(ResultWrapper.Success(it.token))
+                            callback(Success(it.token))
                         }.addOnCanceledListener {
-                            callback(ResultWrapper.GenericError())
+                            callback(GenericError())
                         }.addOnFailureListener {
                             callback(handleFirebaseException(it))
                         }
 
                 }
-                else -> callback(ResultWrapper.DataNotFoundError)
+                else -> callback(DataNotFoundError)
             }
 
         }.onFailure {
-            callback(ResultWrapper.GenericError(Error(it)))
+            callback(GenericError(Error(it)))
         }
     }
 
@@ -74,11 +77,11 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
                 .addOnSuccessListener { result ->
 
                     convertOAuthUserToUser(result.user)?.let {
-                        callback(ResultWrapper.Success(it))
-                    } ?: ResultWrapper.DataNotFoundError
+                        callback(Success(it))
+                    } ?: DataNotFoundError
 
                 }.addOnCanceledListener {
-                    callback(ResultWrapper.GenericError())
+                    callback(GenericError())
                 }.addOnFailureListener {
                     callback(handleFirebaseException(it))
                 }
@@ -103,9 +106,9 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
             auth.sendSignInLinkToEmail(email, actionSettings)
                 .addOnSuccessListener {
                     signInPrefsHelper.putEmail(email)
-                    callback(ResultWrapper.Success(true))
+                    callback(Success(true))
                 }.addOnCanceledListener {
-                    callback(ResultWrapper.GenericError())
+                    callback(GenericError())
                 }.addOnFailureListener {
                     callback(handleFirebaseException(it))
                 }
@@ -115,7 +118,7 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
     }
 
     override fun isSignInWithEmailLink(emailLink: String): ResultWrapper<Boolean> = runCatching {
-        ResultWrapper.Success(auth.isSignInWithEmailLink(emailLink))
+        Success(auth.isSignInWithEmailLink(emailLink))
     }.getOrThrow()
 
     override fun completeSignWithEmailLink(
@@ -137,17 +140,17 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
                         .addOnSuccessListener { result ->
 
                             convertOAuthUserToUser(result.user)?.let {
-                                callback(ResultWrapper.Success(it))
-                            } ?: ResultWrapper.DataNotFoundError
+                                callback(Success(it))
+                            } ?: DataNotFoundError
 
                         }.addOnCanceledListener {
-                            callback(ResultWrapper.GenericError())
+                            callback(GenericError())
                         }.addOnFailureListener {
                             callback(handleFirebaseException(it))
                         }
                 }
 
-            } ?: callback(ResultWrapper.DataNotFoundError)
+            } ?: callback(DataNotFoundError)
 
         }.getOrThrow()
     }
@@ -170,7 +173,7 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
             ) {
                 signInPrefsHelper.putVerificationId(verificationId)
                 signInPrefsHelper.putPhoneNumber(phoneNumber)
-                callback(ResultWrapper.Success(true))
+                callback(Success(true))
             }
 
             override fun onVerificationCompleted(p0: PhoneAuthCredential) {
@@ -206,22 +209,23 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
             if (auth.currentUser?.isAnonymous == true) {
                 linkCurrentUserWith(credential) {
                     when (it) {
-                        is ResultWrapper.Success -> callback(ResultWrapper.Success(true))
-                        else -> callback(ResultWrapper.GenericError())
+                        is Success -> callback(Success(true))
+                        is AuthError -> callback(it)
+                        else -> callback(GenericError())
                     }
                 }
             } else {
                 auth.signInWithCredential(credential)
                     .addOnSuccessListener {
-                        callback(ResultWrapper.Success(true))
+                        callback(Success(true))
                     }.addOnCanceledListener {
-                        callback(ResultWrapper.GenericError())
+                        callback(GenericError())
                     }.addOnFailureListener {
                         callback(handleFirebaseException(it))
                     }
             }
 
-        } ?: callback(ResultWrapper.DataNotFoundError)
+        } ?: callback(DataNotFoundError)
     }
 
     override fun clear() {
@@ -235,7 +239,7 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
 
     override suspend fun logout(): ResultWrapper<Boolean> = runCatching {
         auth.signOut()
-        ResultWrapper.Success(true)
+        Success(true)
     }.getOrThrow()
 
     private fun linkCurrentUserWith(
@@ -247,11 +251,11 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
             .addOnSuccessListener { result ->
 
                 convertOAuthUserToUser(result.user)?.let {
-                    callback(ResultWrapper.Success(it))
-                } ?: ResultWrapper.DataNotFoundError
+                    callback(Success(it))
+                } ?: DataNotFoundError
 
             }.addOnCanceledListener {
-                callback(ResultWrapper.GenericError())
+                callback(GenericError())
             }.addOnFailureListener {
                 callback(handleFirebaseException(it))
             }
@@ -272,8 +276,15 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
     private fun handleFirebaseException(e: Exception): ResultWrapper<Nothing> =
         runCatching {
             when (e) {
-                is FirebaseNetworkException -> ResultWrapper.NetworkError
-                else -> ResultWrapper.GenericError(Error(e))
+                is FirebaseNetworkException -> NetworkError
+                is FirebaseAuthException -> {
+                    if (ERROR_CREDENTIAL_ALREADY_IN_USE == e.errorCode) {
+                        AuthError(AuthErrorResponse(e.errorCode, e.message))
+                    } else {
+                        GenericError(Error(e))
+                    }
+                }
+                else -> GenericError(Error(e))
             }
         }.getOrThrow()
 

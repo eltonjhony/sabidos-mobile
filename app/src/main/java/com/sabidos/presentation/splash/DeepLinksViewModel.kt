@@ -6,8 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.sabidos.domain.interactor.CompleteSignInWithEmailLinkUseCase
 import com.sabidos.domain.interactor.IsSignInWithEmailLinkUseCase
 import com.sabidos.infrastructure.ResultWrapper
-import com.sabidos.infrastructure.ResultWrapper.GenericError
-import com.sabidos.infrastructure.ResultWrapper.Success
+import com.sabidos.infrastructure.ResultWrapper.*
 import kotlinx.coroutines.launch
 import com.sabidos.domain.interactor.CompleteSignInWithEmailLinkUseCase.Params as Params2
 import com.sabidos.domain.interactor.IsSignInWithEmailLinkUseCase.Params as Params1
@@ -41,6 +40,7 @@ class DeepLinksViewModel(
             completeSignInWithEmailLinkUseCase(Params2(data.toString())) {
                 when (it) {
                     is Success -> callback(Success(true))
+                    is AuthError -> callback(it)
                     else -> callback(GenericError())
                 }
 

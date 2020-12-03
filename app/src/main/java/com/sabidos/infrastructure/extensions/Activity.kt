@@ -19,6 +19,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.sabidos.R
+import com.sabidos.data.remote.model.AuthErrorResponse
+import com.sabidos.data.remote.model.AuthErrorResponse.Companion.ERROR_CREDENTIAL_ALREADY_IN_USE
 import com.sabidos.data.remote.model.ErrorResponse
 import com.sabidos.infrastructure.logging.Logger
 import kotlinx.android.synthetic.main.sabidos_animation_dialog.*
@@ -128,11 +130,21 @@ fun AppCompatActivity.showNetworkErrorDialog() {
 }
 
 fun AppCompatActivity.showApiError(errorResponse: ErrorResponse?) {
+    showGenericErrorDialog()
+}
+
+fun AppCompatActivity.showAuthError(errorResponse: AuthErrorResponse?) {
     errorResponse?.let {
-        showDialog(
-            R.drawable.ic_generic_error, getString(R.string.ops_label),
-            it.message
-        )
+        
+        if (it.code == ERROR_CREDENTIAL_ALREADY_IN_USE) {
+            showDialog(
+                R.drawable.ic_generic_error, getString(R.string.ops_label),
+                getString(R.string.user_already_in_use_error)
+            )
+        } else {
+            showGenericErrorDialog()
+        }
+        
     } ?: showGenericErrorDialog()
 }
 
