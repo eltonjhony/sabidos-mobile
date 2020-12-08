@@ -15,7 +15,7 @@
         android:inputType="number"
         android:importantForAutofill="no"
         android:importantForContentCapture="no"
-        android:maxLength="1"
+        android:maxLength="2"
         android:textAlignment="center"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"

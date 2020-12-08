@@ -1,8 +1,11 @@
 package com.sabidos.presentation.onboarding.views
 
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.KeyEvent
+import android.view.View
 import com.sabidos.R
 import com.sabidos.infrastructure.extensions.drawable
 import com.sabidos.presentation.components.BaseComponent
@@ -19,12 +22,6 @@ class VerificationCodeInputItem @JvmOverloads constructor(
     defStyleAttr = defStyleAttr
 ) {
 
-    var viewModel: ViewModel? = null
-        set(value) {
-            field = value
-            setup()
-        }
-
     fun setFocus() {
         verificationField.requestFocus()
         verificationField.setSelection(verificationField.text?.length ?: 0)
@@ -34,57 +31,31 @@ class VerificationCodeInputItem @JvmOverloads constructor(
 
     fun value(): String = verificationField.text?.toString() ?: ""
 
-    private fun setup() {
-
-        verificationField.setOnKeyListener { _, keyCode, event ->
-            if (event.action == KeyEvent.ACTION_DOWN) {
-                runCommandFor(keyCode)
-            }
-            true
-        }
-
+    fun addTextChangedListener(textWatcher: TextWatcher) {
+        verificationField.addTextChangedListener(textWatcher)
     }
 
-    private fun runCommandFor(keyCode: Int) {
-        when (keyCode) {
-            KeyEvent.KEYCODE_DEL -> {
-                verificationField.text?.clear()
-                verificationField.background = context.drawable(R.drawable.edit_text_border)
-                viewModel?.onDeleteCallback?.invoke()
-            }
-            KeyEvent.KEYCODE_BACK -> {
-                viewModel?.onBackPressedCallback?.invoke()
-            }
-            else -> {
-                getCodeFrom(keyCode)?.let {
-                    verificationField.setText(it)
-                    verificationField.background =
-                        context.drawable(R.drawable.edit_text_selected_border)
-                    viewModel?.onAddCallback?.invoke()
-                }
-            }
-        }
+    fun onKeyListener(listener: (View, Int, KeyEvent) -> Boolean) {
+        verificationField.setOnKeyListener(listener)
     }
 
-    private fun getCodeFrom(keyCode: Int): String? {
-        return when (keyCode) {
-            7 -> "0"
-            8 -> "1"
-            9 -> "2"
-            10 -> "3"
-            11 -> "4"
-            12 -> "5"
-            13 -> "6"
-            14 -> "7"
-            15 -> "8"
-            16 -> "9"
-            else -> null
-        }
+    fun editableText(): Editable =
+        verificationField.editableText
+
+    fun setText(newTemp: String) {
+        verificationField.setText(newTemp)
     }
 
-    data class ViewModel(
-        val onAddCallback: (() -> Unit)? = null,
-        val onDeleteCallback: (() -> Unit)? = null,
-        val onBackPressedCallback: (() -> Unit)? = null
-    )
+    fun setSelection() {
+        verificationField.setSelection(verificationField.length())
+    }
+
+    fun setSelectedBackground() {
+        verificationField.background = context.drawable(R.drawable.edit_text_selected_border)
+    }
+
+    fun setUnSelectedBackground() {
+        verificationField.background = context.drawable(R.drawable.edit_text_border)
+    }
+
 }

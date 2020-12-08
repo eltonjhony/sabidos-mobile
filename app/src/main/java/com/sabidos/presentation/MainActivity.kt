@@ -87,4 +87,9 @@ class MainActivity : AppCompatActivity() {
         subscription.cancel()
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
+
 }

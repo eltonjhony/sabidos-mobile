@@ -43,13 +43,17 @@ fun <T> Activity.goTo(
         val intent = Intent(this.applicationContext, destination)
         bundle?.let { intent.putExtras(it) }
 
-        if (forResult) {
-            startActivityForResult(intent, 100)
-        } else if (withAnimation != null) {
-            startActivity(intent)
-            overridePendingTransition(withAnimation.first, withAnimation.second)
-        } else {
-            startActivity(intent)
+        when {
+            forResult -> {
+                startActivityForResult(intent, 100)
+            }
+            withAnimation != null -> {
+                startActivity(intent)
+                overridePendingTransition(withAnimation.first, withAnimation.second)
+            }
+            else -> {
+                startActivity(intent)
+            }
         }
 
     }.onFailure {
