@@ -31,6 +31,8 @@ class QuizViewModel(
 
     private var roundTotal: Int? = null
 
+    private var roundPosition = 0
+
     fun getNewRoundFor(categoryId: Int) {
         roundResource.loading()
         viewModelScope.launch {
@@ -51,7 +53,8 @@ class QuizViewModel(
         } else {
             val nextQuiz = roundQuizList.first()
             roundQuizList.remove(nextQuiz)
-            roundTotal?.let { currentQuizResource.setSuccess(Pair(nextQuiz.position, it)) }
+            roundPosition++
+            roundTotal?.let { currentQuizResource.setSuccess(Pair(roundPosition, it)) }
             quizItemResource.setSuccess(nextQuiz)
         }
     }
@@ -60,8 +63,9 @@ class QuizViewModel(
         QuizResultHandler.init(
             QuizResult(categoryId = quiz.categoryId, numberOfQuestions = quiz.numberOfQuestions)
         )
-        roundQuizList.addAll(quiz.questions.sortedBy { it.position })
+        roundQuizList.addAll(quiz.questions)
         roundTotal = quiz.numberOfQuestions
+        roundPosition = 0
         roundResource.setSuccess(quiz)
     }
 

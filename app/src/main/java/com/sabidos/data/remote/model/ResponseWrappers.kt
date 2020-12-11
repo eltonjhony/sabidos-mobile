@@ -24,7 +24,6 @@ data class QuizResponseWrapper(
 
 data class QuizResponse(
     val id: Int,
-    val position: Int,
     val imageUrl: String?,
     val description: String,
     val quizLimitInSeconds: Int,

@@ -30,7 +30,6 @@ object ResponseToQuizItemMapper : DataMapper<QuizResponse, QuizItem>() {
     override fun transform(entity: QuizResponse): QuizItem {
         return QuizItem(
             id = entity.id,
-            position = entity.position,
             imageUrl = entity.imageUrl,
             description = entity.description,
             quizLimitInSeconds = entity.quizLimitInSeconds,

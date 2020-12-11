@@ -80,7 +80,6 @@ data class Quiz(
 
 data class QuizItem(
     val id: Int,
-    val position: Int,
     val imageUrl: String?,
     val description: String,
     val quizLimitInSeconds: Int,
@@ -88,11 +87,7 @@ data class QuizItem(
     val alternatives: List<Alternative>,
     val explanation: Explanation?
 ) {
-
-    fun getCorrectAnswer(): Alternative {
-        return alternatives.first { it.isCorrect }
-    }
-
+    fun getCorrectAnswer(): Alternative = alternatives.first { it.isCorrect }
 }
 
 data class Alternative(
