@@ -4,13 +4,15 @@ import com.sabidos.domain.Account
 import com.sabidos.domain.Timeline
 import com.sabidos.domain.User
 import com.sabidos.domain.WeeklyHits
+import com.sabidos.domain.interactor.ValidateAccountUseCase.ValidateAccountParam
 import com.sabidos.domain.repository.AccountRepository
 import com.sabidos.infrastructure.ResultWrapper
 import com.sabidos.domain.interactor.CreateAccountUseCase.Params as SaveAccountParam
 import com.sabidos.domain.interactor.GetTimelineUseCase.Params as GetTimelineParam
 import com.sabidos.domain.interactor.GetWeeklyHitsUseCase.Params as GetWeeklyHitsParam
 
-class CreateAccountUseCase(private val accountRepository: AccountRepository) : UseCase<Account, SaveAccountParam>() {
+class CreateAccountUseCase(private val accountRepository: AccountRepository) :
+    UseCase<Account, SaveAccountParam>() {
 
     override suspend fun run(params: SaveAccountParam): ResultWrapper<Account> =
         accountRepository.createAccount(params.account, params.user)
@@ -18,13 +20,24 @@ class CreateAccountUseCase(private val accountRepository: AccountRepository) : U
     data class Params(val account: Account, val user: User)
 }
 
-class CreateAnonymousAccountUseCase(private val accountRepository: AccountRepository) : UseCase<Account, None>() {
+class ValidateAccountUseCase(private val accountRepository: AccountRepository) :
+    UseCase<Boolean, ValidateAccountParam>() {
+
+    override suspend fun run(params: ValidateAccountParam): ResultWrapper<Boolean> =
+        accountRepository.validateAccount(params.nickname)
+
+    data class ValidateAccountParam(val nickname: String)
+}
+
+class CreateAnonymousAccountUseCase(private val accountRepository: AccountRepository) :
+    UseCase<Account, None>() {
 
     override suspend fun run(params: None): ResultWrapper<Account> =
         accountRepository.createAnonymousAccount()
 }
 
-class GetCurrentAccountUseCase(private val accountRepository: AccountRepository) : UseCase<Account?, None>() {
+class GetCurrentAccountUseCase(private val accountRepository: AccountRepository) :
+    UseCase<Account?, None>() {
 
     override suspend fun run(params: None): ResultWrapper<Account?> {
         return accountRepository.getCurrentAccount()

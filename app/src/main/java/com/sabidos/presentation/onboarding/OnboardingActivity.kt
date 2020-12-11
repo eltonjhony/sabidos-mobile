@@ -59,8 +59,8 @@ class OnboardingActivity : BaseActivity() {
         if (viewModel.isAnonymousMigration && viewModel.currentStep.value == SIGN_IN_STEP) {
             finish()
         } else if (viewModel.canGoBack()) {
-            super.onBackPressed()
             viewModel.goBackStep()
+            super.onBackPressed()
         }
     }
 

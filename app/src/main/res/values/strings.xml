@@ -100,4 +100,5 @@
     <string name="select_option_label">Selecione uma opção</string>
     <string name="new_photo_label">Nova Foto</string>
     <string name="gallery_label">Galeria</string>
+    <string name="nickname_already_exists_error">Este apelido de Jogador já existe.</string>
 </resources>

@@ -22,10 +22,7 @@ import com.sabidos.infrastructure.oauth.providers.FirebaseOAuthProvider
 import com.sabidos.presentation.MainViewModel
 import com.sabidos.presentation.category.CategoryViewModel
 import com.sabidos.presentation.home.HomeViewModel
-import com.sabidos.presentation.onboarding.LoginViewModel
-import com.sabidos.presentation.onboarding.OnboardingViewModel
-import com.sabidos.presentation.onboarding.PhoneVerificationViewModel
-import com.sabidos.presentation.onboarding.UserAvatarViewModel
+import com.sabidos.presentation.onboarding.*
 import com.sabidos.presentation.profile.AccountManagementViewModel
 import com.sabidos.presentation.profile.MyPerformanceViewModel
 import com.sabidos.presentation.profile.ProfileViewModel
@@ -44,6 +41,7 @@ val presentationModule = module {
     viewModel { OnboardingViewModel(get(), get(), get(), get()) }
     viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
     viewModel { PhoneVerificationViewModel(get(), get(), get()) }
+    viewModel { PersonalInfoViewModel(get()) }
     viewModel { SplashViewModel(get(), get(), get()) }
     viewModel { DeepLinksViewModel(get(), get()) }
     viewModel { HomeViewModel(get(), get(), get(), get()) }
@@ -68,6 +66,7 @@ val domainModule = module {
     single { IsSignInWithEmailLinkUseCase(get()) }
     single { SignOutUseCase(get(), get(), get()) }
     single { CreateAccountUseCase(get()) }
+    single { ValidateAccountUseCase(get()) }
     single { CreateAnonymousAccountUseCase(get()) }
     single { GetCurrentAccountUseCase(get()) }
     single { GetWeeklyHitsUseCase(get()) }

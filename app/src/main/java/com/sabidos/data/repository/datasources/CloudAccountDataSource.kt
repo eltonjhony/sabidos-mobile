@@ -6,6 +6,7 @@ import com.sabidos.data.remote.AccountService
 import com.sabidos.data.remote.CloudApiFactory
 import com.sabidos.data.remote.ErrorHandling
 import com.sabidos.data.remote.NetworkHandler
+import com.sabidos.data.remote.model.AccountRequest
 import com.sabidos.domain.Account
 import com.sabidos.domain.Timeline
 import com.sabidos.domain.User
@@ -38,6 +39,20 @@ class CloudAccountDataSource(
                     accountCache.put(AccountToEntityMapper.transform(updatedAccount))
                     ResultWrapper.Success(updatedAccount)
 
+                }.getOrElse { ErrorHandling.parse(it) }
+            }
+            else -> ResultWrapper.NetworkError
+        }
+    }
+
+    suspend fun validateAccount(nickname: String): ResultWrapper<Boolean> {
+        return when {
+            networkHandler.isConnected -> {
+                runCatching {
+                    val bodyRequest = AccountRequest(nickname = nickname)
+                    val service = cloudApiFactory.create(AccountService::class.java)
+                    service.validateAccount(bodyRequest)
+                    ResultWrapper.Success(true)
                 }.getOrElse { ErrorHandling.parse(it) }
             }
             else -> ResultWrapper.NetworkError
