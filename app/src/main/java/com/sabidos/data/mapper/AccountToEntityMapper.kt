@@ -11,6 +11,7 @@ object AccountToEntityMapper : DataMapper<Account, AccountEntity>() {
             entity.nickname,
             entity.avatar?.let { AvatarToEntityMapper.transform(it) },
             ReputationToEntityMapper.transform(entity.reputation),
+            entity.xpFactor,
             entity.totalAnswered,
             entity.totalHits
         )

@@ -12,6 +12,7 @@ data class Account(
     val nickname: String,
     val avatar: UserAvatar?,
     val reputation: Reputation? = null,
+    val xpFactor: Int = 0,
     val totalAnswered: Int = 0,
     val totalHits: Int = 0
 )

@@ -27,7 +27,8 @@ data class QuizResult(
     val categoryId: Int?,
     var numberOfCorrects: Int = 0,
     val numberOfQuestions: Int,
-    var accumulateResponseTime: Int = 0
+    var accumulateResponseTime: Int = 0,
+    val xpFactor: Int
 ) {
 
     fun getResultPercentageValue(): Int =
@@ -45,6 +46,6 @@ data class QuizResult(
         accumulateResponseTime / numberOfQuestions
 
     fun getXPsForRound(): Int =
-        numberOfCorrects * 3
+        numberOfCorrects * xpFactor
 
 }

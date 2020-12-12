@@ -6,11 +6,14 @@ import androidx.lifecycle.viewModelScope
 import com.sabidos.data.local.singleton.QuizResult
 import com.sabidos.data.local.singleton.QuizResultHandler
 import com.sabidos.data.remote.model.QuizRequest
+import com.sabidos.domain.Account
 import com.sabidos.domain.Alternative
 import com.sabidos.domain.Quiz
 import com.sabidos.domain.QuizItem
+import com.sabidos.domain.interactor.GetCurrentAccountUseCase
 import com.sabidos.domain.interactor.GetNextRoundUseCase
 import com.sabidos.domain.interactor.GetNextRoundUseCase.Params
+import com.sabidos.domain.interactor.None
 import com.sabidos.domain.interactor.PostQuizUseCase
 import com.sabidos.infrastructure.Resource
 import com.sabidos.infrastructure.ResultWrapper
@@ -19,6 +22,7 @@ import com.sabidos.infrastructure.logging.Logger
 import kotlinx.coroutines.launch
 
 class QuizViewModel(
+    private val getCurrentAccountUseCase: GetCurrentAccountUseCase,
     private val getNextRoundUseCase: GetNextRoundUseCase,
     private val postQuizUseCase: PostQuizUseCase
 ) : ViewModel() {
@@ -41,13 +45,24 @@ class QuizViewModel(
         viewModelScope.launch {
             getNextRoundUseCase(Params(categoryId ?: DEFAULT_CATEGORY_FALLBACK)) {
                 when (it) {
-                    is ResultWrapper.Success -> handleSuccessRound(it.data)
+                    is ResultWrapper.Success -> {
+                        viewModelScope.launch {
+                            getCurrentAccountUseCase(None()) { accountResult ->
+                                when (accountResult) {
+                                    is ResultWrapper.Success -> handleSuccessRound(
+                                        it.data,
+                                        accountResult.data
+                                    )
+                                    else -> handleSuccessRound(it.data)
+                                }
+                            }
+                        }
+                    }
                     is ResultWrapper.NetworkError -> roundResource.setNetworkFailure()
                     else -> roundResource.setGenericFailure()
                 }
             }
         }
-
     }
 
     fun getNextQuizForRound() {
@@ -62,9 +77,13 @@ class QuizViewModel(
         }
     }
 
-    private fun handleSuccessRound(quiz: Quiz) {
+    private fun handleSuccessRound(quiz: Quiz, account: Account? = null) {
         QuizResultHandler.init(
-            QuizResult(categoryId = choiceCategoryId, numberOfQuestions = quiz.numberOfQuestions)
+            QuizResult(
+                categoryId = choiceCategoryId,
+                numberOfQuestions = quiz.numberOfQuestions,
+                xpFactor = account?.xpFactor ?: DEFAULT_XP_FACTOR_FALLBACK
+            )
         )
         roundQuizList.addAll(quiz.questions)
         roundTotal = quiz.numberOfQuestions
@@ -93,6 +112,7 @@ class QuizViewModel(
 
     companion object {
         const val DEFAULT_CATEGORY_FALLBACK = 1
+        const val DEFAULT_XP_FACTOR_FALLBACK = 3
     }
 
 }

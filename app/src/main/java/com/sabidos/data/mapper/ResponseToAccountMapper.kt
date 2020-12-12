@@ -11,6 +11,7 @@ object ResponseToAccountMapper : DataMapper<AccountResponse, Account>() {
             entity.nickname,
             entity.avatar?.let { ResponseToAccountAvatarMapper.transform(it) },
             ResponseToReputationMapper.transform(entity.reputation),
+            entity.xpFactor,
             entity.totalAnswered,
             entity.totalHits
         )

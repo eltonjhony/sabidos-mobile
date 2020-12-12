@@ -11,6 +11,7 @@ data class AccountResponse(
     val nickname: String,
     val avatar: UserAvatarResponse?,
     val reputation: ReputationResponse,
+    val xpFactor: Int,
     val totalAnswered: Int,
     val totalHits: Int
 )

@@ -51,7 +51,7 @@ val presentationModule = module {
     viewModel { RankingViewModel(get(), get()) }
     viewModel { CategoryViewModel(get()) }
     viewModel { UserAvatarViewModel(get()) }
-    viewModel { QuizViewModel(get(), get()) }
+    viewModel { QuizViewModel(get(), get(), get()) }
     viewModel { ResultsViewModel(get()) }
 }
 

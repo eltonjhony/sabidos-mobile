@@ -11,6 +11,7 @@ data class AccountEntity(
     @PrimaryKey val nickname: String,
     @Embedded val avatar: AvatarEntity?,
     @Embedded val reputation: ReputationEntity,
+    val xpFactor: Int,
     val totalAnswered: Int,
     val totalHits: Int
 )
