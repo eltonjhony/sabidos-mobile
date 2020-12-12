@@ -47,7 +47,7 @@ class SabidosQuizActivity : BaseActivity() {
     override fun onBackPressed() {
         categoryId?.let {
             super.onBackPressed()
-        } ?: goTo(MainActivity::class.java)
+        } ?: goTo(MainActivity::class.java, finished = true)
     }
 
     private fun fetchNewRound() {

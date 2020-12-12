@@ -50,7 +50,7 @@ class SplashActivity : AppCompatActivity() {
     private fun bindNewUserState(resource: Resource<Void>?) {
         resource?.let {
             when (it.state) {
-                Success -> StartToPlayCommand.playWithCategory(this)
+                Success -> StartToPlayCommand.playWithCategory(this, finished = true)
             }
         }
     }

@@ -32,7 +32,7 @@ class QuizResultActivity : BaseActivity() {
     override fun onBackPressed() {
         quizResult.categoryId?.let {
             super.onBackPressed()
-        } ?: goTo(MainActivity::class.java)
+        } ?: goTo(MainActivity::class.java, finished = true)
     }
 
     private fun setupButtons() {

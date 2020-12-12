@@ -11,9 +11,6 @@ interface AccountService {
     @POST("v1/account/validate")
     suspend fun validateAccount(@Body account: AccountRequest)
 
-    @POST("v1/account/anonymous")
-    suspend fun createAnonymousAccount(@Body params: HashMap<String, String>): AccountResponse
-
     @GET("v1/account/nickname/{nickname}")
     suspend fun getAccountBy(@Path(value = "nickname") nickname: String): AccountResponseWrapper
 

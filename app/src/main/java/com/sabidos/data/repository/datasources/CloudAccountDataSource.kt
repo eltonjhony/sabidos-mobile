@@ -66,13 +66,14 @@ class CloudAccountDataSource(
 
                     when (val userResult = oAuthProvider.getCurrentUser()) {
                         is ResultWrapper.Success -> {
-
-                            val bodyRequest = hashMapOf("uid" to userResult.data.uid)
+                            val accountRequest = AccountRequest()
+                            accountRequest.isAnonymous = true
+                            accountRequest.uid = userResult.data.uid
                             val service = cloudApiFactory.create(AccountService::class.java)
                             val updatedAccount =
                                 ResponseToAccountMapper.transform(
-                                    service.createAnonymousAccount(
-                                        bodyRequest
+                                    service.createAccount(
+                                        accountRequest
                                     )
                                 )
 

@@ -8,11 +8,11 @@ import com.sabidos.presentation.quiz.SabidosQuizActivity
 
 object StartToPlayCommand {
 
-    fun playWithCategory(activity: FragmentActivity?, categoryId: Int? = null) {
+    fun playWithCategory(activity: FragmentActivity?, categoryId: Int? = null, finished: Boolean = false) {
         runCatching {
             val bundle = Bundle()
             categoryId?.let { bundle.putInt(SabidosQuizActivity.CATEGORY_ID_BUNDLE_KEY, categoryId) }
-            activity?.goTo(SabidosQuizActivity::class.java, false, bundle = bundle)
+            activity?.goTo(SabidosQuizActivity::class.java, finished, bundle = bundle)
         }.onFailure {
             Logger.withTag(StartToPlayCommand::class.java.simpleName).withCause(it)
         }

@@ -5,7 +5,7 @@ import com.sabidos.domain.Alternative
 // Request objects
 data class AccountRequest(
     val name: String = "",
-    val nickname: String,
+    val nickname: String = "",
     val defaultAvatarId: Int? = null
 ) {
     var uid: String? = null
