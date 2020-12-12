@@ -13,6 +13,7 @@ import com.sabidos.infrastructure.ResourceState.*
 import com.sabidos.infrastructure.extensions.*
 import com.sabidos.infrastructure.logging.Logger
 import com.sabidos.presentation.BaseActivity
+import com.sabidos.presentation.MainActivity
 import kotlinx.android.synthetic.main.activity_sabidos_quiz.*
 import kotlinx.android.synthetic.main.content_quiz.*
 import org.koin.android.ext.android.inject
@@ -43,8 +44,14 @@ class SabidosQuizActivity : BaseActivity() {
         quizTopContentComponent.stopTimer()
     }
 
+    override fun onBackPressed() {
+        categoryId?.let {
+            super.onBackPressed()
+        } ?: goTo(MainActivity::class.java)
+    }
+
     private fun fetchNewRound() {
-        viewModel.getNewRoundFor(categoryId ?: DEFAULT_CATEGORY_FALLBACK)
+        viewModel.getNewRoundFor(categoryId)
     }
 
     private fun bindRoundState(resource: Resource<Quiz>?) = resource?.let {
@@ -101,7 +108,7 @@ class SabidosQuizActivity : BaseActivity() {
         }
         quizAnswerResultComponent.hide()
         quizTopContentComponent.didBackPressed = {
-            super.onBackPressed()
+            onBackPressed()
         }
     }
 
@@ -165,7 +172,6 @@ class SabidosQuizActivity : BaseActivity() {
 
     companion object {
         const val CATEGORY_ID_BUNDLE_KEY = "CATEGORY_ID_BUNDLE"
-        const val DEFAULT_CATEGORY_FALLBACK = 1
     }
 
 }

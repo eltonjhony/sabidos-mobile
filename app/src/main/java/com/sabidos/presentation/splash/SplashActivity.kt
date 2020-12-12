@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import com.sabidos.R
 import com.sabidos.domain.Account
 import com.sabidos.domain.User
+import com.sabidos.infrastructure.EventObserver
 import com.sabidos.infrastructure.Resource
 import com.sabidos.infrastructure.ResourceState.*
 import com.sabidos.infrastructure.ResultWrapper
@@ -15,6 +16,7 @@ import com.sabidos.infrastructure.extensions.showAuthError
 import com.sabidos.infrastructure.extensions.showGenericErrorDialog
 import com.sabidos.infrastructure.extensions.showNetworkErrorDialog
 import com.sabidos.presentation.MainActivity
+import com.sabidos.presentation.common.StartToPlayCommand
 import com.sabidos.presentation.onboarding.OnboardingActivity
 import com.sabidos.presentation.onboarding.OnboardingActivity.Companion.FIRST_STEP_NUMBER_PARAM
 import com.sabidos.presentation.onboarding.OnboardingViewModel.Companion.PERSONAL_INFO_STEP
@@ -39,8 +41,17 @@ class SplashActivity : AppCompatActivity() {
             }
 
             viewModel.setupInitialSession()
+            viewModel.newUserResource.observe(this, EventObserver { bindNewUserState(it) })
             viewModel.accountResource.observe(this, Observer { bindAccountState(it) })
             viewModel.userResource.observe(this, Observer { bindUserState(it) })
+        }
+    }
+
+    private fun bindNewUserState(resource: Resource<Void>?) {
+        resource?.let {
+            when (it.state) {
+                Success -> StartToPlayCommand.playWithCategory(this)
+            }
         }
     }
 

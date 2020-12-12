@@ -19,15 +19,15 @@ class CategoryActivity : BaseActivity() {
     private val viewModel: CategoryViewModel by viewModel()
 
     private val topsAdapter = CategoryHorizontalAdapter {
-        StartToPlayCommand.playWithCategory(this, it)
+        StartToPlayCommand.playWithCategory(this, it.id)
     }
 
     private val newestAdapter = CategoryHorizontalAdapter {
-        StartToPlayCommand.playWithCategory(this, it)
+        StartToPlayCommand.playWithCategory(this, it.id)
     }
 
     private val browseAllAdapter = CategoryVerticalAdapter {
-        StartToPlayCommand.playWithCategory(this, it)
+        StartToPlayCommand.playWithCategory(this, it.id)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

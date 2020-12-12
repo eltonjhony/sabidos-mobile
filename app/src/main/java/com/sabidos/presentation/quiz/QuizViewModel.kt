@@ -33,10 +33,13 @@ class QuizViewModel(
 
     private var roundPosition = 0
 
-    fun getNewRoundFor(categoryId: Int) {
+    private var choiceCategoryId: Int? = null
+
+    fun getNewRoundFor(categoryId: Int?) {
+        choiceCategoryId = categoryId
         roundResource.loading()
         viewModelScope.launch {
-            getNextRoundUseCase(Params(categoryId)) {
+            getNextRoundUseCase(Params(categoryId ?: DEFAULT_CATEGORY_FALLBACK)) {
                 when (it) {
                     is ResultWrapper.Success -> handleSuccessRound(it.data)
                     is ResultWrapper.NetworkError -> roundResource.setNetworkFailure()
@@ -61,7 +64,7 @@ class QuizViewModel(
 
     private fun handleSuccessRound(quiz: Quiz) {
         QuizResultHandler.init(
-            QuizResult(categoryId = quiz.categoryId, numberOfQuestions = quiz.numberOfQuestions)
+            QuizResult(categoryId = choiceCategoryId, numberOfQuestions = quiz.numberOfQuestions)
         )
         roundQuizList.addAll(quiz.questions)
         roundTotal = quiz.numberOfQuestions
@@ -86,6 +89,10 @@ class QuizViewModel(
                 Logger.withTag(QuizViewModel::class.java.simpleName).i("Post quiz returned: $it")
             }
         }
+    }
+
+    companion object {
+        const val DEFAULT_CATEGORY_FALLBACK = 1
     }
 
 }

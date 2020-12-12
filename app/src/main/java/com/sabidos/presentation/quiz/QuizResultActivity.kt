@@ -7,7 +7,8 @@ import com.sabidos.data.local.singleton.QuizResult
 import com.sabidos.data.local.singleton.QuizResultHandler
 import com.sabidos.infrastructure.extensions.goTo
 import com.sabidos.presentation.BaseActivity
-import com.sabidos.presentation.quiz.SabidosQuizActivity.Companion.CATEGORY_ID_BUNDLE_KEY
+import com.sabidos.presentation.MainActivity
+import com.sabidos.presentation.common.StartToPlayCommand
 import kotlinx.android.synthetic.main.activity_quiz_result.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -28,15 +29,19 @@ class QuizResultActivity : BaseActivity() {
         setupButtons()
     }
 
+    override fun onBackPressed() {
+        quizResult.categoryId?.let {
+            super.onBackPressed()
+        } ?: goTo(MainActivity::class.java)
+    }
+
     private fun setupButtons() {
         resultsContentComponent.onNextButtonClicked = {
-            val bundle = Bundle()
-            bundle.putInt(CATEGORY_ID_BUNDLE_KEY, quizResult.categoryId)
-            goTo(SabidosQuizActivity::class.java, bundle = bundle)
+            StartToPlayCommand.playWithCategory(this, quizResult.categoryId)
         }
 
         goBackIconView.setOnClickListener {
-            super.onBackPressed()
+            onBackPressed()
         }
     }
 

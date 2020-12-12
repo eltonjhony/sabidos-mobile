@@ -30,7 +30,7 @@ class HomeFragment : Fragment() {
     private val adapter = TimelineAdapter(clickListener = { })
 
     private val browseAllAdapter = CategoryHorizontalAdapter(false) {
-        StartToPlayCommand.playWithCategory(activity, it)
+        StartToPlayCommand.playWithCategory(activity, it.id)
     }
 
     override fun onCreateView(

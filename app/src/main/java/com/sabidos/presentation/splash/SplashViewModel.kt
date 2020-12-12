@@ -30,6 +30,7 @@ class SplashViewModel(
 
     val userResource = MutableLiveData<Resource<User>>()
     val accountResource = MutableLiveData<Resource<Account>>()
+    val newUserResource = MutableLiveData<Resource<Void>>()
 
     fun setupInitialSession() {
         accountResource.loading()
@@ -89,7 +90,13 @@ class SplashViewModel(
     private fun handleResult(it: ResultWrapper<Account?>?) {
         it?.let {
             when (it) {
-                is Success -> accountResource.setSuccess(it.data)
+                is Success -> {
+                    if (it.data?.totalAnswered ?: 0 > 1) {
+                        accountResource.setSuccess(it.data)
+                    } else {
+                        newUserResource.setSuccess()
+                    }
+                }
                 is NetworkError -> accountResource.setNetworkFailure()
                 is DataNotFoundError -> accountResource.setDataNotFound()
                 else -> accountResource.setGenericFailure()

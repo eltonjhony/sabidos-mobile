@@ -24,7 +24,7 @@ object QuizResultHandler {
 }
 
 data class QuizResult(
-    val categoryId: Int,
+    val categoryId: Int?,
     var numberOfCorrects: Int = 0,
     val numberOfQuestions: Int,
     var accumulateResponseTime: Int = 0
