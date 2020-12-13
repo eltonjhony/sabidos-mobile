@@ -6,23 +6,13 @@
     android:layout_height="match_parent">
 
     <com.sabidos.presentation.components.SimpleActionChoiceComponent
-        android:id="@+id/addContactButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        custom:actionTitle="@string/add_contact_label" />
-
-    <com.sabidos.presentation.components.SimpleActionChoiceComponent
         android:id="@+id/addPaymentButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addContactButton"
+        app:layout_constraintTop_toTopOf="parent"
         custom:actionTitle="@string/add_payment_label" />
 
     <com.sabidos.presentation.components.SimpleActionChoiceComponent
@@ -36,13 +26,33 @@
         custom:actionTitle="@string/my_earns_label" />
 
     <com.sabidos.presentation.components.SimpleActionChoiceComponent
-        android:id="@+id/faqButton"
+        android:id="@+id/privacyPolicyButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myEarnsButton"
+        custom:actionTitle="@string/privacy_policy_label" />
+
+    <com.sabidos.presentation.components.SimpleActionChoiceComponent
+        android:id="@+id/ideaButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/privacyPolicyButton"
+        custom:actionTitle="@string/idea_label" />
+
+    <com.sabidos.presentation.components.SimpleActionChoiceComponent
+        android:id="@+id/faqButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ideaButton"
         custom:actionTitle="@string/faq_label" />
 
     <com.sabidos.presentation.profile.views.UserManagmtComponent
