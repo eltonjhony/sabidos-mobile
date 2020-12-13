@@ -4,9 +4,9 @@
     <string name="initial_info_text">Antes de começarmos, informa pra gente</string>
     <string name="next_label">Continuar</string>
     <string name="nickname_player_text">Apelido de Jogador</string>
-    <string name="hint_nickname_field">Exemplo: O sábio</string>
-    <string name="hint_player_name_field">Qual seu primeiro nome?</string>
-    <string name="player_name_text">Primeiro Nome</string>
+    <string name="hint_nickname_field">Ex.: chico91</string>
+    <string name="hint_player_name_field">Ex.: Francisco da Silva</string>
+    <string name="player_name_text">Nome</string>
     <string name="play_label">Jogar</string>
     <string name="home_label">Home</string>
     <string name="premium_label">Premium</string>
@@ -56,7 +56,7 @@
     <string name="category_title_label">Escolha uma categoria</string>
     <string name="exit_label">Sair</string>
     <string name="close_link_label"><u>Sair</u></string>
-    <string name="sign_anonymous_long_text">Caso queira, você também pode logar de forma anônima, clicando</string>
+    <string name="sign_anonymous_long_text">Caso prefira, você também pode entrar como visitante, clicando</string>
     <string name="sign_anonymous_clickable_text">Aqui</string>
     <string name="sign_phone_number_label">Entrar com Telefone</string>
     <string name="sign_email_label">Entrar com Email</string>
@@ -83,9 +83,9 @@
     <string name="performance_label">DESEMPENHO DA RODADA</string>
     <string name="corrects_label">CORRETAS</string>
     <string name="perfect_round_feedback">Rodada Perfeita. Toma aqui seus XPs extra :)</string>
-    <string name="high_round_feedback">Muito bom. Faltou pouco para a rodada perfeita</string>
-    <string name="medium_round_feedback">Você foi mais ou menos. Bora elevar o nível na próxima ;)</string>
-    <string name="low_round_feedback">Foi uma rodada ruim. Bora elevar o nível na próxima ;)</string>
+    <string name="high_round_feedback">Muito bom. Faltou pouco para a rodada perfeita :)</string>
+    <string name="medium_round_feedback">Quase lá. Que tal a rodada perfeita na próxima ;)</string>
+    <string name="low_round_feedback">Foi uma rodada ruim. Vamos tentar elevar o nível na próxima ;)</string>
     <string name="correct_quiz_result_values_label">ACERTOS DA RODADA</string>
     <string name="response_time_label">TEMPO MÉDIO DE RESPOSTA</string>
     <string name="xps_accumulate_label">XPs ACUMULADOS</string>

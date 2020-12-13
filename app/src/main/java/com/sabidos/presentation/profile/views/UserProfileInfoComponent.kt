@@ -24,7 +24,7 @@ class UserProfileInfoComponent @JvmOverloads constructor(
         contentWrapper.show()
         loadingView.stopAnimation()
         loadingView.hide()
-        playerNameTextView.text = "${account.name} - ${account.nickname}"
+        playerNameTextView.text = account.name
         levelStatusComponent.level = account.reputation?.level
         levelStarsComponent.stars = account.reputation?.stars
         answeredValue.text = "${account.totalAnswered}"
