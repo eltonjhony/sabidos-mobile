@@ -84,8 +84,14 @@ class MyWeeklyChartComponent @JvmOverloads constructor(
         }
     }
 
-    fun setupError(reloadCallback: (View) -> Unit) {
-        chartErrorComponent.onReloadListener(reloadCallback)
+    fun setupError() {
+        chartErrorComponent.onReloadListener {
+            if (filterComponent.selectedOption == 1) {
+                lastWeekFilterCallback.invoke()
+            } else {
+                currentWeekFilterCallback.invoke()
+            }
+        }
         chartParent.hide()
         chartErrorComponent.show()
     }

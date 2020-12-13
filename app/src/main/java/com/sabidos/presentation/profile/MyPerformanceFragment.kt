@@ -56,13 +56,7 @@ class MyPerformanceFragment : BaseFragment() {
         when (it.state) {
             Loading -> myWeeklyChartComponent.startLoading()
             Success -> myWeeklyChartComponent.setup(it.data)
-            else -> myWeeklyChartComponent.setupError {
-                viewModel.getWeeklyHitsFor(
-                    today().getNext(
-                        SATURDAY
-                    ).format()
-                )
-            }
+            else -> myWeeklyChartComponent.setupError()
         }
     }
 

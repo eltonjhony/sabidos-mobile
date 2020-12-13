@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.sabidos.R
@@ -37,6 +36,8 @@ class RankingFragment : Fragment() {
         setupFilter()
 
         viewModel.loadWeeklyRanking(today().getNext(Calendar.SATURDAY).format())
+        rankingErrorComponent.onReloadListener { retryFilterRequest() }
+
         viewModel.rankingResource.observe(viewLifecycleOwner, Observer { bindRankingState(it) })
     }
 
@@ -47,23 +48,38 @@ class RankingFragment : Fragment() {
         when (it.state) {
             ResourceState.Loading -> rankingTopsComponent.showLoading()
             ResourceState.Success -> handleSuccess(it.data)
-            ResourceState.GenericError -> (activity as AppCompatActivity).showGenericErrorSnackBar()
+            ResourceState.GenericError -> handleError()
             ResourceState.NetworkError -> {
                 rankingOverlayContentView.show()
                 appBarLayout.setExpanded(false)
                 rankingOverlayContentView.showNetworkErrorWithRetry {
                     rankingOverlayContentView.hide()
-                    viewModel.loadWeeklyRanking(today().getNext(Calendar.SATURDAY).format())
+                    retryFilterRequest()
                 }
             }
         }
     }
 
+    private fun retryFilterRequest() {
+        if (rankingFilterComponent.selectedOption == 1) {
+            viewModel.loadWeeklyRanking(today().getLast(Calendar.SATURDAY).format())
+        } else {
+            viewModel.loadWeeklyRanking(today().getNext(Calendar.SATURDAY).format())
+        }
+    }
+
     private fun handleSuccess(data: RankingWrapper?) {
+        rankingErrorComponent.hide()
+        rankingTopsComponent.show()
         data?.let {
             rankingTopsComponent.podium = it.podium
             rankingTopsComponent.regularPositions = it.regularPositions
         }
+    }
+
+    private fun handleError() {
+        rankingErrorComponent.show()
+        rankingTopsComponent.hide()
     }
 
     private fun setupFilter() {

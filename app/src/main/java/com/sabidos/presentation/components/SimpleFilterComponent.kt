@@ -23,11 +23,14 @@ class SimpleFilterComponent @JvmOverloads constructor(
     defStyleAttr
 ) {
 
+    var selectedOption: Int = 2
+
     var firstOption: FilterModel? = null
         set(value) {
             field = value
             configure(value, firstSelectionOption)
             firstSelectionOption.setOnClickListener {
+                selectedOption = 1
                 disable(secondSelectionOption)
                 active(firstSelectionOption)
                 value?.filterCallback?.invoke()
@@ -39,6 +42,7 @@ class SimpleFilterComponent @JvmOverloads constructor(
             field = value
             configure(value, secondSelectionOption)
             secondSelectionOption.setOnClickListener {
+                selectedOption = 2
                 disable(firstSelectionOption)
                 active(secondSelectionOption)
                 value?.filterCallback?.invoke()

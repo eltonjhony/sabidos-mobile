@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,7 +53,9 @@ class HomeFragment : Fragment() {
         timelineComponent.onLoadMore { nextPage ->
             viewModel.loadTimeline(nextPage)
         }
-
+        timelineComponent.onReloadDataAfterError {
+            viewModel.loadTimeline()
+        }
 
         viewModel.loadTimeline()
         viewModel.loadCategories()
@@ -91,8 +92,11 @@ class HomeFragment : Fragment() {
         }
         when (it.state) {
             Loading -> timelineComponent.starLoading()
-            Success -> adapter.updateItems(it.data)
-            GenericError -> (activity as AppCompatActivity).showGenericErrorSnackBar()
+            Success -> {
+                timelineComponent.showSuccess()
+                adapter.updateItems(it.data)
+            }
+            GenericError -> timelineComponent.showError(activity)
         }
     }
 

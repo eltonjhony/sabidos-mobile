@@ -2,11 +2,14 @@ package com.sabidos.presentation.home.views
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.NestedScrollView
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sabidos.R
 import com.sabidos.infrastructure.extensions.hide
 import com.sabidos.infrastructure.extensions.show
+import com.sabidos.infrastructure.extensions.showGenericErrorSnackBar
 import com.sabidos.presentation.home.TimelineAdapter
 import com.sabidos.presentation.components.BaseComponent
 import kotlinx.android.synthetic.main.sabidos_timeline_component.view.*
@@ -47,6 +50,28 @@ class TimelineComponent @JvmOverloads constructor(
         isLoading = true
         progressAnimationComponent.show()
         progressAnimationComponent.startAnimation()
+    }
+
+    fun showSuccess() {
+        contentWrapper.show()
+        timelineErrorComponent.hide()
+    }
+
+    fun showError(activity: FragmentActivity?) {
+        if (currentPage == 1) {
+            contentWrapper.hide()
+            timelineErrorComponent.show()
+        } else {
+            (activity as? AppCompatActivity)?.showGenericErrorSnackBar()
+        }
+    }
+
+    fun onReloadDataAfterError(callback: (() -> Unit)) {
+        resetPagination()
+        (timelineRecyclerView.adapter as? TimelineAdapter)?.clearData()
+        timelineErrorComponent.onReloadListener {
+            callback()
+        }
     }
 
     private fun resetPagination() {

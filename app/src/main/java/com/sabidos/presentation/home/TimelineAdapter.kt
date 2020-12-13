@@ -43,6 +43,11 @@ class TimelineAdapter(
         }
     }
 
+    fun clearData() {
+        answeredQuestions.clear()
+        notifyDataSetChanged()
+    }
+
     inner class TimelineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(timeline: Timeline) {
