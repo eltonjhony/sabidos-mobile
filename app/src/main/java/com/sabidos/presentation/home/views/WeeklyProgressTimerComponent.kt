@@ -54,7 +54,7 @@ class WeeklyProgressTimerComponent @JvmOverloads constructor(
         }
 
         delay(200)
-        for (x in 1 until consumedHours) {
+        for (x in 0 until consumedHours) {
             animate(x)
             delay(50)
         }
