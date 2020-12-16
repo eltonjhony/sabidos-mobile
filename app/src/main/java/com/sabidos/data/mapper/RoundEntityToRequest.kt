@@ -7,8 +7,6 @@ object RoundEntityToRequest : DataMapper<PostRoundEntity, FinishRoundRequest>() 
 
     override fun transform(entity: PostRoundEntity): FinishRoundRequest {
         return FinishRoundRequest(
-            roundId = entity.roundId,
-            averageResponseTime = entity.averageResponseTime,
             accumulateXp = entity.accumulateXps
         )
     }

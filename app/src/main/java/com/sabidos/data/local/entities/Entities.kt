@@ -48,10 +48,11 @@ data class PostQuizEntity(
 
 @Entity(tableName = "post_round")
 data class PostRoundEntity(
-    @PrimaryKey val roundId: Int,
-    val averageResponseTime: Int,
     val accumulateXps: Int
-)
+) {
+    @PrimaryKey(autoGenerate = true)
+    var roundId: Int = 0
+}
 
 @Entity(tableName = "alternative")
 data class AlternativeEntity(

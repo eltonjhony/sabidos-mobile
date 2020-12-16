@@ -21,7 +21,5 @@ data class QuizRequest(
 )
 
 data class FinishRoundRequest(
-    val roundId: Int,
-    val averageResponseTime: Int,
     val accumulateXp: Int
 )

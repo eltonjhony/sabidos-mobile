@@ -78,15 +78,16 @@ class QuizViewModel(
     }
 
     private fun handleSuccessRound(quiz: Quiz, account: Account? = null) {
+        val numberOfQuestions = quiz.questions.size
         QuizResultHandler.init(
             QuizResult(
                 categoryId = choiceCategoryId,
-                numberOfQuestions = quiz.numberOfQuestions,
+                numberOfQuestions = numberOfQuestions,
                 xpFactor = account?.xpFactor ?: DEFAULT_XP_FACTOR_FALLBACK
             )
         )
         roundQuizList.addAll(quiz.questions)
-        roundTotal = quiz.numberOfQuestions
+        roundTotal = numberOfQuestions
         roundPosition = 0
         roundResource.setSuccess(quiz)
     }

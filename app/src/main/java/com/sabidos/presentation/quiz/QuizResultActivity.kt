@@ -23,7 +23,7 @@ class QuizResultActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_result)
-        viewModel.postRound(roundPrefsHelper.getRound(), quizResult)
+        viewModel.postRound(quizResult)
         roundPrefsHelper.didFinishRound()
         resultsContentComponent.setup(quizResult)
         setupButtons()

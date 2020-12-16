@@ -12,11 +12,9 @@ class ResultsViewModel(
     private val postRoundUseCase: PostRoundUseCase
 ) : ViewModel() {
 
-    fun postRound(roundId: Int, quizResult: QuizResult) {
+    fun postRound(quizResult: QuizResult) {
 
         val request = FinishRoundRequest(
-            roundId,
-            quizResult.getAverageResponseTime(),
             quizResult.getXPsForRound()
         )
 
