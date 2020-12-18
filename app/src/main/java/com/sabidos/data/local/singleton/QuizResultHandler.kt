@@ -32,10 +32,10 @@ data class QuizResult(
 ) {
 
     fun getResultPercentageValue(): Int =
-        (numberOfQuestions * numberOfCorrects)
+        (numberOfCorrects / numberOfQuestions) * 100
 
     fun getPerformance(): RoundPerformance =
-        when ((numberOfCorrects * numberOfQuestions)) {
+        when (getResultPercentageValue()) {
             100 -> RoundPerformance.PERFECT
             in 80..99 -> RoundPerformance.HIGH
             in 50..79 -> RoundPerformance.MEDIUM
