@@ -18,6 +18,10 @@ class ResultsViewModel(
             quizResult.getXPsForRound()
         )
 
+        if (request.accumulateXp <= 0) {
+            return
+        }
+
         viewModelScope.launch {
             postRoundUseCase(PostRoundUseCase.Params(request)) {
                 Logger.withTag(ResultsViewModel::class.java.simpleName).i("Post round returned: $it")
