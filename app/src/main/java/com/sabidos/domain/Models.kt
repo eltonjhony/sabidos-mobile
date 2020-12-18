@@ -77,7 +77,7 @@ data class Quiz(
 )
 
 data class QuizItem(
-    val id: Int,
+    val id: String,
     val imageUrl: String?,
     val description: String,
     val quizLimitInSeconds: Int,

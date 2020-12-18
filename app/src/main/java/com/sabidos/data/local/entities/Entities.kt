@@ -41,7 +41,7 @@ data class CategoryEntity(
 
 @Entity(tableName = "post_quiz")
 data class PostQuizEntity(
-    @PrimaryKey val quizId: Int,
+    @PrimaryKey val quizId: String,
     val responseTime: Int,
     @Embedded val alternative: AlternativeEntity
 )
@@ -56,7 +56,7 @@ data class PostRoundEntity(
 
 @Entity(tableName = "alternative")
 data class AlternativeEntity(
-    @PrimaryKey @ColumnInfo(name = "alternative_id") val id: Int,
+    @PrimaryKey @ColumnInfo(name = "alternative_id") val id: String,
     val description: String,
     val isCorrect: Boolean,
     val percentageAnswered: Int

@@ -15,7 +15,7 @@ data class AccountRequest(
 }
 
 data class QuizRequest(
-    val quizId: Int,
+    val quizId: String,
     val responseTime: Int,
     val alternative: Alternative
 )
