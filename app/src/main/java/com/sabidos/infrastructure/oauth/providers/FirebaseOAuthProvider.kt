@@ -200,7 +200,7 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
 
     }.getOrThrow()
 
-    override fun signInWithPhoneNumber(code: String, callback: ((ResultWrapper<Boolean>) -> Unit)) {
+    override fun signInWithPhoneNumber(code: String, callback: ((ResultWrapper<User>) -> Unit)) {
         val verificationId = signInPrefsHelper.getVerificationId()
 
         verificationId?.let { id ->
@@ -210,7 +210,7 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
             if (auth.currentUser?.isAnonymous == true) {
                 linkCurrentUserWith(credential) {
                     when (it) {
-                        is Success -> callback(Success(true))
+                        is Success -> callback(Success(it.data))
                         is AuthError -> callback(it)
                         else -> callback(GenericError())
                     }
@@ -218,7 +218,9 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
             } else {
                 auth.signInWithCredential(credential)
                     .addOnSuccessListener {
-                        callback(Success(true))
+                        convertOAuthUserToUser(it.user, false)?.let { user ->
+                            callback(Success(user))
+                        } ?: DataNotFoundError
                     }.addOnCanceledListener {
                         callback(GenericError())
                     }.addOnFailureListener {
@@ -251,7 +253,7 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
         auth.currentUser!!.linkWithCredential(credential)
             .addOnSuccessListener { result ->
 
-                convertOAuthUserToUser(result.user)?.let {
+                convertOAuthUserToUser(result.user, true)?.let {
                     callback(Success(it))
                 } ?: DataNotFoundError
 
@@ -263,13 +265,14 @@ class FirebaseOAuthProvider(private val signInPrefsHelper: SignInPrefsHelper) :
 
     }
 
-    private fun convertOAuthUserToUser(fbUser: FirebaseUser?): User? {
+    private fun convertOAuthUserToUser(fbUser: FirebaseUser?, isLinked: Boolean = false): User? {
         return fbUser?.let {
             User(
                 it.uid,
                 it.isAnonymous,
                 it.phoneNumber,
-                it.email
+                it.email,
+                isLinked
             )
         }
     }

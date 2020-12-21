@@ -8,6 +8,9 @@ interface AccountService {
     @POST("v1/account")
     suspend fun createAccount(@Body account: AccountRequest): AccountResponse
 
+    @PATCH("v1/account/{uid}")
+    suspend fun updateAccount(@Path(value = "uid") uid: String, @Body account: UpdateAccountRequest): AccountResponse
+
     @POST("v1/account/validate")
     suspend fun validateAccount(@Body account: AccountRequest)
 

@@ -7,6 +7,7 @@ import com.sabidos.data.remote.CloudApiFactory
 import com.sabidos.data.remote.ErrorHandling
 import com.sabidos.data.remote.NetworkHandler
 import com.sabidos.data.remote.model.AccountRequest
+import com.sabidos.data.remote.model.UpdateAccountRequest
 import com.sabidos.domain.Account
 import com.sabidos.domain.Timeline
 import com.sabidos.domain.User
@@ -21,7 +22,10 @@ class CloudAccountDataSource(
     private val networkHandler: NetworkHandler
 ) {
 
-    suspend fun createAccount(account: Account, user: User): ResultWrapper<Account> {
+    suspend fun createAccount(
+        account: Account,
+        user: User
+    ): ResultWrapper<Account> {
         return when {
             networkHandler.isConnected -> {
                 runCatching {
@@ -36,6 +40,39 @@ class CloudAccountDataSource(
                     val service = cloudApiFactory.create(AccountService::class.java)
                     val updatedAccount =
                         ResponseToAccountMapper.transform(service.createAccount(bodyRequest))
+
+                    accountCache.put(AccountToEntityMapper.transform(updatedAccount))
+                    ResultWrapper.Success(updatedAccount)
+
+                }.getOrElse { ErrorHandling.parse(it) }
+            }
+            else -> ResultWrapper.NetworkError
+        }
+    }
+
+    suspend fun updateAccount(
+        name: String?,
+        user: User
+    ): ResultWrapper<Account> {
+        return when {
+            networkHandler.isConnected -> {
+                runCatching {
+
+                    val bodyRequest = UpdateAccountRequest(
+                        name,
+                        user.email,
+                        user.phoneNumber,
+                        user.isAnonymous
+                    )
+
+                    val service = cloudApiFactory.create(AccountService::class.java)
+                    val updatedAccount = ResponseToAccountMapper.transform(
+                        service.updateAccount(
+                            user.uid,
+                            bodyRequest
+                        )
+                    )
+
                     accountCache.put(AccountToEntityMapper.transform(updatedAccount))
                     ResultWrapper.Success(updatedAccount)
 

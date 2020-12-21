@@ -21,6 +21,11 @@ class AccountDataRepository(
     override suspend fun createAccount(account: Account, user: User): ResultWrapper<Account> =
         cloudAccountDataSource.createAccount(account, user)
 
+    override suspend fun updateAccount(user: User): ResultWrapper<Account> {
+        val account = localAccountDataSource.getCurrentAccount()
+        return cloudAccountDataSource.updateAccount(account?.name, user)
+    }
+
     override suspend fun validateAccount(nickname: String): ResultWrapper<Boolean> =
         cloudAccountDataSource.validateAccount(nickname)
 

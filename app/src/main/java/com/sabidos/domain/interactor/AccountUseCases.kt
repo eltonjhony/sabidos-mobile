@@ -20,6 +20,15 @@ class CreateAccountUseCase(private val accountRepository: AccountRepository) :
     data class Params(val account: Account, val user: User)
 }
 
+class UpdateAccountUseCase(private val accountRepository: AccountRepository) :
+    UseCase<Account, UpdateAccountUseCase.UpdateAccountParam>() {
+
+    override suspend fun run(params: UpdateAccountParam): ResultWrapper<Account> =
+        accountRepository.updateAccount(params.user)
+
+    data class UpdateAccountParam(val user: User)
+}
+
 class ValidateAccountUseCase(private val accountRepository: AccountRepository) :
     UseCase<Boolean, ValidateAccountParam>() {
 

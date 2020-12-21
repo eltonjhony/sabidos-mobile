@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sabidos.domain.interactor.CompleteSignInWithEmailLinkUseCase
 import com.sabidos.domain.interactor.IsSignInWithEmailLinkUseCase
+import com.sabidos.domain.interactor.UpdateAccountUseCase
 import com.sabidos.infrastructure.ResultWrapper
 import com.sabidos.infrastructure.ResultWrapper.*
 import kotlinx.coroutines.launch
@@ -13,8 +14,9 @@ import com.sabidos.domain.interactor.IsSignInWithEmailLinkUseCase.Params as Para
 
 class DeepLinksViewModel(
     private val isSignInWithEmailLinkUseCase: IsSignInWithEmailLinkUseCase,
-    private val completeSignInWithEmailLinkUseCase: CompleteSignInWithEmailLinkUseCase
-): ViewModel() {
+    private val completeSignInWithEmailLinkUseCase: CompleteSignInWithEmailLinkUseCase,
+    private val updateAccountUseCase: UpdateAccountUseCase
+) : ViewModel() {
 
     fun handle(data: Uri, callback: (ResultWrapper<Boolean>) -> Unit) {
 
@@ -39,13 +41,24 @@ class DeepLinksViewModel(
         viewModelScope.launch {
             completeSignInWithEmailLinkUseCase(Params2(data.toString())) {
                 when (it) {
-                    is Success -> callback(Success(true))
+                    is Success -> {
+                        viewModelScope.launch {
+                            if (it.data != null && it.data.isLinked) {
+                                updateAccountUseCase(UpdateAccountUseCase.UpdateAccountParam(it.data)) {
+                                    callback(Success(true))
+                                }
+                            } else {
+                                callback(Success(true))
+                            }
+                        }
+                    }
                     is AuthError -> callback(it)
                     else -> callback(GenericError())
                 }
 
             }
         }
+
     }
 
 }

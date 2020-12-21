@@ -40,10 +40,10 @@ val presentationModule = module {
     viewModel { MainViewModel(get()) }
     viewModel { OnboardingViewModel(get(), get(), get(), get()) }
     viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
-    viewModel { PhoneVerificationViewModel(get(), get(), get()) }
+    viewModel { PhoneVerificationViewModel(get(), get(), get(), get()) }
     viewModel { PersonalInfoViewModel(get()) }
     viewModel { SplashViewModel(get(), get(), get()) }
-    viewModel { DeepLinksViewModel(get(), get()) }
+    viewModel { DeepLinksViewModel(get(), get(), get()) }
     viewModel { HomeViewModel(get(), get(), get(), get()) }
     viewModel { ProfileViewModel(get(), get()) }
     viewModel { AccountManagementViewModel(get(), get()) }
@@ -66,6 +66,7 @@ val domainModule = module {
     single { IsSignInWithEmailLinkUseCase(get()) }
     single { SignOutUseCase(get(), get(), get()) }
     single { CreateAccountUseCase(get()) }
+    single { UpdateAccountUseCase(get()) }
     single { ValidateAccountUseCase(get()) }
     single { CreateAnonymousAccountUseCase(get()) }
     single { GetCurrentAccountUseCase(get()) }

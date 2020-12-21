@@ -26,7 +26,7 @@ interface OAuthProvider {
 
     fun verifyPhoneNumber(phoneNumber: String, callback: (ResultWrapper<Boolean>) -> Unit)
 
-    fun signInWithPhoneNumber(code: String, callback: (ResultWrapper<Boolean>) -> Unit)
+    fun signInWithPhoneNumber(code: String, callback: (ResultWrapper<User>) -> Unit)
 
     fun clear()
 }

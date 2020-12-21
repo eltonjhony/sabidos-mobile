@@ -51,9 +51,9 @@ class VerifyPhoneNumberUseCase(private val oauthProvider: OAuthProvider) :
 }
 
 class SignInWithPhoneNumberUseCase(private val oauthProvider: OAuthProvider) :
-    UseCase<Boolean?, SignInWithPhoneNumberUseCase.Params>() {
+    UseCase<User?, SignInWithPhoneNumberUseCase.Params>() {
 
-    override suspend fun run(params: Params): ResultWrapper<Boolean?> = suspendCoroutine { cont ->
+    override suspend fun run(params: Params): ResultWrapper<User?> = suspendCoroutine { cont ->
         oauthProvider.signInWithPhoneNumber(params.code) {
             cont.resume(it)
         }

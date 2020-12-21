@@ -8,6 +8,7 @@ import com.sabidos.infrastructure.ResultWrapper
 
 interface AccountRepository {
     suspend fun createAccount(account: Account, user: User): ResultWrapper<Account>
+    suspend fun updateAccount(user: User): ResultWrapper<Account>
     suspend fun validateAccount(nickname: String): ResultWrapper<Boolean>
     suspend fun createAnonymousAccount(): ResultWrapper<Account>
     suspend fun getCurrentAccount(): ResultWrapper<Account>

@@ -3,7 +3,9 @@ package com.sabidos.presentation.onboarding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sabidos.domain.User
 import com.sabidos.domain.interactor.SignInWithPhoneNumberUseCase
+import com.sabidos.domain.interactor.UpdateAccountUseCase
 import com.sabidos.domain.interactor.VerifyPhoneNumberUseCase
 import com.sabidos.infrastructure.Resource
 import com.sabidos.infrastructure.ResultWrapper.*
@@ -14,6 +16,7 @@ import kotlinx.coroutines.launch
 class PhoneVerificationViewModel(
     private val signInWithPhoneNumberUseCase: SignInWithPhoneNumberUseCase,
     private val verifyPhoneNumberUseCase: VerifyPhoneNumberUseCase,
+    private val updateAccountUseCase: UpdateAccountUseCase,
     private val signInPrefsHelper: SignInPrefsHelper
 ) : ViewModel() {
 
@@ -26,7 +29,7 @@ class PhoneVerificationViewModel(
         viewModelScope.launch {
             signInWithPhoneNumberUseCase(SignInWithPhoneNumberUseCase.Params(code)) {
                 when (it) {
-                    is Success -> signInWithPhoneNumberResource.setSuccess()
+                    is Success -> handleSuccess(it)
                     is NetworkError -> signInWithPhoneNumberResource.setNetworkFailure()
                     is AuthError -> signInWithPhoneNumberResource.setAuthFailure(it.errorResponse)
                     else -> signInWithPhoneNumberResource.setGenericFailure()
@@ -58,6 +61,20 @@ class PhoneVerificationViewModel(
     fun getMaskedPhone(): String? {
         val phoneNumber = signInPrefsHelper.getPhoneNumber()
         return phoneNumber?.replaceRange(0, phoneNumber.length - 2, "** *******")
+    }
+
+    private fun handleSuccess(resource: Success<User?>) {
+        viewModelScope.launch {
+            resource.data?.let { user ->
+                if (user.isLinked) {
+                    updateAccountUseCase(UpdateAccountUseCase.UpdateAccountParam(user)) {
+                        signInWithPhoneNumberResource.setSuccess()
+                    }
+                } else {
+                    signInWithPhoneNumberResource.setSuccess()
+                }
+            } ?: signInWithPhoneNumberResource.setSuccess()
+        }
     }
 
 }

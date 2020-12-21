@@ -4,7 +4,8 @@ data class User(
     val uid: String,
     val isAnonymous: Boolean,
     val phoneNumber: String?,
-    val email: String?
+    val email: String?,
+    val isLinked: Boolean
 )
 
 data class Account(
