@@ -31,8 +31,13 @@ data class QuizResult(
     val xpFactor: Int
 ) {
 
-    fun getResultPercentageValue(): Int =
-        (numberOfCorrects / numberOfQuestions) * 100
+    fun getResultPercentageValue(): Int {
+        if (numberOfQuestions > 0) {
+            return (numberOfCorrects / numberOfQuestions) * 100
+        }
+        return 0
+    }
+
 
     fun getPerformance(): RoundPerformance =
         when (getResultPercentageValue()) {
@@ -42,8 +47,12 @@ data class QuizResult(
             else -> RoundPerformance.LOW
         }
 
-    fun getAverageResponseTime(): Int =
-        accumulateResponseTime / numberOfQuestions
+    fun getAverageResponseTime(): Int {
+        if (numberOfQuestions > 0) {
+            return accumulateResponseTime / numberOfQuestions
+        }
+        return 0
+    }
 
     fun getXPsForRound(): Int =
         numberOfCorrects * xpFactor
