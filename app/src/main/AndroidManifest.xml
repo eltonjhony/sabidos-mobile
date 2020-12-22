@@ -79,6 +79,12 @@
             android:theme="@style/NoActionBarAppThemeDefault"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
+        <activity
+            android:name=".presentation.quiz.AnsweredAllActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBarAppThemeDefault"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
     </application>
 
 </manifest>

@@ -69,6 +69,9 @@ class SabidosQuizActivity : BaseActivity() {
             NetworkError -> {
                 overlayView.showNetworkErrorWithRetry { fetchNewRound() }
             }
+            DataNotFoundError -> {
+                goTo(AnsweredAllActivity::class.java, finished = true)
+            }
             else -> overlayView.showErrorWithRetry { fetchNewRound() }
         }
     }

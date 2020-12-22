@@ -3,6 +3,7 @@
     <string name="slogan_text">Teste seus conhecimentos. Divirta-se e ganhe.</string>
     <string name="initial_info_text">Antes de começarmos, informa pra gente</string>
     <string name="next_label">Continuar</string>
+    <string name="caps_next_label">CONTINUAR</string>
     <string name="nickname_player_text">Apelido de Jogador</string>
     <string name="hint_nickname_field">Ex.: chico91</string>
     <string name="hint_player_name_field">Ex.: Francisco da Silva</string>
@@ -102,4 +103,8 @@
     <string name="nickname_already_exists_error">Este apelido de Jogador já existe.</string>
     <string name="privacy_policy_label">Política de privacidade</string>
     <string name="idea_label">Envia uma ideia</string>
+    <string name="stay_tuned_label">#FiqueLigado</string>
+    <string name="congrats_label">Parabéns :)</string>
+    <string name="answered_all_title">Você conseguiu completar todas as perguntas dessa categoria!</string>
+    <string name="answered_all_sub_title">Muito em breve teremos perguntas novas por aqui :)</string>
 </resources>

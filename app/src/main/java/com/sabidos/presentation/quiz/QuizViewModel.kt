@@ -79,17 +79,23 @@ class QuizViewModel(
 
     private fun handleSuccessRound(quiz: Quiz, account: Account? = null) {
         val numberOfQuestions = quiz.questions.size
-        QuizResultHandler.init(
-            QuizResult(
-                categoryId = choiceCategoryId,
-                numberOfQuestions = numberOfQuestions,
-                xpFactor = account?.xpFactor ?: DEFAULT_XP_FACTOR_FALLBACK
+
+        if (numberOfQuestions < 1) {
+            roundResource.setDataNotFound()
+        } else {
+            QuizResultHandler.init(
+                QuizResult(
+                    categoryId = choiceCategoryId,
+                    numberOfQuestions = numberOfQuestions,
+                    xpFactor = account?.xpFactor ?: DEFAULT_XP_FACTOR_FALLBACK
+                )
             )
-        )
-        roundQuizList.addAll(quiz.questions)
-        roundTotal = numberOfQuestions
-        roundPosition = 0
-        roundResource.setSuccess(quiz)
+            roundQuizList.addAll(quiz.questions)
+            roundTotal = numberOfQuestions
+            roundPosition = 0
+            roundResource.setSuccess(quiz)
+        }
+
     }
 
     fun postQuiz(quizItem: QuizItem, responseTime: Int, alternative: Alternative) {
