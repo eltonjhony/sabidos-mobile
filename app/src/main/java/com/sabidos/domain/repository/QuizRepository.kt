@@ -8,6 +8,5 @@ import com.sabidos.infrastructure.ResultWrapper
 interface QuizRepository {
     suspend fun getNextRound(categoryId: Int): ResultWrapper<Quiz>
     suspend fun postQuiz(request: QuizRequest): ResultWrapper<Boolean>
-    suspend fun syncQuiz(): ResultWrapper<Boolean>
     suspend fun postRound(request: FinishRoundRequest): ResultWrapper<Boolean>
 }

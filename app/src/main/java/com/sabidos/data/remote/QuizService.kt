@@ -17,10 +17,8 @@ interface QuizService {
     suspend fun postQuiz(
         @Path(value = "nickname") nickname: String, @Body request: List<QuizRequest>
     )
-
-    @POST("v1/quiz/round/{nickname}")
-    suspend fun postRound(
-        @Path(value = "nickname") nickname: String, @Body request: List<FinishRoundRequest>
-    )
+    
+    @POST("v1/quiz/round")
+    suspend fun postRound(@Body request: FinishRoundRequest)
 
 }

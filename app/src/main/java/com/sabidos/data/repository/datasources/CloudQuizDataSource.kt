@@ -44,12 +44,13 @@ class CloudQuizDataSource(
         }
     }
 
-    suspend fun postRound(nickname: String, request: List<FinishRoundRequest>): ResultWrapper<Boolean> {
+    suspend fun postRound(nickname: String, request: FinishRoundRequest): ResultWrapper<Boolean> {
         return when {
             networkHandler.isConnected -> {
                 runCatching {
                     val service = cloudApiFactory.create(QuizService::class.java)
-                    service.postRound(nickname, request)
+                    request.nickname = nickname
+                    service.postRound(request)
                     ResultWrapper.Success(true)
                 }.getOrElse { ErrorHandling.parse(it) }
             }

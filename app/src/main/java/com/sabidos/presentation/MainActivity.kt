@@ -17,11 +17,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.consumeEach
-import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
-
-    private val viewModel: MainViewModel by viewModel()
 
     private lateinit var subscription: ReceiveChannel<BottomNavigationEvent>
 
@@ -60,11 +57,6 @@ class MainActivity : AppCompatActivity() {
             goTo(CategoryActivity::class.java, finished = false)
         }
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.syncQuiz()
     }
 
     private fun setupFragmentsViewPager() {

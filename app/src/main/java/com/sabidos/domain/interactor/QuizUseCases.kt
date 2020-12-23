@@ -32,10 +32,3 @@ class PostRoundUseCase(private val quizRepository: QuizRepository) :
 
     data class Params(val request: FinishRoundRequest)
 }
-
-class SyncQuizUseCase(private val quizRepository: QuizRepository) :
-    UseCase<Boolean, None>() {
-
-    override suspend fun run(params: None): ResultWrapper<Boolean> =
-        quizRepository.syncQuiz()
-}

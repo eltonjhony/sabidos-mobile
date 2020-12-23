@@ -19,7 +19,6 @@ import com.sabidos.infrastructure.helpers.PhoneNumberHelper
 import com.sabidos.infrastructure.helpers.SignInPrefsHelper
 import com.sabidos.infrastructure.oauth.OAuthProvider
 import com.sabidos.infrastructure.oauth.providers.FirebaseOAuthProvider
-import com.sabidos.presentation.MainViewModel
 import com.sabidos.presentation.category.CategoryViewModel
 import com.sabidos.presentation.home.HomeViewModel
 import com.sabidos.presentation.onboarding.*
@@ -37,7 +36,6 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val presentationModule = module {
-    viewModel { MainViewModel(get()) }
     viewModel { OnboardingViewModel(get(), get(), get(), get()) }
     viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
     viewModel { PhoneVerificationViewModel(get(), get(), get(), get()) }
@@ -78,7 +76,6 @@ val domainModule = module {
     single { GetAllAvatarsUseCase(get()) }
     single { GetNextRoundUseCase(get()) }
     single { PostQuizUseCase(get()) }
-    single { SyncQuizUseCase(get()) }
     single { PostRoundUseCase(get()) }
 }
 
@@ -130,12 +127,10 @@ val dataModule = module {
     single { AppDatabase.getDatabase(androidContext()).accountDao() } bind AccountDao::class
     single { AppDatabase.getDatabase(androidContext()).categoryDao() } bind CategoryDao::class
     single { AppDatabase.getDatabase(androidContext()).avatarDao() } bind AvatarDao::class
-    single { AppDatabase.getDatabase(androidContext()).quizDao() } bind QuizDao::class
 
     single { LocalAccountDataSource(get()) }
     single { LocalCategoryDataSource(get()) }
     single { LocalAvatarDataSource(get()) }
-    single { LocalQuizDataSource(get()) }
 
     single { CloudAccountDataSource(get(), get(), get(), get()) }
     single { CloudRankingDataSource(get(), get()) }
@@ -149,7 +144,7 @@ val dataModule = module {
     single<CategoryRepository> { CategoryDataRepository(get(), get(), get()) }
     single<AvatarRepository> { AvatarDataRepository(get(), get(), get()) }
     single<InitialLoadRepository> { InitialLoadDataRepository(get(), get(), get()) }
-    single<QuizRepository> { QuizDataRepository(get(), get(), get(), get()) }
+    single<QuizRepository> { QuizDataRepository(get(), get(), get()) }
 
 }
 
