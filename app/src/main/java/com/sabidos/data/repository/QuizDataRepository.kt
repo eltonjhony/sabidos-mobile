@@ -23,11 +23,9 @@ class QuizDataRepository(
 
     override suspend fun postQuiz(request: QuizRequest): ResultWrapper<Boolean> =
         localAccountDataSource.getCurrentNickname()?.let {
-            val result = cloudQuizDataSource.postQuiz(it, listOf(request))
-            when (result) {
-                is ResultWrapper.Success -> {
-                    accountCache.invalidate()
-                }
+            val result = cloudQuizDataSource.postQuiz(it, request)
+            if (result is ResultWrapper.Success) {
+                accountCache.invalidate()
             }
             result
         } ?: DataNotFoundError
@@ -35,10 +33,8 @@ class QuizDataRepository(
     override suspend fun postRound(request: FinishRoundRequest): ResultWrapper<Boolean> =
         localAccountDataSource.getCurrentNickname()?.let {
             val result = cloudQuizDataSource.postRound(it, request)
-            when (result) {
-                is ResultWrapper.Success -> {
-                    accountCache.invalidate()
-                }
+            if (result is ResultWrapper.Success) {
+                accountCache.invalidate()
             }
             result
         } ?: DataNotFoundError

@@ -13,10 +13,8 @@ interface QuizService {
         @Query(value = "categoryId") categoryId: Int
     ): QuizResponseWrapper
 
-    @POST("v1/quiz/{nickname}")
-    suspend fun postQuiz(
-        @Path(value = "nickname") nickname: String, @Body request: List<QuizRequest>
-    )
+    @POST("v1/quiz")
+    suspend fun postQuiz(@Body request: QuizRequest)
     
     @POST("v1/quiz/round")
     suspend fun postRound(@Body request: FinishRoundRequest)

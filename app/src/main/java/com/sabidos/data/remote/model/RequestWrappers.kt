@@ -22,6 +22,7 @@ data class UpdateAccountRequest(
 
 data class QuizRequest(
     val quizId: String,
+    var nickname: String = "",
     val responseTime: Int,
     val alternative: Alternative
 )
