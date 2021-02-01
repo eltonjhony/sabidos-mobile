@@ -36,9 +36,12 @@ class ProfileFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setupViewPager()
         updateAvatarComponent.setup(this)
-
-        viewModel.getCurrentAccount()
         viewModel.accountResource.observe(viewLifecycleOwner, Observer { bindAccountState(it) })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getCurrentAccount()
     }
 
     override fun onDestroy() {
