@@ -1,6 +1,6 @@
 package com.sabidos.data.remote
 
-import com.sabidos.data.remote.model.FinishRoundRequest
+import com.sabidos.data.remote.model.PostQuizResponse
 import com.sabidos.data.remote.model.QuizRequest
 import com.sabidos.data.remote.model.QuizResponseWrapper
 import retrofit2.http.*
@@ -14,9 +14,6 @@ interface QuizService {
     ): QuizResponseWrapper
 
     @POST("v1/quiz")
-    suspend fun postQuiz(@Body request: QuizRequest)
-    
-    @POST("v1/quiz/round")
-    suspend fun postRound(@Body request: FinishRoundRequest)
+    suspend fun postQuiz(@Body request: QuizRequest): PostQuizResponse
 
 }

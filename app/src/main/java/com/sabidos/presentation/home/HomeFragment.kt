@@ -13,7 +13,10 @@ import com.sabidos.domain.Category
 import com.sabidos.domain.Timeline
 import com.sabidos.infrastructure.Resource
 import com.sabidos.infrastructure.ResourceState.*
-import com.sabidos.infrastructure.extensions.*
+import com.sabidos.infrastructure.extensions.getNext
+import com.sabidos.infrastructure.extensions.hide
+import com.sabidos.infrastructure.extensions.show
+import com.sabidos.infrastructure.extensions.today
 import com.sabidos.presentation.category.CategoryHorizontalAdapter
 import com.sabidos.presentation.common.StartToPlayCommand
 import kotlinx.android.synthetic.main.content_home_layout.*
@@ -81,9 +84,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun bindAccountState(resource: Resource<Account?>?) = resource?.let {
-        when (it.state) {
-            Success -> setupAccountInformation(it.data)
-        }
+        if (it.state == Success) setupAccountInformation(it.data)
     }
 
     private fun bindTimelineState(it: Resource<List<Timeline>>) {

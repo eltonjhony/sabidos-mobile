@@ -11,11 +11,8 @@ import com.sabidos.presentation.MainActivity
 import com.sabidos.presentation.common.StartToPlayCommand
 import kotlinx.android.synthetic.main.activity_quiz_result.*
 import org.koin.android.ext.android.inject
-import org.koin.android.viewmodel.ext.android.viewModel
 
 class QuizResultActivity : BaseActivity() {
-
-    private val viewModel: ResultsViewModel by viewModel()
 
     private val quizResult: QuizResult by lazy { QuizResultHandler.getResults() }
     private val roundPrefsHelper: RoundPrefsHelper by inject()
@@ -23,7 +20,6 @@ class QuizResultActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz_result)
-        viewModel.postRound(quizResult)
         roundPrefsHelper.didFinishRound()
         resultsContentComponent.setup(quizResult)
         setupButtons()

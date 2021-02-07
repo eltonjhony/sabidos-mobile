@@ -84,3 +84,5 @@ data class PlayerResponse(
 
 data class CategoryWrapperResponse(val categories: List<CategoryResponse>)
 data class CategoryResponse(val id: Int, val description: String, val imageUrl: String?, val iconUrl: String?)
+
+data class PostQuizResponse(val levelHasBeenUp: Boolean, val starHasBeenUp: Boolean)

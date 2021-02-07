@@ -26,7 +26,6 @@ import com.sabidos.presentation.profile.AccountManagementViewModel
 import com.sabidos.presentation.profile.MyPerformanceViewModel
 import com.sabidos.presentation.profile.ProfileViewModel
 import com.sabidos.presentation.quiz.QuizViewModel
-import com.sabidos.presentation.quiz.ResultsViewModel
 import com.sabidos.presentation.ranking.RankingViewModel
 import com.sabidos.presentation.splash.DeepLinksViewModel
 import com.sabidos.presentation.splash.SplashViewModel
@@ -50,7 +49,6 @@ val presentationModule = module {
     viewModel { CategoryViewModel(get()) }
     viewModel { UserAvatarViewModel(get()) }
     viewModel { QuizViewModel(get(), get(), get()) }
-    viewModel { ResultsViewModel(get()) }
 }
 
 val domainModule = module {
@@ -76,7 +74,6 @@ val domainModule = module {
     single { GetAllAvatarsUseCase(get()) }
     single { GetNextRoundUseCase(get()) }
     single { PostQuizUseCase(get()) }
-    single { PostRoundUseCase(get()) }
 }
 
 val infrastructureModule = module {

@@ -26,8 +26,3 @@ data class QuizRequest(
     val responseTime: Int,
     val alternative: Alternative
 )
-
-data class FinishRoundRequest(
-    val accumulateXp: Int,
-    var nickname: String = ""
-)
